@@ -1,5 +1,7 @@
 #define __MT_TERRAIN_CPP__
 
+#include <array>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -113,7 +115,7 @@ void Terrain::init(string name)
 // 	m_texture.loadAdd("res/terrain/" + name + "/texPartA.tga");
 
 	// Init Texture
-	impl->texture.init("../res/textures/heightmap/heightmap1/Untitled2.png");
+	impl->texture.init("../res/terrains/static/chadvernon/Untitled2.png");
 }
 
 void Terrain::render()

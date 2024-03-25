@@ -15,13 +15,14 @@ class LobbyMap : public Map
 public:
 
 	// Variable
+	std::string name;
 	// PhysicDebug* physicDebug;
 	// Terrain* terrain;
 	std::vector<Entity*> lstEntitiesStatic;
-	// std::vector<Entity*> lstEntitiesDynamic;
+	std::vector<Entity*> lstEntitiesDynamic;
 
 	// Forward
-	LobbyMap();
+	LobbyMap(std::string);
 	~LobbyMap();
 	void load();
 	void clear();

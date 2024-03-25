@@ -13,7 +13,7 @@ using namespace mt::graphic;
 
 Camera::Camera()
 {
-	this->position = vec3(0,128,0);
+	this->position = vec3(0,0,3);
 	this->forward = vec3(0,0,-1);
 	this->right = vec3(1,0,0);
 	this->up = vec3(0,1,0);
@@ -60,8 +60,8 @@ void Camera::update()
 		updateView = true;
 	}
 
-	float speed = 50.0f;
-	float maxSpeed = 100.0f;
+	float speed = 10.0f;
+	float maxSpeed = 20.0f;
 
 	if (Input::ins.checkHold(87)) // W
 		this->velocity = this->movement(this->velocity, this->forward,  speed, maxSpeed, true);
@@ -90,7 +90,7 @@ void Camera::update()
 		// 	this->velocity *= 0.01f;//0.8f;
 
 		this->position += this->velocity * Timer::ins.getTimePassed();
-		this->velocity = vec3();
+		this->velocity = vec3(); // Dung ngay lap tuc
 
 		Graphic::ins.shaderProgramMgr.setCameraPosition(position);
 
@@ -99,12 +99,12 @@ void Camera::update()
 	
 	if (updateView)
 	{
-		Graphic::ins.scene.view.lookAt(position, position+forward, vec3(0,1,0));
+		Graphic::ins.scene.view.lookAt(position, position + forward, vec3(0,1,0));
 
 		Graphic::ins.shaderProgramMgr.setSceneView(Graphic::ins.scene.view);
 
 		// Update frustum culling
-		frustumCulling.update();
+		this->frustumCulling.update();
 	}
 }
 

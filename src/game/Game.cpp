@@ -1,6 +1,6 @@
 #define __MT_GAME_CPP__
 
-// #define LOG
+// #define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
 
 #include "common.h"
 #include "Game.h"
@@ -10,7 +10,7 @@
 
 // test import
 #include "graphic/ShaderProgram.h"
-#include "game/maps/LobbyMap.h"
+#include "game/maps/MapBuilder.h"
 
 // #include "graphic/models/animation/AnimationModel.h"
 
@@ -33,7 +33,7 @@ void Game::run()
 {
 
 	#ifdef LOG
-	cout << __FILE__ << " | " << __LINE__ << '\n';
+	LOG
 	#endif
 
 	try
@@ -41,19 +41,19 @@ void Game::run()
 		this->init();
 
 		#ifdef LOG
-		cout << __FILE__ << " | " << __LINE__ << '\n';
+		LOG
 		#endif
 
 		this->framework();
 
 		#ifdef LOG
-		cout << __FILE__ << " | " << __LINE__ << '\n';
+		LOG
 		#endif
 	
 		this->close();
 	
 		#ifdef LOG
-		cout << __FILE__ << " | " << __LINE__ << '\n';
+		LOG
 		#endif
 	
 	}
@@ -61,7 +61,7 @@ void Game::run()
 	{
 		
 		#ifdef LOG
-		cout << __FILE__ << " | " << __LINE__ << '\n';
+		LOG
 		#endif
 	
 		cerr << "[ERROR]: " << e.getMessage() << '\n';
@@ -70,14 +70,14 @@ void Game::run()
 	{
 		
 		#ifdef LOG
-		cout << __FILE__ << " | " << __LINE__ << '\n';
+		LOG
 		#endif
 	
 		cerr << "[ERROR]: " << e.what() << '\n';
 	}
 	
 	#ifdef LOG
-	cout << __FILE__ << " | " << __LINE__ << '\n';
+	LOG
 	#endif
 	
 }
@@ -90,7 +90,7 @@ void Game::init()
 	Physic::ins.init();
 
 	// Init component
-	this->map = new LobbyMap();
+	this->map = MapBuilder::load("lobby");
 
 	// #EXTRA
 }
@@ -98,7 +98,7 @@ void Game::init()
 void Game::framework()
 {
 	#ifdef LOG
-	cout << __FILE__ << " | " << __LINE__ << '\n';
+	LOG
 	#endif
 
 	// Before loop
@@ -121,18 +121,21 @@ void Game::framework()
 		// Pre Process
 		Graphic::ins.camera.update();
 
+		// Map update
+		this->map->update();
+
 		// rendering commands here
 		Graphic::ins.renderPre();
 
 		#ifdef LOG
-		cout << __FILE__ << " | " << __LINE__ << '\n';
+		LOG
 		#endif
 
 		// Map render
 		this->map->render();
 
 		#ifdef LOG
-		cout << __FILE__ << " | " << __LINE__ << '\n';
+		LOG
 		#endif
 
 		// #ADD

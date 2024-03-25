@@ -9,12 +9,12 @@ class Texture
 
 public:
 
-	// Forward
+	// Constructor
 	Texture();
 	~Texture();
-	void init(std::string filepath, bool flip = false);
 
-	// Native
+	// General
+	void init(std::string filepath, bool flip = false);
 	void bind(unsigned int location = 0);
 
 private:

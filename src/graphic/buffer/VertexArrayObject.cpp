@@ -102,6 +102,11 @@ void VertexArrayObject::updateDynamicAttribute(int location, vector<int> data)
 	VBOs.at(location)->updateDynamic(data);
 }
 
+void VertexArrayObject::updateDynamicAttribute(int location, vector<float> data)
+{
+	VBOs.at(location)->updateDynamic(data);
+}
+
 void VertexArrayObject::updateDynamicAttribute(int location, vector<vec2> data)
 {
 	VBOs.at(location)->updateDynamic(data);
@@ -153,6 +158,11 @@ void VertexArrayObject::drawTriangle()
 void VertexArrayObject::drawTriangleTrip()
 {
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, this->count);
+}
+
+void VertexArrayObject::drawTriangleTripInstance(int num)
+{
+	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, this->count, num);
 }
 
 void VertexArrayObject::drawPatches()

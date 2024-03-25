@@ -3,8 +3,6 @@
 
 #include "Model.h"
 #include "../ShaderProgram.h"
-#include "../buffer/VertexArrayObject.h"
-#include "../texture/Texture.h"
 
 namespace mt {
 namespace graphic {
@@ -17,12 +15,18 @@ public:
 	// Variables
 	static ShaderProgram shader;
 
-	// Forwards
+	// Constructor
 	SimpleModel();
 	~SimpleModel();
-	void render();
 
-	// Natives
+	// Load custom
+	void loadVAO(std::vector<vec3> vertices, std::vector<vec2> texcoords, std::vector<vec3> normals, std::vector<unsigned int> indices);
+	void loadVAO(std::vector<vec3> vertices, std::vector<vec2> texcoords, std::vector<unsigned int> indices);
+	void loadVAO(std::vector<vec3> vertices, std::vector<unsigned int> indices);
+	void loadTexture(std::string filepath);
+
+	// General
+	void render();
 
 	// Other
 	friend class ModelBuilder;
@@ -30,8 +34,8 @@ public:
 private:
 
 	// Variables
-	VertexArrayObject VAO;
-	Texture texture;
+	class SimpleModelImpl;
+	SimpleModelImpl* impl;
 
 };
 

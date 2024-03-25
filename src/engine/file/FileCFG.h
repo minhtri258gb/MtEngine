@@ -18,6 +18,7 @@ public:
 	int getInt(std::string);
 	uint getUInt(std::string);
 	float getFloat(std::string);
+	vec2 getVec2(std::string);
 	vec3 getVec3(std::string);
 	std::map<std::string, std::string>* getPtr();
 

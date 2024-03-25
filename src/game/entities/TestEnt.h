@@ -12,16 +12,27 @@ class TestEnt : public Entity
 
 public:
 
-	// Variable
-	graphic::Model* model;
+	// Properties
+	vec3 position;
+	quat angle;
+	vec3 scale;
 
-	// Forward
+	// Constructor
 	TestEnt(std::string name);
 	~TestEnt();
+
+	// Forward
+	void init();
 	void update();
 	void render();
 
 	// Native
+
+private:
+
+	// Variables
+	class TestEntImpl;
+	TestEntImpl* impl;
 
 };
 

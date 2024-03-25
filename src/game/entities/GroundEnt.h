@@ -13,17 +13,23 @@ class GroundEnt : public Entity
 
 public:
 
-	// Variable
-	graphic::Model* model;
-	physic::RigidBody* body;
+	// Properties
+	vec3 position;
 
 	// Forward
 	GroundEnt(std::string name);
 	~GroundEnt();
+	void init();
 	void update();
 	void render();
 
 	// Native
+
+private:
+
+	// Impliment
+	class GroundEntImpl;
+	GroundEntImpl* impl;
 
 };
 

@@ -1,34 +1,50 @@
 #define __MT_LOBBY_MAP_CPP__
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include "common.h"
 #include "graphic/Graphic.h"
 #include "LobbyMap.h"
 
-#include "../../graphic/sky/SkyBox.h"
-#include "../../graphic/terrain/StaticTerrain.h"
-#include "../../graphic/terrain/Terrain.h"
+#include "graphic/sky/SkyBox.h"
+#include "graphic/terrain/StaticTerrain.h"
+#include "graphic/terrain/Terrain.h"
+#include "graphic/bsp/BspSourceMap.h"
+#include "graphic/bsp/BspQuakeMap.h"
+#include "graphic/bsp/BspMap.h"
 
-#include "../entities/TestEnt.h"
-#include "../entities/GroundEnt.h"
-#include "../entities/TestAnimEnt.h"
-#include "../entities/TestParticleEnt.h"
+#include "game/entities/TestEnt.h"
+#include "game/entities/GroundEnt.h"
+#include "game/entities/TestAnimEnt.h"
+#include "game/entities/TestParticleEnt.h"
+#include "game/entities/TestEmitterEnt.h"
+
+#include "engine/file/FileCFG.h"
 
 using namespace std;
 using namespace mt::graphic;
 using namespace mt::game;
+
 
 class LobbyMap::LobbyMapImpl
 {
 public:
 	SkyBox* sky;
 	StaticTerrain* terrainStatic;
-	// Terrain* terrain;
+	Terrain* terrain;
+	BspSourceMap* sourceMap;
+	BspQuakeMap* quakeMap;
+	BspMap* bspMap;
 };
 
-LobbyMap::LobbyMap()
+LobbyMap::LobbyMap(string name)
 {
 	// Implement
 	impl = new LobbyMapImpl();
+
+	// Data
+	this->name = name;
 }
 
 LobbyMap::~LobbyMap()
@@ -68,6 +84,70 @@ void LobbyMap::load()
 	
 	this->needLoading = false; // or not maybe
 
+	// Data config
+	// string pathDir = "../res/terrains/static/lobby/";
+	// FileCFG* fCFG = new FileCFG(pathDir + "info.cfg");
+	
+	// fCFG->select("general");
+	// string terrainName = fCFG->get("type");
+	// unsigned int size = fCFG->getUInt("size");
+	
+
+	// =================== Sky ===================
+	impl->sky = new SkyBox();
+	impl->sky->init("blabla");
+
+	// =================== Terrain Static ===================
+	impl->terrainStatic = new StaticTerrain();
+	impl->terrainStatic->init("chadvernon");
+
+	// =================== Terrain QuadTree ===================
+	// impl->terrain = new Terrain();
+	// impl->terrain->init("something");
+
+	// =================== BSP Source Map ===================
+	// impl->sourceMap = new BspSourceMap();
+	// impl->sourceMap->init("de_dust2");
+
+	// =================== BSP Quake Map ===================
+	// impl->quakeMap = new BspQuakeMap();
+	// impl->quakeMap->init("de_dust2");
+
+	// =================== BSP Map ===================
+	// impl->bspMap = new BspMap();
+	// impl->bspMap->init("de_dust2");
+
+	// =================== Ent Ground ===================
+	// GroundEnt* groundEnt = new GroundEnt("matdat");
+	// groundEnt->position = vec3(0,-5,0);
+	// groundEnt->init();
+	// this->lstEntitiesStatic.push_back(groundEnt);
+
+	// =================== Ent Box ===================
+	// TestEnt* boxEnt1 = new TestEnt("box");
+	// boxEnt1->position = vec3(0,50,-2);
+	// boxEnt1->scale = vec3(1,1,1);
+	// boxEnt1->init();
+	// this->lstEntitiesStatic.push_back(boxEnt1);
+
+	// =================== Ent Box ===================
+	// TestEnt* boxEnt2 = new TestEnt("box");
+	// boxEnt2->position = vec3(128.0, 0.0, 0.0);
+	// this->lstEntitiesStatic.push_back(boxEnt2);
+
+	// =================== Ent Box ===================
+	// TestEnt* boxEnt3 = new TestEnt("box");
+	// boxEnt3->position = vec3(0.0, 0.0, 128.0);
+	// this->lstEntitiesStatic.push_back(boxEnt3);
+
+	// =================== Ent Box ===================
+	// TestEnt* boxEnt4 = new TestEnt("box");
+	// boxEnt4->position = vec3(128.0, 0.0, 128.0);
+	// this->lstEntitiesStatic.push_back(boxEnt4);
+
+	// Image data;
+	// data.load(pathDir + terrainName);
+	// // BTFile *filebt = new BTFile("res/terrain/" + terrainName + "/heightmap.bt");
 
 	// // Create world physic
 	// this->world = newton::NewtonCreate();
@@ -151,7 +231,7 @@ void LobbyMap::load()
 	// }
 
 	// Tao hinh cau
-	// SphereEnt* sphereEnt = new SphereEnt();
+	// SphereEnt* sphereEnt = new SphereEnt(); // thieu class
 	// sphereEnt->position = vec3(0, 100, 0);
 	// sphereEnt->radius = 1.0f;
 	// sphereEnt->color = vec4i(0, 0, 0, 255);
@@ -159,12 +239,10 @@ void LobbyMap::load()
 	// this->lstEntitiesDynamic.push_back(sphereEnt);
 
 	// Test Entity
-	// this->lstEntitiesStatic.push_back(new TestEnt("test"));
-	// this->lstEntitiesStatic.push_back(new TestEnt("box"));
+	// this->lstEntitiesStatic.push_back(new TestEnt("test")); // ko hien
 
-	this->lstEntitiesStatic.push_back(new GroundEnt("matdat"));
-	// this->lstEntitiesStatic.push_back(new TestAnimEnt("asd")); // Test animation model // OKE
-	// this->lstEntitiesStatic.push_back(new TestParticleEnt("test"));
+	// this->lstEntitiesDynamic.push_back(new TestAnimEnt("asd")); // Test animation model // ok
+	// this->lstEntitiesStatic.push_back(new TestParticleEnt("test")); // ok
 
 	// Ground
 	// GroundEnt* ground1 = new GroundEnt("matdat");
@@ -180,16 +258,91 @@ void LobbyMap::load()
 	// ground4->position = vec3(256,-0.5,256);
 	// this->lstEntitiesStatic.push_back(ground4);
 
-	// Sky
-	// impl->sky = new SkyBox();
-	// impl->sky->init("blabla");
+	// =================== Entity kim tu thap voi normal
+	// SimpleModel* kttMdl = (SimpleModel*) Graphic::ins.modelMgr.getModel("kim_tu_thap");
+	// if (kttMdl == nullptr) {
+	// 	kttMdl = new SimpleModel();
 
-	// Terrain
-	impl->terrainStatic = new StaticTerrain();
-	impl->terrainStatic->init("hm1");
+	// 	vector<vec3> vertices;
+	// 	vertices.push_back(vec3(-0.5f,  0.0f,  0.5f));
+	// 	vertices.push_back(vec3(-0.5f,  0.0f, -0.5f));
+	// 	vertices.push_back(vec3( 0.5f,  0.0f, -0.5f));
+	// 	vertices.push_back(vec3( 0.5f,  0.0f,  0.5f));
+	// 	vertices.push_back(vec3(-0.5f,  0.0f,  0.5f));
+	// 	vertices.push_back(vec3(-0.5f,  0.0f, -0.5f));
+	// 	vertices.push_back(vec3( 0.0f,  0.8f,  0.0f));
+	// 	vertices.push_back(vec3(-0.5f,  0.0f, -0.5f));
+	// 	vertices.push_back(vec3( 0.5f,  0.0f, -0.5f));
+	// 	vertices.push_back(vec3( 0.0f,  0.8f,  0.0f));
+	// 	vertices.push_back(vec3( 0.5f,  0.0f, -0.5f));
+	// 	vertices.push_back(vec3( 0.5f,  0.0f,  0.5f));
+	// 	vertices.push_back(vec3( 0.0f,  0.8f,  0.0f));
+	// 	vertices.push_back(vec3( 0.5f,  0.0f,  0.5f));
+	// 	vertices.push_back(vec3(-0.5f,  0.0f,  0.5f));
+	// 	vertices.push_back(vec3( 0.0f,  0.8f,  0.0f));
+		
+	// 	vector<vec2> texcoords;
+	// 	texcoords.push_back(vec2(0.0f, 0.0f));
+	// 	texcoords.push_back(vec2(0.0f, 5.0f));
+	// 	texcoords.push_back(vec2(5.0f, 5.0f));
+	// 	texcoords.push_back(vec2(5.0f, 0.0f));
+	// 	texcoords.push_back(vec2(0.0f, 0.0f));
+	// 	texcoords.push_back(vec2(5.0f, 0.0f));
+	// 	texcoords.push_back(vec2(2.5f, 5.0f));
+	// 	texcoords.push_back(vec2(5.0f, 0.0f));
+	// 	texcoords.push_back(vec2(0.0f, 0.0f));
+	// 	texcoords.push_back(vec2(2.5f, 5.0f));
+	// 	texcoords.push_back(vec2(0.0f, 0.0f));
+	// 	texcoords.push_back(vec2(5.0f, 0.0f));
+	// 	texcoords.push_back(vec2(2.5f, 5.0f));
+	// 	texcoords.push_back(vec2(5.0f, 0.0f));
+	// 	texcoords.push_back(vec2(0.0f, 0.0f));
+	// 	texcoords.push_back(vec2(2.5f, 5.0f));
+		
+	// 	vector<vec3> normals;
+	// 	normals.push_back(vec3(0.0f, -1.0f, 0.0f));
+	// 	normals.push_back(vec3(0.0f, -1.0f, 0.0f));
+	// 	normals.push_back(vec3(0.0f, -1.0f, 0.0f));
+	// 	normals.push_back(vec3(0.0f, -1.0f, 0.0f));
+	// 	normals.push_back(vec3(-0.8f, 0.5f, 0.0f));
+	// 	normals.push_back(vec3(-0.8f, 0.5f, 0.0f));
+	// 	normals.push_back(vec3(-0.8f, 0.5f, 0.0f));
+	// 	normals.push_back(vec3(0.0f, 0.5f, -0.8f));
+	// 	normals.push_back(vec3(0.0f, 0.5f, -0.8f));
+	// 	normals.push_back(vec3(0.0f, 0.5f, -0.8f));
+	// 	normals.push_back(vec3(0.8f, 0.5f, 0.8f));
+	// 	normals.push_back(vec3(0.8f, 0.5f, 0.8f));
+	// 	normals.push_back(vec3(0.8f, 0.5f, 0.8f));
+	// 	normals.push_back(vec3(0.0f, 0.5f, 0.8f));
+	// 	normals.push_back(vec3(0.0f, 0.5f, 0.8f));
+	// 	normals.push_back(vec3(0.0f, 0.5f, 0.8f));
+		
+	// 	vector<unsigned int> indices;
+	// 	indices.push_back( 0); indices.push_back( 1); indices.push_back( 2); // bottom
+	// 	indices.push_back( 0); indices.push_back( 2); indices.push_back( 3); // Bottom
+	// 	indices.push_back( 4); indices.push_back( 6); indices.push_back( 5); // left
+	// 	indices.push_back( 7); indices.push_back( 9); indices.push_back( 8); // Behide
+	// 	indices.push_back(10); indices.push_back(12); indices.push_back(11); // Right
+	// 	indices.push_back(13); indices.push_back(15); indices.push_back(14); // Front
+		
+	// 	kttMdl->loadVAO(vertices, texcoords, normals, indices);
+	// 	kttMdl->loadTexture("../res/textures/wall.jpg");
 
-	// impl->terrain = new Terrain();
-	// impl->terrain->init("something");
+	// 	Graphic::ins.modelMgr.addModel("kim_tu_thap", kttMdl);
+	// }
+
+	// TestEnt* ent001 = new TestEnt("kim_tu_thap");
+	// ent001->position = vec3(0,0,0);
+	// ent001->scale = vec3(100,100,100);
+	// this->lstEntitiesStatic.push_back(ent001);
+
+	// =================== Emitter
+	// TestEmitterEnt* ent002 = new TestEmitterEnt("exp03");
+	// ent002->originB = vec3(0, 0, 0);
+	// ent002->originE = vec3(0, 0, 0);
+	// ent002->velocityB = vec3(-1, 3, -1);
+	// ent002->velocityE = vec3(1, 3, 1);
+	// this->lstEntitiesDynamic.push_back(ent002);
 
 	// HUD - Text
 	// #TODO
@@ -203,6 +356,10 @@ void LobbyMap::clear()
 		delete ent;
 	this->lstEntitiesStatic.clear();
 
+	for (Entity *ent : this->lstEntitiesDynamic)
+		delete ent;
+	this->lstEntitiesDynamic.clear();
+
 	// Sky
 	if (impl->sky)
 	{
@@ -210,17 +367,40 @@ void LobbyMap::clear()
 		impl->sky = nullptr;
 	}
 
-	// Terrain
-	// if (impl->terrainStatic)
-	// {
-	// 	delete impl->terrainStatic;
-	// 	impl->terrainStatic = nullptr;
-	// }
-	// if (impl->terrain)
-	// {
-	// 	delete impl->terrain;
-	// 	impl->terrain = nullptr;
-	// }
+	// Terrain Static
+	if (impl->terrainStatic)
+	{
+		delete impl->terrainStatic;
+		impl->terrainStatic = nullptr;
+	}
+
+	// Terrain QuadTree
+	if (impl->terrain)
+	{
+		delete impl->terrain;
+		impl->terrain = nullptr;
+	}
+
+	// BSP Source Map
+	if (impl->sourceMap)
+	{
+		delete impl->sourceMap;
+		impl->sourceMap = nullptr;
+	}
+
+	// BSP Quake Map
+	if (impl->quakeMap)
+	{
+		delete impl->quakeMap;
+		impl->quakeMap = nullptr;
+	}
+
+	// BSP Map
+	if (impl->bspMap)
+	{
+		delete impl->bspMap;
+		impl->bspMap = nullptr;
+	}
 
 	// #EXTRA
 }
@@ -234,25 +414,37 @@ void LobbyMap::update()
 	// // Enviroment update
 	// this->physicDebug->update();
 
-	// for (Entity* ent : this->lstEntitiesDynamic)
-	// {
-	// 	ent->update();
-	// }
+	if (impl->sourceMap)
+		impl->sourceMap->update();
 
+	if (impl->quakeMap)
+		impl->quakeMap->update();
+
+	if (impl->bspMap)
+		impl->bspMap->update();
+
+	for (Entity* ent : this->lstEntitiesStatic)
+		ent->update();
+	
+	for (Entity* ent : this->lstEntitiesDynamic)
+		ent->update();
 }
 
 void LobbyMap::render()
 {
-	// sky
 	if (impl->sky)
 		impl->sky->render();
-
 	if (impl->terrainStatic)
 		impl->terrainStatic->render();
-	
-	// if (impl->terrain)
-	// 	impl->terrain->render();
-	
+	if (impl->terrain)
+		impl->terrain->render();
+	if (impl->sourceMap)
+		impl->sourceMap->render();
+	if (impl->quakeMap)
+		impl->quakeMap->render();
+	if (impl->bspMap)
+		impl->bspMap->render();
+
 	// Render nhieu lop doi voi graphic
 	// while (Graphic::ins->needRenderMore())
 	// {
@@ -264,9 +456,7 @@ void LobbyMap::render()
 		for (Entity* ent : this->lstEntitiesStatic)
 			ent->render();
 
-		// for (Entity* ent : this->lstEntitiesDynamic)
-		// {
-		// 	ent->render();
-		// }
+		for (Entity* ent : this->lstEntitiesDynamic)
+			ent->render();
 	// }
 }

@@ -22,16 +22,14 @@ public:
 
 	// Native
 	Model* cache(std::string name);
+	Model* getModel(std::string name);
+	void addModel(std::string name, Model*);
 
 private:
 
 	// Variable
 	ModelBuilder builder;
 	std::map<std::string, Model*> models;
-
-	// Natives
-	Model* getModel(std::string name);
-	void addModel(std::string name, Model*);
 
 };
 

@@ -11,6 +11,9 @@ class TestParticleEnt : public Entity
 
 public:
 
+	// Properties
+	vec3 position;
+
 	// Forward
 	TestParticleEnt(std::string name);
 	~TestParticleEnt();

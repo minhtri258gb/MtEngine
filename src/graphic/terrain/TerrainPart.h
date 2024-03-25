@@ -9,6 +9,7 @@ class TerrainPart
 public:
 
 	// Variables
+	float heightScale;
 
 	// Forwards
 	TerrainPart();

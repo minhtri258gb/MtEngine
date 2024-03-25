@@ -85,7 +85,7 @@ Vector4 Vector4::operator * (float f) const
 
 float Vector4::operator * (const Vector4& v) const
 {
-	return x * v.x + y * v.y + z * v.z + w * v.x;
+	return x * v.x + y * v.y + z * v.z + w * v.w;
 }
 
 Vector4 Vector4::operator / (float f) const

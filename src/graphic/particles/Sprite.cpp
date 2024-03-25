@@ -1,18 +1,19 @@
 #define __MT_SPRITE_CPP__
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+// #include <glad/glad.h>
+// #include <GLFW/glfw3.h>
 
 #include "common.h"
-#include "../Graphic.h"
+#include "graphic/Graphic.h"
+#include "graphic/buffer/VertexArrayObject.h"
+#include "graphic/texture/Texture.h"
 #include "Sprite.h"
-#include "../buffer/VertexArrayObject.h"
-#include "../texture/Texture.h"
 
 using namespace std;
 using namespace mt::graphic;
 
 ShaderProgram Sprite::shader;
+
 
 class Sprite::SpriteImpl
 {

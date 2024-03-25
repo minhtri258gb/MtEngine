@@ -22,7 +22,7 @@ void Scene::init()
 	float width = Config::ins.windowWidth;
 	float height = Config::ins.windowHeight;
 
-	this->proj.perspective(Math::toRadian(80.0), width/height, 1.0f, 1000.0f);
+	this->proj.perspective(Math::toRadian(80.0), width/height, 0.1f, 99999.0f);
 	this->view = mat4();
 
 	Graphic::ins.shaderProgramMgr.setSceneProj(proj);

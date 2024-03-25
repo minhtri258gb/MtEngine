@@ -22,7 +22,11 @@ TestParticleEnt::TestParticleEnt(std::string name)
 	// Implement
 	this->impl = new TestParticleEntImpl();
 
+	// Component
 	this->impl->sprite.load("mai");
+
+	// Default
+	this->position = vec3();
 }
 
 TestParticleEnt::~TestParticleEnt()

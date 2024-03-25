@@ -23,8 +23,8 @@ Texture::~Texture()
 
 void Texture::init(string filepath, bool _flip)
 {
-	glGenTextures(1, &this->gl_textureId);
-	glBindTexture(GL_TEXTURE_2D, this->gl_textureId);
+	glGenTextures(1, &gl_textureId);
+	glBindTexture(GL_TEXTURE_2D, gl_textureId);
 
 	// set the texture wrapping/filtering options (on the currently bound texture object)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
@@ -44,8 +44,10 @@ void Texture::init(string filepath, bool _flip)
 	
 	if (nrChannels == 4)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	else
+	else if (nrChannels == 3)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	else if (nrChannels == 1)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 	

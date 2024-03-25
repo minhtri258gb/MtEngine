@@ -9,8 +9,8 @@ class Entity
 
 public:
 
-	// Variable
-	vec3 position;
+	// Variables
+	std::string name;
 
 	// Forward
 	Entity();

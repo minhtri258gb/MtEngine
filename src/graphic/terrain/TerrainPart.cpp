@@ -3,10 +3,13 @@
 #include "common.h"
 #include "engine/Timer.h"
 #include "../Graphic.h"
-#include "TerrainPart.h"
 #include "TerrainQuad.h"
 #include "../buffer/VertexArrayObject.h"
 #include "../texture/Texture.h"
+#include "TerrainPart.h"
+
+// Import nguoc
+#include "Terrain.h"
 
 using namespace std;
 using namespace mt;
@@ -36,13 +39,14 @@ TerrainPart::TerrainPart()
 	impl->VAO.init();
 	impl->VAO.bind();
 	impl->VAO.addDynamicAttribute(maxInstance, vec2());	// 0
-	impl->VAO.addDynamicAttribute(maxInstance, 0);		// 1
-	impl->VAO.addDynamicAttribute(maxInstance, 0);		// 2
+	impl->VAO.addDynamicAttribute(maxInstance, 0);			// 1
+	impl->VAO.addDynamicAttribute(maxInstance, 0);			// 2
 	impl->VAO.unbind();
 	impl->VAO.setCount(4); // luu 4 diem tai vs.shader
 
 	// Init Texture
-	impl->heightMapTex.init("../res/textures/heightmap/heightmap1/Untitled1.png");
+	this->heightScale = 50.0f;
+	impl->heightMapTex.init("../res/terrains/static/chadvernon/Untitled1.png");
 	
 }
 
@@ -57,6 +61,9 @@ TerrainPart::~TerrainPart()
 
 void TerrainPart::render()
 {
+	// Update Shader
+	Terrain::shader.setFloat(4, this->heightScale);
+
 	// Update Triangle
 	unsigned int count = 0;
 	vector<vec2> positions;

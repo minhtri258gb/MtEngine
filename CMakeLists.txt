@@ -19,10 +19,11 @@ add_library(engine #SHARED
 ./src/engine/Input.cpp
 ./src/engine/Timer.h
 ./src/engine/Timer.cpp
+./src/engine/Random.h
+./src/engine/Random.cpp
 ./src/engine/datatype/Flag32.h
 ./src/engine/datatype/Flag32.cpp
 ./src/engine/datatype/3D/Math3D.h
-
 ./src/engine/datatype/3D/Vector2.h
 ./src/engine/datatype/3D/Vector2.cpp
 ./src/engine/datatype/3D/Vector2i.h
@@ -41,7 +42,8 @@ add_library(engine #SHARED
 ./src/engine/datatype/3D/Matrix4x4.cpp
 ./src/engine/datatype/3D/Quaternion.h
 ./src/engine/datatype/3D/Quaternion.cpp
-
+./src/engine/object/Node.h
+./src/engine/object/Node.cpp
 ./src/engine/exception/Exception.h
 ./src/engine/exception/Exception.cpp
 ./src/engine/exception/BoundingException.h
@@ -60,8 +62,12 @@ add_library(engine #SHARED
 ./src/engine/file/Image.cpp
 ./src/engine/file/FileCFG.h
 ./src/engine/file/FileCFG.cpp
+./src/engine/utils/GeneralUtils.h
+./src/engine/utils/GeneralUtils.cpp
 ./src/engine/utils/StringUtils.h
 ./src/engine/utils/StringUtils.cpp
+./src/engine/utils/DevUtils.h
+./src/engine/utils/DevUtils.cpp
 )
 
 add_library(graphic #SHARED
@@ -93,6 +99,8 @@ add_library(graphic #SHARED
 
 ./src/graphic/texture/Texture.h
 ./src/graphic/texture/Texture.cpp
+./src/graphic/texture/TextureAtlas.h
+./src/graphic/texture/TextureAtlas.cpp
 ./src/graphic/texture/TextureCube.h
 ./src/graphic/texture/TextureCube.cpp
 
@@ -102,25 +110,64 @@ add_library(graphic #SHARED
 ./src/graphic/models/ModelBuilder.cpp
 ./src/graphic/models/Model.h
 ./src/graphic/models/Model.cpp
+./src/graphic/models/ColorModel.h
+./src/graphic/models/ColorModel.cpp
 ./src/graphic/models/SimpleModel.h
 ./src/graphic/models/SimpleModel.cpp
 ./src/graphic/models/animation/AnimationModel.h
 ./src/graphic/models/animation/AnimationModel.cpp
 ./src/graphic/particles/Sprite.h
 ./src/graphic/particles/Sprite.cpp
+./src/graphic/particles/Particle.h
+./src/graphic/particles/Particle.cpp
+./src/graphic/particles/Emitter.h
+./src/graphic/particles/Emitter.cpp
 ./src/graphic/sky/SkyBox.h
 ./src/graphic/sky/SkyBox.cpp
 ./src/graphic/sky/Sun.h
 ./src/graphic/sky/Sun.cpp
-
 ./src/graphic/terrain/StaticTerrain.h
 ./src/graphic/terrain/StaticTerrain.cpp
-# ./src/graphic/terrain/Terrain.h
-# ./src/graphic/terrain/Terrain.cpp
-# ./src/graphic/terrain/TerrainPart.h
-# ./src/graphic/terrain/TerrainPart.cpp
-# ./src/graphic/terrain/TerrainQuad.h
-# ./src/graphic/terrain/TerrainQuad.cpp
+./src/graphic/terrain/Terrain.h
+./src/graphic/terrain/Terrain.cpp
+./src/graphic/terrain/TerrainPart.h
+./src/graphic/terrain/TerrainPart.cpp
+./src/graphic/terrain/TerrainQuad.h
+./src/graphic/terrain/TerrainQuad.cpp
+./src/graphic/bsp/BspSourceMap.h
+./src/graphic/bsp/BspSourceMap.cpp
+./src/graphic/bsp/BspQuakeMap.h
+./src/graphic/bsp/BspQuakeMap.cpp
+./src/graphic/bsp/BspMap.h
+./src/graphic/bsp/BspMap.cpp
+
+./src/graphic/bsp/bsp4/Math.cpp
+./src/graphic/bsp/bsp4/Math.hpp
+./src/graphic/bsp/bsp4/Q3Bsp.hpp
+./src/graphic/bsp/bsp4/Q3BspLoader.cpp
+./src/graphic/bsp/bsp4/Q3BspLoader.hpp
+./src/graphic/bsp/bsp4/Q3BspMap.cpp
+./src/graphic/bsp/bsp4/Q3BspMap.hpp
+./src/graphic/bsp/bsp4/Q3BspPatch.cpp
+./src/graphic/bsp/bsp4/Q3BspPatch.hpp
+./src/graphic/bsp/bsp4/Q3BspRenderHelpers.hpp
+./src/graphic/bsp/bsp4/StringHelpers.cpp
+./src/graphic/bsp/bsp4/StringHelpers.hpp
+
+./src/graphic/bsp/bsp5/bsp.cpp
+./src/graphic/bsp/bsp5/bsp.hpp
+./src/graphic/bsp/bsp5/bezier.cpp
+./src/graphic/bsp/bsp5/bezier.hpp
+./src/graphic/bsp/bsp5/frustum.cpp
+./src/graphic/bsp/bsp5/frustum.hpp
+# ./src/graphic/bsp/bsp5/q3_shader.cpp
+# ./src/graphic/bsp/bsp5/q3_shader.hpp
+# ./src/graphic/bsp/bsp5/shader.cpp
+# ./src/graphic/bsp/bsp5/shader.hpp
+# ./src/graphic/bsp/bsp5/shader_loader.cpp
+# ./src/graphic/bsp/bsp5/shader_loader.hpp
+# ./src/graphic/bsp/bsp5/texture_loader.cpp
+# ./src/graphic/bsp/bsp5/texture_loader.hpp
 
 ./src/graphic/hud/Text.h
 ./src/graphic/hud/Text.cpp
@@ -145,6 +192,8 @@ add_library(game #SHARED
 ./src/game/Command.h
 ./src/game/Command.cpp
 
+./src/game/maps/MapBuilder.h
+./src/game/maps/MapBuilder.cpp
 ./src/game/maps/Map.h
 ./src/game/maps/Map.cpp
 ./src/game/maps/LobbyMap.h
@@ -158,6 +207,8 @@ add_library(game #SHARED
 ./src/game/entities/TestAnimEnt.cpp
 ./src/game/entities/TestParticleEnt.h
 ./src/game/entities/TestParticleEnt.cpp
+./src/game/entities/TestEmitterEnt.h
+./src/game/entities/TestEmitterEnt.cpp
 ./src/game/entities/GroundEnt.h
 ./src/game/entities/GroundEnt.cpp
 )

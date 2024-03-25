@@ -48,10 +48,10 @@ void Physic::init()
 	impl->broadphase = new btDbvtBroadphase();
 	impl->collisionConfiguration = new btDefaultCollisionConfiguration();
 	impl->dispatcher = new btCollisionDispatcher(impl->collisionConfiguration);
-	btGImpactCollisionAlgorithm::registerAlgorithm(impl->dispatcher);
+	// btGImpactCollisionAlgorithm::registerAlgorithm(impl->dispatcher);
 	impl->solver = new btSequentialImpulseConstraintSolver;
 	impl->dynamicsWorld = new btDiscreteDynamicsWorld(impl->dispatcher, impl->broadphase, impl->solver, impl->collisionConfiguration);
-	impl->dynamicsWorld->setGravity(btVector3(0, -10, 0));
+	impl->dynamicsWorld->setGravity(btVector3(0, -9.8, 0));
 }
 
 void Physic::close()

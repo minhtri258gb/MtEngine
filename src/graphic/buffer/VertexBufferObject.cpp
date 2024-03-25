@@ -85,6 +85,23 @@ void VertexBufferObject::initDynamic(int location, int maxInstance, int type)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+void VertexBufferObject::initDynamic(int location, int maxInstance, float type)
+{
+	glGenBuffers(1, &this->gl_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, this->gl_VBO);
+
+	vector<float> fake;
+	fake.resize(maxInstance, type);
+	glBufferData(GL_ARRAY_BUFFER, 4 * maxInstance, &fake[0], GL_DYNAMIC_DRAW); // #TODO ko dung fake data
+	
+	glVertexAttribPointer(location, 1, GL_FLOAT, GL_FALSE, 4, (void*)0);
+	glVertexAttribDivisor(location, 1);
+
+	glEnableVertexAttribArray(location);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void VertexBufferObject::initDynamic(int location, int maxInstance, vec2 type)
 {
 	glGenBuffers(1, &this->gl_VBO);
@@ -137,6 +154,13 @@ void VertexBufferObject::initDynamic(int location, int maxInstance, vec4 type)
 }
 
 void VertexBufferObject::updateDynamic(vector<int> vertices)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, this->gl_VBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, 4 * vertices.size(), &vertices[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void VertexBufferObject::updateDynamic(vector<float> vertices)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, this->gl_VBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, 4 * vertices.size(), &vertices[0]);

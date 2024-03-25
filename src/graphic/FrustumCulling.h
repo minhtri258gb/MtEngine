@@ -15,10 +15,12 @@ public:
 
 	// Natives
 	bool point(vec3 pos);
+	bool point2(vec3 pos);
 	bool sphere(vec3 pos, float radius);
 	int spherePart(vec3 pos, float radius);
 	float sphereDis(vec3 pos, float radius);
 	bool cube(vec3 pos, float size);
+	bool cube2(vec3 v[8]);
 	int cubePart(vec3 pos, float size);
 	bool polygon(std::vector<vec3> points);
 

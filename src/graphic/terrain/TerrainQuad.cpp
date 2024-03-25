@@ -30,6 +30,11 @@ TerrainQuad::~TerrainQuad()
 			delete children[i];
 }
 
+/**
+ * Index of children:
+ *   0  2
+ *   1  3
+ **/
 void TerrainQuad::generateTreeEx(unsigned char level, TerrainQuad* parent, vec2 _position)
 {
 	this->level = level;
@@ -40,24 +45,30 @@ void TerrainQuad::generateTreeEx(unsigned char level, TerrainQuad* parent, vec2 
 	{
 		int halfSize = (1 << level - 1);
 		float minX = _position.x;
-		float minY = _position.y;
+		float minZ = _position.y;
 		float midX = minX + halfSize;
-		float midY = minY + halfSize;
+		float midZ = minZ + halfSize;
 
 		children[0] = new TerrainQuad();
-		children[0]->generateTreeEx(level - 1, this, vec2(minX, minY));
+		children[0]->generateTreeEx(level - 1, this, vec2(minX, minZ));
 		
 		children[1] = new TerrainQuad();
-		children[1]->generateTreeEx(level - 1, this, vec2(minX, midY));
+		children[1]->generateTreeEx(level - 1, this, vec2(minX, midZ));
 		
 		children[2] = new TerrainQuad();
-		children[2]->generateTreeEx(level - 1, this, vec2(midX, minY));
+		children[2]->generateTreeEx(level - 1, this, vec2(midX, minZ));
 		
 		children[3] = new TerrainQuad();
-		children[3]->generateTreeEx(level - 1, this, vec2(midX, midY));
+		children[3]->generateTreeEx(level - 1, this, vec2(midX, midZ));
 	}
 }
 
+/**
+ * Index of neighbor: same tess control
+ *			0
+ * 		1		3
+ * 			2
+ **/
 void TerrainQuad::generateNeighborEx(TerrainQuad* n0, TerrainQuad* n1, TerrainQuad* n2, TerrainQuad* n3)
 {
     neighbor[0] = n0;
@@ -69,30 +80,30 @@ void TerrainQuad::generateNeighborEx(TerrainQuad* n0, TerrainQuad* n1, TerrainQu
 
 	if(children[0])
 	{
-		noc1 = n3 ? n3->children[2] : nullptr;
-		noc2 = n0 ? n0->children[1] : nullptr;
-		children[0]->generateNeighborEx(noc2, children[2], children[1], noc1);
+		noc1 = n0 ? n0->children[1] : nullptr;
+		noc2 = n1 ? n1->children[2] : nullptr;
+		children[0]->generateNeighborEx(noc1, noc2, children[1], children[2]);
 	}
 
 	if(children[1])
 	{
-		noc1 = n3 ? n3->children[3] : nullptr;
+		noc1 = n1 ? n1->children[3] : nullptr;
 		noc2 = n2 ? n2->children[0] : nullptr;
-		children[1]->generateNeighborEx(children[0], children[3], noc2, noc1);
+		children[1]->generateNeighborEx(children[0], noc1, noc2, children[3]);
 	}
 
 	if(children[2])
 	{
 		noc1 = n0 ? n0->children[3] : nullptr;
-		noc2 = n1 ? n1->children[0] : nullptr;
-		children[2]->generateNeighborEx(noc1, noc2, children[3], children[0]);
+		noc2 = n3 ? n3->children[0] : nullptr;
+		children[2]->generateNeighborEx(noc1, children[0], children[3], noc2);
 	}
 
 	if(children[3])
 	{
-		noc1 = n1 ? n1->children[1] : nullptr;
-		noc2 = n2 ? n2->children[2] : nullptr;
-		children[3]->generateNeighborEx(children[2], noc1, noc2, children[1]);
+		noc1 = n2 ? n2->children[2] : nullptr;
+		noc2 = n3 ? n3->children[1] : nullptr;
+		children[3]->generateNeighborEx(children[2], children[1], noc1, noc2);
 	}
 }
 
@@ -105,8 +116,9 @@ void TerrainQuad::update()
 
 	vec3 center(midX, 0.0f, midZ);
 	
-	// isVisible = Graphic::ins.camera.frustumCulling.sphere(center, halfsize * 2.0f + 128.0);
-	isVisible = Graphic::ins.camera.frustumCulling.point(center);
+	// isVisible = Graphic::ins.camera.frustumCulling.sphere(center, halfsize * 2.0f + 128.0); // #TODO
+	// isVisible = Graphic::ins.camera.frustumCulling.point(center); // #DEBUG
+	isVisible = true; // #TODO remove
 	if (!isVisible)
 	{
 		isRender = true;

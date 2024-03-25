@@ -30,6 +30,7 @@ public:
 	void addDynamicAttribute(int maxInstance, vec4 type);
 
 	void updateDynamicAttribute(int location, std::vector<int> data);
+	void updateDynamicAttribute(int location, std::vector<float> data);
 	void updateDynamicAttribute(int location, std::vector<vec2> data);
 	void updateDynamicAttribute(int location, std::vector<vec3> data);
 	void updateDynamicAttribute(int location, std::vector<vec4> data);
@@ -44,6 +45,7 @@ public:
 	void drawPointInstance(int num);
 	void drawTriangle();
 	void drawTriangleTrip();
+	void drawTriangleTripInstance(int num);
 	void drawPatches();
 	void drawPatchesInstance(int num);
 	void drawElementTriangle();

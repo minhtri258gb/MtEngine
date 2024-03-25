@@ -1,5 +1,7 @@
 #define __MT_FRUSTUM_CULLING_CPP__
 
+#define DEBUGGER
+
 #include <cmath>
 
 #include "common.h"
@@ -15,6 +17,7 @@ using namespace mt::graphic;
 
 bool debug_frustumCulling = false;
 
+
 FrustumCulling::FrustumCulling()
 {
 }
@@ -28,12 +31,6 @@ void FrustumCulling::update()
 	if (debug_frustumCulling)
 		return;
 	
-	// mat4 m = Graphic::ins.scene.proj * Graphic::ins.scene.view;
-	// frustum[0] = vec4(m[ 3] + m[ 0], m[ 7] + m[ 4], m[11] + m[ 8], m[15] + m[12]).normalize(); // left
-	// frustum[1] = vec4(m[ 3] - m[ 0], m[ 7] - m[ 4], m[11] - m[ 8], m[15] - m[12]).normalize(); // right
-	// frustum[2] = vec4(m[ 3] - m[ 1], m[ 7] - m[ 5], m[11] - m[ 9], m[15] - m[13]).normalize(); // top
-	// frustum[3] = vec4(m[ 3] + m[ 1], m[ 7] + m[ 5], m[11] + m[ 9], m[15] + m[13]).normalize(); // bottom
-
 	mat4 m = Graphic::ins.scene.proj * Graphic::ins.scene.view;
 	frustum[0] = vec4(m[3] + m[2], m[7] + m[6], m[11] + m[10], m[15] + m[14]).normalize(); // near
 	frustum[1] = vec4(m[3] - m[2], m[7] - m[6], m[11] - m[10], m[15] - m[14]).normalize(); // far
@@ -46,7 +43,7 @@ void FrustumCulling::update()
 
 bool FrustumCulling::point(vec3 pos)
 {
-	for (int i=0; i<6; i++) 
+	for (int i=0; i<6; i++)
 		if (frustum[i] * vec4(pos.x, pos.y, pos.z, 1.0f) <= 0)
 			return false;
 	return true;
@@ -112,6 +109,33 @@ bool FrustumCulling::cube(vec3 pos, float size)
 	return true;
 }
 
+bool FrustumCulling::cube2(vec3 v[8])
+{
+    for (int i = 0; i < 6; ++i)
+    {
+        if((frustum[i].x * v[0].x + frustum[i].y * v[0].y + frustum[i].z * v[0].z + frustum[i].w) > 0)
+            continue;
+        if((frustum[i].x * v[1].x + frustum[i].y * v[1].y + frustum[i].z * v[1].z + frustum[i].w) > 0)
+            continue;
+        if((frustum[i].x * v[2].x + frustum[i].y * v[2].y + frustum[i].z * v[2].z + frustum[i].w) > 0)
+            continue;
+        if((frustum[i].x * v[3].x + frustum[i].y * v[3].y + frustum[i].z * v[3].z + frustum[i].w) > 0)
+            continue;
+        if((frustum[i].x * v[4].x + frustum[i].y * v[4].y + frustum[i].z * v[4].z + frustum[i].w) > 0)
+            continue;
+        if((frustum[i].x * v[5].x + frustum[i].y * v[5].y + frustum[i].z * v[5].z + frustum[i].w) > 0)
+            continue;
+        if((frustum[i].x * v[6].x + frustum[i].y * v[6].y + frustum[i].z * v[6].z + frustum[i].w) > 0)
+            continue;
+        if((frustum[i].x * v[7].x + frustum[i].y * v[7].y + frustum[i].z * v[7].z + frustum[i].w) > 0)
+            continue;
+
+        return false;
+    }
+
+    return true;
+}
+
 int FrustumCulling::cubePart(vec3 pos, float size)
 {
 	int c;
@@ -164,4 +188,8 @@ bool FrustumCulling::polygon(std::vector<vec3> points)
 void FrustumCulling::debug()
 {
 	debug_frustumCulling = !debug_frustumCulling;
+	
+	#ifdef DEBUGGER
+	cout << "[INFO] debug_frustumCulling: " << debug_frustumCulling << endl;
+	#endif
 }

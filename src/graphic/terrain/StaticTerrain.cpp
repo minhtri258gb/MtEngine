@@ -42,22 +42,23 @@ StaticTerrain::~StaticTerrain()
 
 void StaticTerrain::init(string name)
 {
-	// Data
-	string cfgPath = "../res/terrains/static/" + name + "/info.cfg";
-	FileCFG* fCFG = new FileCFG(cfgPath);
-	// fCFG->select("[terrain]");
-	string terrainName = fCFG->get("name");
+	// Load config
+	string pathDir = "../res/terrains/static/" + name + "/";
+	FileCFG* fCFG = new FileCFG(pathDir + "info.cfg");
+	
+	fCFG->select("terrain");
+	string terrainName = fCFG->get("heightmap");
+	float heightScale = fCFG->getFloat("height_scale");
+	string textureFile = fCFG->get("texture");
 
 	Image data;
-	data.load("../res/textures/heightmap/hm1.jpg");
+	data.load(pathDir + terrainName);
 	// BTFile *filebt = new BTFile("res/terrain/" + terrainName + "/heightmap.bt");
 
 	int depth = data.getWidth();
 	int width = data.getHeight();
 	// float depth = filebt->getRows();
 	// float width = filebt->getColumns();
-
-
 
 	// vector<float> heightmapData;
 	// heightmapData.resize((float)(depth * width), 0.0f);
@@ -71,17 +72,18 @@ void StaticTerrain::init(string name)
 
 	// VAO
 	vector<vec3> vertices;
-// 	vector<vec2> uvs;
+	vector<vec2> uvs;
 	vector<unsigned int> indices;
 	for(int z = 0; z < depth; z++)
 	{
 		for(int x = 0; x < width; x++)
 		{
-			float height = (float)data[z*width + x] / 255.0f * 200.f;
+			float height = (float)data[z*width + x] / 255.0f * heightScale;
 			float xc = x * CELLSPACE;
 			float zc = z * CELLSPACE;
 
 			vertices.push_back(vec3(xc, height, zc));
+			uvs.push_back(vec2(x * 1.0 / width, z * 1.0 / depth));
 		}
 	}
 	for(int z = 0; z < depth - 1; z++)
@@ -100,6 +102,7 @@ void StaticTerrain::init(string name)
 	impl->VAO.init();
 	impl->VAO.bind();
 	impl->VAO.addAttribute(vertices);
+	impl->VAO.addAttribute(uvs);
 	impl->VAO.addIndices(indices);
 	impl->VAO.unbind();
 
@@ -111,7 +114,8 @@ void StaticTerrain::init(string name)
 // 	vao->unbind();
 
 	// Texture
-	// texture->load("res/textures/wall_512_1_05.tga");
+	impl->texture.init(pathDir + textureFile);
+	
 
 	// Clear
 	delete fCFG;
@@ -121,13 +125,13 @@ void StaticTerrain::render()
 {
 	shader.use();
 
-	Graphic::ins.wireframe(true);
+	// Graphic::ins.wireframe(true);
 
-	// texture->bindTex();
+	impl->texture.bind();
 
 	impl->VAO.bind();
 	impl->VAO.drawElementTriangle();
 	impl->VAO.unbind();
 
-	Graphic::ins.wireframe(false);
+	// Graphic::ins.wireframe(false);
 }
