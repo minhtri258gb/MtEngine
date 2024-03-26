@@ -1,6 +1,7 @@
 #define __MT_SKYBOX_CPP__
 
 #include "common.h"
+#include "engine/Config.h"
 #include "../Graphic.h"
 #include "SkyBox.h"
 #include "../buffer/VertexArrayObject.h"
@@ -8,6 +9,7 @@
 
 using namespace std;
 using namespace mt;
+using namespace mt::engine;
 using namespace mt::graphic;
 
 class SkyBox::SkyBoxImpl {
@@ -76,12 +78,12 @@ void SkyBox::init(string name)
 	impl->VAO.unbind();
 
 	// Texture sky
-	impl->texture.init("../res/textures/sky/ely_hills/hills_X.tga");
+	impl->texture.init(Config::ins.skybox_path + name + "/X.tga");
 
 	// // Sun
 	// fCFG.select("[sun]");
 	// vec3 sunOrigin = fCFG.getVec3("origin");
-	// if(sunOrigin.length() != 0.0)
+	// if (sunOrigin.length() != 0.0)
 	// 	sun = new Sun(sunOrigin);
 
 	// // Fog
@@ -117,7 +119,7 @@ void SkyBox::render()
 
 // vec3 SkyBox::getSunDirect()
 // {
-// 	// if(sun)
+// 	// if (sun)
 // 	// 	return sun->light->getDirect();
 // 	// else
 // 	// 	return vec3();
@@ -125,7 +127,7 @@ void SkyBox::render()
 
 // vec3 SkyBox::getSunOrigin()
 // {
-// 	// if(sun)
+// 	// if (sun)
 // 	// 	return sun->getOrigin();
 // 	// else
 // 	// 	return vec3();

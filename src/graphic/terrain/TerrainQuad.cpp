@@ -78,28 +78,28 @@ void TerrainQuad::generateNeighborEx(TerrainQuad* n0, TerrainQuad* n1, TerrainQu
 
     TerrainQuad *noc1, *noc2; // Neighbor outter of children
 
-	if(children[0])
+	if (children[0])
 	{
 		noc1 = n0 ? n0->children[1] : nullptr;
 		noc2 = n1 ? n1->children[2] : nullptr;
 		children[0]->generateNeighborEx(noc1, noc2, children[1], children[2]);
 	}
 
-	if(children[1])
+	if (children[1])
 	{
 		noc1 = n1 ? n1->children[3] : nullptr;
 		noc2 = n2 ? n2->children[0] : nullptr;
 		children[1]->generateNeighborEx(children[0], noc1, noc2, children[3]);
 	}
 
-	if(children[2])
+	if (children[2])
 	{
 		noc1 = n0 ? n0->children[3] : nullptr;
 		noc2 = n3 ? n3->children[0] : nullptr;
 		children[2]->generateNeighborEx(noc1, children[0], children[3], noc2);
 	}
 
-	if(children[3])
+	if (children[3])
 	{
 		noc1 = n2 ? n2->children[2] : nullptr;
 		noc2 = n3 ? n3->children[1] : nullptr;
@@ -130,13 +130,13 @@ void TerrainQuad::update()
 	vec3 vecdis = eyePos - center;
 	float distance = vecdis.length();
 
-	if(distance > (1 << (level+1)) || level == 1)
+	if (distance > (1 << (level+1)) || level == 1)
 		isRender = true;
 	else
 	{
 		isRender = false;
-		for(short i=0; i<4; i++)
-			if(children[i])
+		for (short i=0; i<4; i++)
+			if (children[i])
 				children[i]->update();
 	}
 }
@@ -163,7 +163,7 @@ void TerrainQuad::getData(unsigned int& count, std::vector<vec2>& positions, vec
 	else
 	{
 		for (unsigned char i=0; i<4; i++)
-			if(children[i])
+			if (children[i])
 				children[i]->getData(count, positions, levels, flags);
 	}
 }

@@ -3,52 +3,52 @@
 #include <mini/ini.h>
 
 #include "common.h"
-#include "FileIni.h"
+#include "FileINI.h"
 
 using namespace std;
 using namespace mINI;
-using namespace mt::engine;
+using namespace mt;
 
-class FileIni::FileIniImpl
+class FileINI::FileINIImpl
 {
 public:
 	INIStructure ini;
 };
 
-FileIni::FileIni()
+FileINI::FileINI()
 {
-	this->impl = new FileIniImpl();
+	this->impl = new FileINIImpl();
 }
 
-FileIni::FileIni(string filepath)
+FileINI::FileINI(string filepath)
 {
-	this->impl = new FileIniImpl();
+	this->impl = new FileINIImpl();
 	this->load(filepath);
 }
 
-FileIni::~FileIni()
+FileINI::~FileINI()
 {
 	delete this->impl;
 }
 
-void FileIni::load(string filepath)
+void FileINI::load(string filepath)
 {
 	INIFile file(filepath);
 	file.read(this->impl->ini);
 }
 
-void FileIni::save(string filepath)
+void FileINI::save(string filepath)
 {
 	INIFile file(filepath);
 	file.write(this->impl->ini);
 }
 
-string FileIni::get(string session, string key)
+string FileINI::get(string session, string key)
 {
 	return this->impl->ini[session][key];
 }
 
-void FileIni::set(string session, string key, string value)
+void FileINI::set(string session, string key, string value)
 {
 	this->impl->ini[session][key] = value;
 }

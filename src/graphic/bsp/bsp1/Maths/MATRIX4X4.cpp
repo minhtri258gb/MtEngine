@@ -54,13 +54,13 @@ MATRIX4X4::MATRIX4X4(const float * rhs)
 
 void MATRIX4X4::SetEntry(int position, float value)
 {
-	if(position>=0 && position<=15)
+	if (position>=0 && position<=15)
 		entries[position]=value;
 }
 	
 float MATRIX4X4::GetEntry(int position) const
 {
-	if(position>=0 && position<=15)
+	if (position>=0 && position<=15)
 		return entries[position];
 
 	return 0.0f;
@@ -68,16 +68,16 @@ float MATRIX4X4::GetEntry(int position) const
 
 VECTOR4D MATRIX4X4::GetRow(int position) const
 {
-	if(position==0)
+	if (position==0)
 		return VECTOR4D(entries[0], entries[4], entries[8], entries[12]);
 	
-	if(position==1)
+	if (position==1)
 		return VECTOR4D(entries[1], entries[5], entries[9], entries[13]);
 	
-	if(position==2)
+	if (position==2)
 		return VECTOR4D(entries[2], entries[6], entries[10], entries[14]);
 	
-	if(position==3)
+	if (position==3)
 		return VECTOR4D(entries[3], entries[7], entries[11], entries[15]);
 
 	return VECTOR4D(0.0f, 0.0f, 0.0f, 0.0f);
@@ -85,16 +85,16 @@ VECTOR4D MATRIX4X4::GetRow(int position) const
 
 VECTOR4D MATRIX4X4::GetColumn(int position) const
 {
-	if(position==0)
+	if (position==0)
 		return VECTOR4D(entries[0], entries[1], entries[2], entries[3]);
 	
-	if(position==1)
+	if (position==1)
 		return VECTOR4D(entries[4], entries[5], entries[6], entries[7]);
 	
-	if(position==2)
+	if (position==2)
 		return VECTOR4D(entries[8], entries[9], entries[10], entries[11]);
 	
-	if(position==3)
+	if (position==3)
 		return VECTOR4D(entries[12], entries[13], entries[14], entries[15]);
 
 	return VECTOR4D(0.0f, 0.0f, 0.0f, 0.0f);
@@ -157,7 +157,7 @@ MATRIX4X4 MATRIX4X4::operator-(const MATRIX4X4 & rhs) const		//overloaded operat
 MATRIX4X4 MATRIX4X4::operator*(const MATRIX4X4 & rhs) const
 {
 	//Optimise for matrices in which bottom row is (0, 0, 0, 1) in both matrices
-	if(	entries[3]==0.0f && entries[7]==0.0f && entries[11]==0.0f && entries[15]==1.0f	&&
+	if (	entries[3]==0.0f && entries[7]==0.0f && entries[11]==0.0f && entries[15]==1.0f	&&
 		rhs.entries[3]==0.0f && rhs.entries[7]==0.0f &&
 		rhs.entries[11]==0.0f && rhs.entries[15]==1.0f)
 	{
@@ -180,7 +180,7 @@ MATRIX4X4 MATRIX4X4::operator*(const MATRIX4X4 & rhs) const
 	}
 
 	//Optimise for when bottom row of 1st matrix is (0, 0, 0, 1)
-	if(	entries[3]==0.0f && entries[7]==0.0f && entries[11]==0.0f && entries[15]==1.0f)
+	if (	entries[3]==0.0f && entries[7]==0.0f && entries[11]==0.0f && entries[15]==1.0f)
 	{
 		return MATRIX4X4(	entries[0]*rhs.entries[0]+entries[4]*rhs.entries[1]+entries[8]*rhs.entries[2]+entries[12]*rhs.entries[3],
 							entries[1]*rhs.entries[0]+entries[5]*rhs.entries[1]+entries[9]*rhs.entries[2]+entries[13]*rhs.entries[3],
@@ -201,7 +201,7 @@ MATRIX4X4 MATRIX4X4::operator*(const MATRIX4X4 & rhs) const
 	}
 
 	//Optimise for when bottom row of 2nd matrix is (0, 0, 0, 1)
-	if(	rhs.entries[3]==0.0f && rhs.entries[7]==0.0f &&
+	if (	rhs.entries[3]==0.0f && rhs.entries[7]==0.0f &&
 		rhs.entries[11]==0.0f && rhs.entries[15]==1.0f)
 	{
 		return MATRIX4X4(	entries[0]*rhs.entries[0]+entries[4]*rhs.entries[1]+entries[8]*rhs.entries[2],
@@ -277,9 +277,9 @@ MATRIX4X4 operator*(float scaleFactor, const MATRIX4X4 & rhs)
 
 bool MATRIX4X4::operator==(const MATRIX4X4 & rhs) const
 {
-	for(int i=0; i<16; i++)
+	for (int i=0; i<16; i++)
 	{
-		if(entries[i]!=rhs.entries[i])
+		if (entries[i]!=rhs.entries[i])
 			return false;
 	}
 	return true;
@@ -319,7 +319,7 @@ MATRIX4X4 MATRIX4X4::operator-(void) const
 {
 	MATRIX4X4 result(*this);
 
-	for(int i=0; i<16; i++)
+	for (int i=0; i<16; i++)
 		result.entries[i]=-result.entries[i];
 
 	return result;
@@ -328,7 +328,7 @@ MATRIX4X4 MATRIX4X4::operator-(void) const
 VECTOR4D MATRIX4X4::operator*(const VECTOR4D rhs) const
 {
 	//Optimise for matrices in which bottom row is (0, 0, 0, 1)
-	if(entries[3]==0.0f && entries[7]==0.0f && entries[11]==0.0f && entries[15]==1.0f)
+	if (entries[3]==0.0f && entries[7]==0.0f && entries[11]==0.0f && entries[15]==1.0f)
 	{
 		return VECTOR4D(entries[0]*rhs.x
 					+	entries[4]*rhs.y
@@ -518,7 +518,7 @@ MATRIX4X4 MATRIX4X4::GetInverseTranspose(void) const
 			+entries[2]*result.GetEntry(2)
 			+entries[3]*result.GetEntry(3);
 
-	if(det==0.0f)
+	if (det==0.0f)
 	{
 		MATRIX4X4 id;
 		return id;
@@ -676,7 +676,7 @@ void MATRIX4X4::SetPerspective(	float left, float right, float bottom,
 	LoadZero();
 
 	//check for division by 0
-	if(left==right || top==bottom || n==f)
+	if (left==right || top==bottom || n==f)
 		return;
 
 	entries[0]=(2*n)/(right-left);
@@ -686,7 +686,7 @@ void MATRIX4X4::SetPerspective(	float left, float right, float bottom,
 	entries[8]=(right+left)/(right-left);
 	entries[9]=(top+bottom)/(top-bottom);
 
-	if(f!=-1)
+	if (f!=-1)
 	{
 		entries[10]=-(f+n)/(f-n);
 	}
@@ -697,7 +697,7 @@ void MATRIX4X4::SetPerspective(	float left, float right, float bottom,
 
 	entries[11]=-1;
 
-	if(f!=-1)
+	if (f!=-1)
 	{
 		entries[14]=-(2*f*n)/(f-n);
 	}

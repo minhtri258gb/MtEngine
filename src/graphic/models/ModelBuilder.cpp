@@ -58,7 +58,7 @@ Model* ModelBuilder::loadModel(std::string name)
 		indices.push_back(3);
 
 		newModel->loadVAO(vertices, texcoords, indices);
-		newModel->loadTexture("../res/textures/wall.jpg");
+		newModel->loadTexture("./res/textures/wall.jpg");
 
 		// Override class
 		model = newModel;
@@ -116,7 +116,7 @@ Model* ModelBuilder::createBox()
 	
 	model->loadVAO(vertices, indices);
 
-	// model->texture.init("../res/textures/default.png");
+	// model->texture.init("./res/textures/default.png");
 
 	return model;
 }
@@ -148,7 +148,7 @@ Model* ModelBuilder::createPlane()
 	indices.push_back(1); indices.push_back(2); indices.push_back(3);
 	
 	model->loadVAO(vertices, texcoords, normals, indices);
-	model->loadTexture("../res/textures/default.tga");
+	model->loadTexture("./res/textures/default.tga");
 
 	return model;
 }

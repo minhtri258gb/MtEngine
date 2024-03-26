@@ -113,9 +113,9 @@ public:
 BspQuakeMap::BspQuakeMap()
 {
 	// Component
-	// impl->map = new bsp("../res/bsp/de_dust2.bsp");
-	// impl->map = new bsp("../res/bsp/css_cs_deadhouse_1.0/cs_deadhouse.bsp");
-	// impl->map = new bsp("../res/bsp/source/CS_Sklad_Top-X/maps/cs_sklad_top-x.bsp");
+	// impl->map = new bsp("./res/bsp/de_dust2.bsp");
+	// impl->map = new bsp("./res/bsp/css_cs_deadhouse_1.0/cs_deadhouse.bsp");
+	// impl->map = new bsp("./res/bsp/source/CS_Sklad_Top-X/maps/cs_sklad_top-x.bsp");
 
 	// Implement
 	impl = new BspQuakeMapImpl();
@@ -133,13 +133,13 @@ BspQuakeMap::~BspQuakeMap()
 void BspQuakeMap::init(string name)
 {
 	Q3BspLoader loader;
-	// impl->m_q3map = loader.Load("../res/quake/1++/1++.bsp");
-	// impl->m_q3map = loader.Load("../res/quake/1smallmap/1smallmap.bsp");
-	// impl->m_q3map = loader.Load("../res/quake/ntkjidm2.bsp");
-	// impl->m_q3map = loader.Load("../res/quake/agorafobia/maps/agorafobia.bsp"); // crash map
-	// impl->m_q3map = loader.Load("../res/quake/maps/air2.bsp"); // lag
-	// impl->m_q3map = loader.Load("../res/quake/maps/test_bigbox.bsp"); // box
-	// impl->m_q3map = loader.Load("../res/quake/maps/texturegrab.bsp"); // nhieu texture
+	// impl->m_q3map = loader.Load("./res/quake/1++/1++.bsp");
+	// impl->m_q3map = loader.Load("./res/quake/1smallmap/1smallmap.bsp");
+	// impl->m_q3map = loader.Load("./res/quake/ntkjidm2.bsp");
+	// impl->m_q3map = loader.Load("./res/quake/agorafobia/maps/agorafobia.bsp"); // crash map
+	// impl->m_q3map = loader.Load("./res/quake/maps/air2.bsp"); // lag
+	// impl->m_q3map = loader.Load("./res/quake/maps/test_bigbox.bsp"); // box
+	// impl->m_q3map = loader.Load("./res/quake/maps/texturegrab.bsp"); // nhieu texture
 	// impl->m_q3map = loader.Load("aggressor"); // oke
 	impl->m_q3map = loader.Load("test1"); // oke
 

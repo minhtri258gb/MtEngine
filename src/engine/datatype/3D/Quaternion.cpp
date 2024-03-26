@@ -185,7 +185,7 @@ void Quaternion::set(const Matrix3x3& m)
 		z = (m[2] + m[6]) / s;
 		w = (m[7] - m[5]) / s;
 	}
-	else if( m[4] > m[8])
+	else if ( m[4] > m[8])
 	{
 		// Column 1:
 		float s = sqrtf(1.0f + m[4] - m[0] - m[8]) * 2.0f;

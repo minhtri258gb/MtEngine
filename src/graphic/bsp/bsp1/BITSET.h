@@ -19,7 +19,7 @@ public:
 	{}
 	~BITSET()
 	{
-		if(bits)
+		if (bits)
 			delete [] bits;
 		bits=nullptr;
 	}

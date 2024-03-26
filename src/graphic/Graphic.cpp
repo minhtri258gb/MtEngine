@@ -34,11 +34,11 @@ void cbk_key(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 	// cout << key << endl;
 
-	if(key == -1)
+	if (key == -1)
 		return;
-	if(action == GLFW_PRESS)
+	if (action == GLFW_PRESS)
 		Input::ins.keyPress(key, true);
-	else if(action == GLFW_RELEASE)
+	else if (action == GLFW_RELEASE)
 		Input::ins.keyPress(key, false);
 }
 
@@ -56,7 +56,7 @@ void cbk_mouse_button(GLFWwindow *window, int button, int action, int mods)
 		return;
 	}
 
-	if(button > 2)
+	if (button > 2)
 		return;
 
 	Input::ins.keyPress(351 + button, press);
@@ -149,7 +149,7 @@ void Graphic::close()
 
 void Graphic::processInput()
 {
-	if(glfwGetKey(this->impl->gl_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	if (glfwGetKey(this->impl->gl_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(this->impl->gl_window, true);
 }
 
@@ -247,6 +247,6 @@ void Graphic::setPatchParameter(int value)
 
 void Graphic::setDepthMark(bool toogle)
 {
-	if(toogle) glDepthMask(GL_TRUE);
+	if (toogle) glDepthMask(GL_TRUE);
 	else glDepthMask(GL_FALSE);
 }

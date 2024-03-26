@@ -67,7 +67,7 @@ void Terrain::init(string name)
 
 	// Data
 	// Image data;
-	// data.load("../res/textures/heightmap/57fd738417ea37bf5af6c2493fd8d54644f5a45a.jpeg");
+	// data.load("./res/textures/heightmap/57fd738417ea37bf5af6c2493fd8d54644f5a45a.jpeg");
 	// BTFile fBT("res/terrain/" + name + "/heightmap.bt");
 
 	// int depth = data.getWidth();
@@ -84,8 +84,8 @@ void Terrain::init(string name)
 	// m_maxwidth = depth;
 	// m_maxlength = width;
 
-    // for(int z=0; z<depth; z++)
-	// 	for(int x=0; x<width; x++)
+    // for (int z=0; z<depth; z++)
+	// 	for (int x=0; x<width; x++)
 	// 	{
 	// 		float h = fBT.getData(depth - z - 1, x);
 	// 		heightmap.push_back(h);
@@ -115,7 +115,7 @@ void Terrain::init(string name)
 // 	m_texture.loadAdd("res/terrain/" + name + "/texPartA.tga");
 
 	// Init Texture
-	impl->texture.init("../res/terrains/static/chadvernon/Untitled2.png");
+	impl->texture.init("./res/terrains/static/chadvernon/texture.png");
 }
 
 void Terrain::render()
@@ -211,25 +211,25 @@ void Terrain::render()
 // 	// Build indices
 // 	vector<unsigned int> indices;
 
-// 	if(patch.check(1)) {
+// 	if (patch.check(1)) {
 // 		indices.push_back(0); indices.push_back(1); indices.push_back(3);
 // 	} else {
 // 		indices.push_back(0); indices.push_back(1); indices.push_back(2);
 // 		indices.push_back(0); indices.push_back(2); indices.push_back(3);
 // 	}
-// 	if(patch.check(3)) {
+// 	if (patch.check(3)) {
 // 		indices.push_back(0); indices.push_back(3); indices.push_back(5);
 // 	} else {
 // 		indices.push_back(0); indices.push_back(3); indices.push_back(4);
 // 		indices.push_back(0); indices.push_back(4); indices.push_back(5);
 // 	}
-// 	if(patch.check(2)) {
+// 	if (patch.check(2)) {
 // 		indices.push_back(0); indices.push_back(5); indices.push_back(7);
 // 	} else {
 // 		indices.push_back(0); indices.push_back(5); indices.push_back(6);
 // 		indices.push_back(0); indices.push_back(6); indices.push_back(7);
 // 	}
-// 	if(patch.check(0)) {
+// 	if (patch.check(0)) {
 // 		indices.push_back(0); indices.push_back(7); indices.push_back(1);
 // 	} else {
 // 		indices.push_back(0); indices.push_back(7); indices.push_back(8);
@@ -256,7 +256,7 @@ void Terrain::render()
 // unsigned short Terrain::getHeightGrid(int x, int z)
 // {
 // 	int hmax = (1 << 8); // #LEVEL8
-// 	if(x >= hmax || z >= hmax)
+// 	if (x >= hmax || z >= hmax)
 // 		return 0;
 // 	return heightmap[(z) * hmax + (x)];
 // }
@@ -272,7 +272,7 @@ void Terrain::render()
 // 	x /= CELLSPACE;
 // 	z /= CELLSPACE;
 
-// 	if(x >= hmax || z >= hmax || x < 0 || z < 0) {
+// 	if (x >= hmax || z >= hmax || x < 0 || z < 0) {
 // 		return 0;
 // 	}
 

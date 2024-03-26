@@ -50,7 +50,7 @@ void Font::init()
 		throw error("Could not init FreeType Library");
 	
 	FT_Face face;
-	if (FT_New_Face(ft, "../res/fonts/OCRAEXT.ttf", 0, &face))
+	if (FT_New_Face(ft, "./res/fonts/OCRAEXT.ttf", 0, &face))
 		throw error("Failed to load font");
 	
 	FT_Set_Pixel_Sizes(face, 0, 48);

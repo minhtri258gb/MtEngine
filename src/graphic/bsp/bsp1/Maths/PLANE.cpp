@@ -34,7 +34,7 @@ bool PLANE::Intersect3(const PLANE & p2, const PLANE & p3, VECTOR3D & result)//f
 {
 	float denominator=normal.DotProduct((p2.normal).CrossProduct(p3.normal));
 											//scalar triple product of normals
-	if(denominator==0.0f)									//if zero
+	if (denominator==0.0f)									//if zero
 		return false;										//no intersection
 
 	VECTOR3D temp1, temp2, temp3;
@@ -56,10 +56,10 @@ int PLANE::ClassifyPoint(const VECTOR3D & point) const
 {
 	float distance=point.x*normal.x + point.y*normal.y + point.z*normal.z + intercept;
 
-	if(distance>EPSILON)	//==0.0f is too exact, give a bit of room
+	if (distance>EPSILON)	//==0.0f is too exact, give a bit of room
 		return POINT_IN_FRONT_OF_PLANE;
 	
-	if(distance<-EPSILON)
+	if (distance<-EPSILON)
 		return POINT_BEHIND_PLANE;
 
 	return POINT_ON_PLANE;	//otherwise
@@ -78,7 +78,7 @@ PLANE PLANE::lerp(const PLANE & p2, float factor)
 
 bool PLANE::operator ==(const PLANE & rhs) const
 {
-	if(normal==rhs.normal && intercept==rhs.intercept)
+	if (normal==rhs.normal && intercept==rhs.intercept)
 		return true;
 
 	return false;

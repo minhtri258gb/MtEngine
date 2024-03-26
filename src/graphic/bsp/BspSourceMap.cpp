@@ -388,9 +388,9 @@ BspSourceMap::~BspSourceMap()
 void BspSourceMap::init(string name)
 {
 	// Load
-	// impl->map = new bsp("../res/bsp/de_dust2.bsp");
-	// impl->map = new bsp("../res/bsp/css_cs_deadhouse_1.0/cs_deadhouse.bsp");
-	impl->map = new bsp("../res/bsp/source/CS_Sklad_Top-X/maps/cs_sklad_top-x.bsp");
+	// impl->map = new bsp("./res/bsp/de_dust2.bsp");
+	// impl->map = new bsp("./res/bsp/css_cs_deadhouse_1.0/cs_deadhouse.bsp");
+	impl->map = new bsp("./res/bsp/source/CS_Sklad_Top-X/maps/cs_sklad_top-x.bsp");
 
 	vec3 camPos = Graphic::ins.camera.position;
 	glm::vec3 camPos2(camPos.x, camPos.y, camPos.z);

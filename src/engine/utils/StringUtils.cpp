@@ -37,9 +37,9 @@ int StringUtils::parseInt(std::string str)
 
 
 //     int max = va_arg(ap, int);
-//     for(int i = 2; i <= n_args; i++) {
+//     for (int i = 2; i <= n_args; i++) {
 //         int a = va_arg(ap, int);
-//         if(a > max) max = a;
+//         if (a > max) max = a;
 //     }
 //     va_end(ap);
 //     return max;

@@ -15,6 +15,7 @@ public:
 	// System
 	std::string resource_dir;
 	std::string shader_path;
+	std::string skybox_path;
 
 	// Window
 	int windowWidth;

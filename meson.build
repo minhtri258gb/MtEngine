@@ -1,89 +1,168 @@
+
 project('MT Engine', 'cpp',
 	version: '1.0.0',
-	license: 'MIT')
-# add_global_arguments('-DSOME_TOKEN=value', language: 'cpp')
-# glib_dep = dependency('glib-2.0')
+	license: 'MIT'
+)
 
-# inc = include_directories('include')
-
-# subdir('include')
-# subdir('src')
-# subdir('test')
-
-# pkg_mod = import('pkgconfig')
-# pkg_mod.generate(
-# 	libraries: foolib,
-# 	version: '1.0',
-# 	name: 'libfoobar',
-# 	filebase: 'foobar',
-# 	description: 'A Library to barnicate your foos.'
-# )
+cpp = meson.get_compiler('cpp')
+dir_base = meson.current_source_dir()
+dir_lib = join_paths(dir_base, 'lib')
 
 # Include
 dir_includes = ['./src', './inc', './inc/bullet']
 
 
-# Library Engine
-engine_file_cpp = [
-	 './src/engine/library.cpp'
-	,'./src/engine/Config.cpp'
-	,'./src/engine/Input.cpp'
-	,'./src/engine/Timer.cpp'
-	,'./src/engine/datatype/Flag32.cpp'
-	,'./src/engine/datatype/3D/Vector2.cpp'
-	,'./src/engine/datatype/3D/Vector2i.cpp'
-	,'./src/engine/datatype/3D/Vector3.cpp'
-	,'./src/engine/datatype/3D/Vector3i.cpp'
-	,'./src/engine/datatype/3D/Vector4.cpp'
-	,'./src/engine/datatype/3D/Vector4i.cpp'
-	,'./src/engine/datatype/3D/Matrix3x3.cpp'
-	,'./src/engine/datatype/3D/Matrix4x4.cpp'
-	,'./src/engine/datatype/3D/Quaternion.cpp'
-	,'./src/engine/exception/Exception.cpp'
-	,'./src/engine/exception/BoundingException.cpp'
-	,'./src/engine/exception/LoadException.cpp'
-	,'./src/engine/exception/MathException.cpp'
-	,'./src/engine/load/TextFile.cpp'
-	,'./src/engine/load/FileIni.cpp'
-	,'./src/engine/math/Math.cpp'
-	,'./src/engine/file/Image.cpp'
-	,'./src/engine/file/FileCFG.cpp'
-	,'./src/engine/utils/StringUtils.cpp'
-]
-engine_file_h = [
-	 './src/engine/enumKey.h'
-	,'./src/engine/Config.h'
-	,'./src/engine/Input.h'
-	,'./src/engine/Timer.h'
-	,'./src/engine/datatype/3D/Math3D.'
-	,'./src/engine/datatype/Flag32.h'
-	,'./src/engine/datatype/3D/Vector2.h'
-	,'./src/engine/datatype/3D/Vector2i.h'
-	,'./src/engine/datatype/3D/Vector3.h'
-	,'./src/engine/datatype/3D/Vector3i.h'
-	,'./src/engine/datatype/3D/Vector4.h'
-	,'./src/engine/datatype/3D/Vector4i.h'
-	,'./src/engine/datatype/3D/Matrix3x3.h'
-	,'./src/engine/datatype/3D/Matrix4x4.h'
-	,'./src/engine/datatype/3D/Quaternion.h'
-	,'./src/engine/exception/Exception.h'
-	,'./src/engine/exception/BoundingException.h'
-	,'./src/engine/exception/LoadException.h'
-	,'./src/engine/exception/MathException.h'
-	,'./src/engine/load/TextFile.h'
-	,'./src/engine/load/FileIni.h'
-	,'./src/engine/math/Math.h'
-	,'./src/engine/file/Image.h'
-	,'./src/engine/file/FileCFG.h'
-	,'./src/engine/utils/StringUtils.h'
-]
-lib_engine = static_library('engine', engine_file_cpp,
+# Dependencies
+assimp = cpp.find_library('assimp', dirs: dir_lib)
+freetype = cpp.find_library('freetype', dirs: dir_lib)
+glfw3 = cpp.find_library('glfw3', dirs: dir_lib)
+bullet_collision = cpp.find_library('BulletCollision', dirs: dir_lib)
+bullet_dynamics = cpp.find_library('BulletDynamics', dirs: dir_lib)
+linear_math = cpp.find_library('LinearMath', dirs: dir_lib)
+bass = cpp.find_library('bass', dirs: dir_lib)
+
+
+mtengine = library('mtengine',
+	[
+		'./src/engine/library.cpp'
+		,'./src/engine/Config.cpp'
+		,'./src/engine/Input.cpp'
+		,'./src/engine/Timer.cpp'
+		,'./src/engine/Random.cpp'
+		,'./src/engine/datatype/Flag32.cpp'
+		,'./src/engine/datatype/3D/Vector2.cpp'
+		,'./src/engine/datatype/3D/Vector2i.cpp'
+		,'./src/engine/datatype/3D/Vector3.cpp'
+		,'./src/engine/datatype/3D/Vector3i.cpp'
+		,'./src/engine/datatype/3D/Vector4.cpp'
+		,'./src/engine/datatype/3D/Vector4i.cpp'
+		,'./src/engine/datatype/3D/Matrix3x3.cpp'
+		,'./src/engine/datatype/3D/Matrix4x4.cpp'
+		,'./src/engine/datatype/3D/Quaternion.cpp'
+		,'./src/engine/exception/Exception.cpp'
+		,'./src/engine/exception/BoundingException.cpp'
+		,'./src/engine/exception/LoadException.cpp'
+		,'./src/engine/exception/MathException.cpp'
+		,'./src/engine/load/TextFile.cpp'
+		,'./src/engine/math/Math.cpp'
+		,'./src/engine/file/Image.cpp'
+		,'./src/engine/file/FileCFG.cpp'
+		,'./src/engine/file/FileINI.cpp'
+		,'./src/engine/utils/StringUtils.cpp'
+	],
 	include_directories: dir_includes
 )
 
+mtgraphic = library('mtgraphic',
+	[
+		'./src/graphic/glad.cpp'
+		,'./src/graphic/Graphic.cpp'
+		,'./src/graphic/Scene.cpp'
+		,'./src/graphic/Screen.cpp'
+		,'./src/graphic/Camera.cpp'
+		,'./src/graphic/ShaderProgram.cpp'
+		,'./src/graphic/ShaderProgramMgr.cpp'
+		,'./src/graphic/buffer/VertexArrayObject.cpp'
+		,'./src/graphic/buffer/VertexBufferObject.cpp'
+		,'./src/graphic/buffer/ElementBufferObject.cpp'
+		,'./src/graphic/buffer/FrameBuffer.cpp'
+		,'./src/graphic/FrustumCulling.cpp'
+		,'./src/graphic/texture/Texture.cpp'
+		,'./src/graphic/texture/TextureAtlas.cpp'
+		,'./src/graphic/texture/TextureCube.cpp'
+		,'./src/graphic/models/ModelMgr.cpp'
+		,'./src/graphic/models/ModelBuilder.cpp'
+		,'./src/graphic/models/Model.cpp'
+		,'./src/graphic/models/ColorModel.cpp'
+		,'./src/graphic/models/SimpleModel.cpp'
+		,'./src/graphic/models/animation/AnimationModel.cpp'
+		,'./src/graphic/particles/Sprite.cpp'
+		,'./src/graphic/particles/Particle.cpp'
+		,'./src/graphic/particles/Emitter.cpp'
+		,'./src/graphic/sky/SkyBox.cpp'
+		,'./src/graphic/sky/Sun.cpp'
+		,'./src/graphic/terrain/StaticTerrain.cpp'
+		,'./src/graphic/terrain/Terrain.cpp'
+		,'./src/graphic/terrain/TerrainPart.cpp'
+		,'./src/graphic/terrain/TerrainQuad.cpp'
+		,'./src/graphic/bsp/BspSourceMap.cpp'
+		,'./src/graphic/bsp/BspQuakeMap.cpp'
+		,'./src/graphic/bsp/BspMap.cpp'
+		,'./src/graphic/bsp/bsp4/Math.cpp'
+		,'./src/graphic/bsp/bsp4/Q3BspLoader.cpp'
+		,'./src/graphic/bsp/bsp4/Q3BspMap.cpp'
+		,'./src/graphic/bsp/bsp4/Q3BspPatch.cpp'
+		,'./src/graphic/bsp/bsp4/StringHelpers.cpp'
+		,'./src/graphic/bsp/bsp5/bsp.cpp'
+		,'./src/graphic/bsp/bsp5/bezier.cpp'
+		,'./src/graphic/bsp/bsp5/frustum.cpp'
+		# ,' ./src/graphic/bsp/bsp5/q3_shader.cpp'
+		# ,' ./src/graphic/bsp/bsp5/shader.cpp'
+		# ,' ./src/graphic/bsp/bsp5/shader_loader.cpp'
+		# ,' ./src/graphic/bsp/bsp5/texture_loader.cpp'
+		,'./src/graphic/hud/Text.cpp'
+	],
+	include_directories: dir_includes,
+	link_with: mtengine,
+	dependencies: [assimp, freetype, glfw3],
+)
 
-# Exec file
-# executable('main', './src/main.cpp',
-# 	# include_directories: ['include'],
-# 	link_with: lib_engine
-# )
+mtphysic = library('mtphysic',
+	[
+		'./src/physic/Physic.cpp'
+		,'./src/physic/body/RigidBody.cpp'
+	],
+	include_directories: dir_includes,
+	link_with: mtengine,
+	dependencies: [bullet_collision, bullet_dynamics, linear_math],
+)
+
+mtgame = library('mtgame',
+	[
+		'./src/game/Game.cpp'
+		,'./src/game/Command.cpp'
+		,'./src/game/maps/MapBuilder.cpp'
+		,'./src/game/maps/Map.cpp'
+		,'./src/game/maps/LobbyMap.cpp'
+		,'./src/game/maps/AreaBoundMap.cpp'
+		,'./src/game/entities/Entity.cpp'
+		,'./src/game/entities/TestEnt.cpp'
+		,'./src/game/entities/TestAnimEnt.cpp'
+		,'./src/game/entities/TestParticleEnt.cpp'
+		,'./src/game/entities/TestEmitterEnt.cpp'
+		,'./src/game/entities/GroundEnt.cpp'
+	],
+	include_directories: dir_includes,
+	link_with: [mtengine, mtphysic, mtgraphic],
+	dependencies: [bullet_collision, bullet_dynamics, linear_math],
+)
+
+mtmod = library('mtmod',
+	[
+		'./src/mod/Plugin.cpp'
+		,'./src/mod/PluginSystem.cpp'
+	],
+	include_directories: dir_includes,
+	link_with: mtengine,
+)
+
+mttest = library('mttest',
+	[
+		'./src/test/Test.cpp'
+		# ,'./src/test/file/TestJson.cpp'
+		# ,'./src/test/file/FileJson.cpp'
+		,'./src/test/audio/Audio.cpp'
+		,'./src/test/audio/AudioMgr.cpp'
+		,'./src/test/audio/Sound.cpp'
+		,'./src/test/technique/TestTechnique.cpp'
+		,'./src/test/thread/Thread.cpp'
+	],
+	include_directories: dir_includes,
+	link_with: mtengine,
+	dependencies: bass
+)
+
+executable('main', './src/main.cpp',
+	# include_directories: ['include'],
+	link_with: [mttest, mtgame]
+)

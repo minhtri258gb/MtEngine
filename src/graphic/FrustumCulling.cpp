@@ -113,21 +113,21 @@ bool FrustumCulling::cube2(vec3 v[8])
 {
     for (int i = 0; i < 6; ++i)
     {
-        if((frustum[i].x * v[0].x + frustum[i].y * v[0].y + frustum[i].z * v[0].z + frustum[i].w) > 0)
+        if ((frustum[i].x * v[0].x + frustum[i].y * v[0].y + frustum[i].z * v[0].z + frustum[i].w) > 0)
             continue;
-        if((frustum[i].x * v[1].x + frustum[i].y * v[1].y + frustum[i].z * v[1].z + frustum[i].w) > 0)
+        if ((frustum[i].x * v[1].x + frustum[i].y * v[1].y + frustum[i].z * v[1].z + frustum[i].w) > 0)
             continue;
-        if((frustum[i].x * v[2].x + frustum[i].y * v[2].y + frustum[i].z * v[2].z + frustum[i].w) > 0)
+        if ((frustum[i].x * v[2].x + frustum[i].y * v[2].y + frustum[i].z * v[2].z + frustum[i].w) > 0)
             continue;
-        if((frustum[i].x * v[3].x + frustum[i].y * v[3].y + frustum[i].z * v[3].z + frustum[i].w) > 0)
+        if ((frustum[i].x * v[3].x + frustum[i].y * v[3].y + frustum[i].z * v[3].z + frustum[i].w) > 0)
             continue;
-        if((frustum[i].x * v[4].x + frustum[i].y * v[4].y + frustum[i].z * v[4].z + frustum[i].w) > 0)
+        if ((frustum[i].x * v[4].x + frustum[i].y * v[4].y + frustum[i].z * v[4].z + frustum[i].w) > 0)
             continue;
-        if((frustum[i].x * v[5].x + frustum[i].y * v[5].y + frustum[i].z * v[5].z + frustum[i].w) > 0)
+        if ((frustum[i].x * v[5].x + frustum[i].y * v[5].y + frustum[i].z * v[5].z + frustum[i].w) > 0)
             continue;
-        if((frustum[i].x * v[6].x + frustum[i].y * v[6].y + frustum[i].z * v[6].z + frustum[i].w) > 0)
+        if ((frustum[i].x * v[6].x + frustum[i].y * v[6].y + frustum[i].z * v[6].z + frustum[i].w) > 0)
             continue;
-        if((frustum[i].x * v[7].x + frustum[i].y * v[7].y + frustum[i].z * v[7].z + frustum[i].w) > 0)
+        if ((frustum[i].x * v[7].x + frustum[i].y * v[7].y + frustum[i].z * v[7].z + frustum[i].w) > 0)
             continue;
 
         return false;

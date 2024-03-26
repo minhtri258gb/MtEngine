@@ -22,9 +22,9 @@
 Q3BspMap *Q3BspLoader::Load(const std::string &filename)
 {
     std::ifstream bspFile;    
-    bspFile.open("../res/EngineQuakeIII/maps/" + filename + ".bsp", std::ios::in | std::ios::binary );
+    bspFile.open("./res/EngineQuakeIII/maps/" + filename + ".bsp", std::ios::in | std::ios::binary );
     
-    if(!bspFile.is_open())
+    if (!bspFile.is_open())
     {
         return NULL;
     }
@@ -36,7 +36,7 @@ Q3BspMap *Q3BspLoader::Load(const std::string &filename)
     //validate the header
     bool validQ3Bsp = !strncmp(bspHeader.magic, "IBSP", 4) && (bspHeader.version == 0x2e);
 
-    if(!validQ3Bsp)
+    if (!validQ3Bsp)
     {
         return NULL;
     }

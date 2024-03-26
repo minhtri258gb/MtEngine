@@ -1,16 +1,24 @@
 #define __MT_FILE_CFG_CPP__
 
+#include "common.h"
+
 #include <sstream>
 #include <fstream>
 
-#include "common.h"
-#include "FileCFG.h"
-
+#include "engine/datatype/3D/Math3D.h"
 #include "engine/exception/LoadException.h"
+#include "FileCFG.h"
 
 using namespace std;
 using namespace mt;
 
+typedef unsigned int uint;
+
+
+FileCFG::FileCFG()
+{
+	sessionID = 0;
+}
 
 FileCFG::FileCFG(string filename)
 {
@@ -25,14 +33,93 @@ FileCFG::~FileCFG()
 void FileCFG::select(string sessionName)
 {
 	short sizeArr = m_sessions.size();
-	for(short i = 0; i < sizeArr; i++)
-		if(m_sessions.at(i) == sessionName)
+	for (short i = 0; i < sizeArr; i++)
+	{
+		if (m_sessions.at(i) == sessionName)
 		{
 			this->sessionID = i;
 			return;
 		}
+	}
 	
 	throw Exception("Session \"" + sessionName + "\" not found!", __FILE__, __LINE__);
+}
+
+void FileCFG::addSession(string sessionName)
+{
+	short sizeArr = m_sessions.size();
+	for (short i = 0; i < sizeArr; i++)
+	{
+		if (m_sessions.at(i) == sessionName)
+		{
+			sessionID = i;
+			return;
+		}
+	}
+	
+	vector<string> keys, values;
+	
+	m_sessions.push_back(sessionName);
+	m_key.push_back(keys);
+	m_value.push_back(values);
+
+	sessionID = m_sessions.size() - 1;
+}
+
+void FileCFG::set(string key, string value)
+{
+	// Validate
+	short sizeArr = m_sessions.size();
+	if (this->sessionID == sizeArr)
+		return;
+
+	sizeArr = m_key[sessionID].size();
+
+	// Find pos of key
+	short pos = -1;
+	for (short i = 0; i < sizeArr; i++)
+	{
+		if (m_key[sessionID][i] == key)
+		{
+			pos = i;
+			break;
+		}
+	}
+
+	if (pos >= 0) // if found
+	{
+		m_value[sessionID][pos] = value;
+	}
+	else // if not found then add
+	{
+		m_key[sessionID].push_back(key);
+		m_value[sessionID].push_back(value);
+	}
+}
+
+void FileCFG::save(string filepath)
+{
+	fstream file(filepath, fstream::out);
+
+	for (short i=0, szi=m_sessions.size(); i<szi; i++)
+	{
+		string session = m_sessions[i];
+		file << '[' << session << ']' << endl;
+
+		vector<string> keys = m_key[i];
+		vector<string> values = m_value[i];
+		for (short j=0, szj=keys.size(); j<szj; j++)
+		{
+			string key = keys[j];
+			string value = values[j];
+
+			file << key << '=' << value << endl;
+		}
+
+		file << endl;
+	}
+
+	file.close();
 }
 
 string FileCFG::get(string key)

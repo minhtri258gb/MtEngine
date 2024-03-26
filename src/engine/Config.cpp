@@ -2,7 +2,7 @@
 
 #include "common.h"
 #include "Config.h"
-#include "engine/load/FileIni.h"
+#include "engine/file/FileINI.h"
 #include "engine/utils/StringUtils.h"
 
 using namespace std;
@@ -13,12 +13,13 @@ Config Config::ins;
 Config::Config()
 {
 	// Load setting.ini
-	FileIni setting;
-	setting.load("../res/setting.ini");
+	FileINI setting;
+	setting.load("./res/setting.ini");
 
 	// File path
-	this->resource_dir = "../res/";
+	this->resource_dir = "./res/";
 	this->shader_path = this->resource_dir + "shaders/";
+	this->skybox_path = this->resource_dir + "skybox/";
 
 	// Window
 	this->windowWidth = StringUtils::parseInt(setting.get("window","width"));

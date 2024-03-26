@@ -19,7 +19,7 @@ void VECTOR3D::Normalize()
 {
 	float length=GetLength();
 
-	if(length==1 || length==0)			//return if length is 1 or 0
+	if (length==1 || length==0)			//return if length is 1 or 0
 		return;
 
 	float scalefactor = 1.0f/length;
@@ -39,7 +39,7 @@ VECTOR3D VECTOR3D::GetNormalized() const
 
 VECTOR3D VECTOR3D::GetRotatedX(double angle) const
 {
-	if(angle==0.0)
+	if (angle==0.0)
 		return (*this);
 
 	float sinAngle=(float)sin(M_PI*angle/180);
@@ -57,7 +57,7 @@ void VECTOR3D::RotateX(double angle)
 
 VECTOR3D VECTOR3D::GetRotatedY(double angle) const
 {
-	if(angle==0.0)
+	if (angle==0.0)
 		return (*this);
 
 	float sinAngle=(float)sin(M_PI*angle/180);
@@ -75,7 +75,7 @@ void VECTOR3D::RotateY(double angle)
 
 VECTOR3D VECTOR3D::GetRotatedZ(double angle) const
 {
-	if(angle==0.0)
+	if (angle==0.0)
 		return (*this);
 
 	float sinAngle=(float)sin(M_PI*angle/180);
@@ -93,7 +93,7 @@ void VECTOR3D::RotateZ(double angle)
 
 VECTOR3D VECTOR3D::GetRotatedAxis(double angle, const VECTOR3D & axis) const
 {
-	if(angle==0.0)
+	if (angle==0.0)
 		return (*this);
 
 	VECTOR3D u=axis.GetNormalized();
@@ -150,7 +150,7 @@ VECTOR3D operator*(float scaleFactor, const VECTOR3D & rhs)
 
 bool VECTOR3D::operator==(const VECTOR3D & rhs) const
 {
-	if(x==rhs.x && y==rhs.y && z==rhs.z)
+	if (x==rhs.x && y==rhs.y && z==rhs.z)
 		return true;
 
 	return false;

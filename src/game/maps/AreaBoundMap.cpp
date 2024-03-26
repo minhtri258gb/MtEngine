@@ -5,7 +5,7 @@
 
 #include "common.h"
 #include "graphic/Graphic.h"
-#include "LobbyMap.h"
+#include "AreaBoundMap.h"
 
 #include "graphic/sky/SkyBox.h"
 #include "graphic/terrain/StaticTerrain.h"
@@ -27,27 +27,48 @@ using namespace mt::graphic;
 using namespace mt::game;
 
 
-class LobbyMap::LobbyMapImpl
+class AreaBoundMap::AreaBoundMapImpl
 {
 public:
+
+	// General
+	string name;
+	int size;
+
+	// Enviroment
 	SkyBox* sky;
+	string skyName;
 	StaticTerrain* terrainStatic;
 	Terrain* terrain;
 	BspSourceMap* sourceMap;
 	BspQuakeMap* quakeMap;
 	BspMap* bspMap;
+	
+	// Entities
+	vector<Entity*> lstEntities;
 };
 
-LobbyMap::LobbyMap(string name)
+AreaBoundMap::AreaBoundMap(string name)
 {
 	// Implement
-	impl = new LobbyMapImpl();
+	impl = new AreaBoundMapImpl();
+	impl->name = name;
 
-	// Data
-	this->name = name;
+	// Load config
+	string configPath = "./res/maps/" + name + ".cfg";
+	FileCFG* fCFG = new FileCFG(configPath);
+
+	// Set general
+	fCFG->select("general");
+	impl->size = fCFG->getInt("size");
+
+	// Set enviroment
+	fCFG->select("enviroment");
+	impl->skyName = fCFG->get("skybox");
+
 }
 
-LobbyMap::~LobbyMap()
+AreaBoundMap::~AreaBoundMap()
 {
 	// // Xoa debug physic
 	// if (this->physicDebug)
@@ -77,7 +98,7 @@ LobbyMap::~LobbyMap()
 	delete impl;
 }
 
-void LobbyMap::load()
+void AreaBoundMap::load()
 {
 	if (!this->needLoading)
 		return;
@@ -95,15 +116,15 @@ void LobbyMap::load()
 
 	// =================== Sky ===================
 	impl->sky = new SkyBox();
-	impl->sky->init("blabla");
+	impl->sky->init(impl->skyName);
 
 	// =================== Terrain Static ===================
-	impl->terrainStatic = new StaticTerrain();
-	impl->terrainStatic->init("chadvernon");
+	// impl->terrainStatic = new StaticTerrain();
+	// impl->terrainStatic->init("chadvernon");
 
 	// =================== Terrain QuadTree ===================
-	// impl->terrain = new Terrain();
-	// impl->terrain->init("something");
+	impl->terrain = new Terrain();
+	impl->terrain->init("something");
 
 	// =================== BSP Source Map ===================
 	// impl->sourceMap = new BspSourceMap();
@@ -350,15 +371,11 @@ void LobbyMap::load()
 	// #EXTRA
 }
 
-void LobbyMap::clear()
+void AreaBoundMap::clear()
 {
-	for (Entity *ent : this->lstEntitiesStatic)
+	for (Entity *ent : impl->lstEntities)
 		delete ent;
-	this->lstEntitiesStatic.clear();
-
-	for (Entity *ent : this->lstEntitiesDynamic)
-		delete ent;
-	this->lstEntitiesDynamic.clear();
+	impl->lstEntities.clear();
 
 	// Sky
 	if (impl->sky)
@@ -405,7 +422,7 @@ void LobbyMap::clear()
 	// #EXTRA
 }
 
-void LobbyMap::update()
+void AreaBoundMap::update()
 {
 	// float timeStep = Time::ins->getTimeStep();
 
@@ -423,14 +440,11 @@ void LobbyMap::update()
 	if (impl->bspMap)
 		impl->bspMap->update();
 
-	for (Entity* ent : this->lstEntitiesStatic)
-		ent->update();
-	
-	for (Entity* ent : this->lstEntitiesDynamic)
+	for (Entity* ent : impl->lstEntities)
 		ent->update();
 }
 
-void LobbyMap::render()
+void AreaBoundMap::render()
 {
 	if (impl->sky)
 		impl->sky->render();
@@ -453,10 +467,7 @@ void LobbyMap::render()
 		// this->terrain->render();
 
 		// Draw some cubes around
-		for (Entity* ent : this->lstEntitiesStatic)
-			ent->render();
-
-		for (Entity* ent : this->lstEntitiesDynamic)
+		for (Entity* ent : impl->lstEntities)
 			ent->render();
 	// }
 }

@@ -2,11 +2,17 @@
 
 // #define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
 
-#include "common.h"
-#include "Game.h"
+#include <iostream>
+#include <vector>
+#include <map>
+
 #include "engine/Timer.h"
+#include "engine/math/Math.h"
+#include "engine/datatype/3D/Math3D.h"
+#include "engine/exception/Exception.h"
 #include "graphic/Graphic.h"
 #include "physic/Physic.h"
+#include "Game.h"
 
 // test import
 #include "graphic/ShaderProgram.h"
@@ -90,7 +96,7 @@ void Game::init()
 	Physic::ins.init();
 
 	// Init component
-	this->map = MapBuilder::load("lobby");
+	this->map = MapBuilder::firstLoad();
 
 	// #EXTRA
 }

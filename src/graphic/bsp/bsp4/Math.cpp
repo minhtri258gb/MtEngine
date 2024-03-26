@@ -243,7 +243,7 @@ namespace Math
     {
         float distance = point.m_x * normalX + point.m_y * normalY + point.m_z * normalZ - intercept;
 
-        if(distance >= 0.0f)
+        if (distance >= 0.0f)
             return PointInFrontOfPlane;
 
         return PointBehindPlane; 

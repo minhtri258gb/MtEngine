@@ -79,7 +79,7 @@ VECTOR4D operator*(float scaleFactor, const VECTOR4D & rhs)
 
 bool VECTOR4D::operator==(const VECTOR4D & rhs) const
 {
-	if(x==rhs.x && y==rhs.y && z==rhs.z && w==rhs.w)
+	if (x==rhs.x && y==rhs.y && z==rhs.z && w==rhs.w)
 		return true;
 
 	return false;
@@ -87,7 +87,7 @@ bool VECTOR4D::operator==(const VECTOR4D & rhs) const
 
 VECTOR4D::operator VECTOR3D()
 {
-	if(w==0.0f || w==1.0f)
+	if (w==0.0f || w==1.0f)
 		return VECTOR3D(x, y, z);
 	else
 		return VECTOR3D(x/w, y/w, z/w);

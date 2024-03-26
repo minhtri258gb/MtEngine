@@ -22,7 +22,7 @@ TestJson::~TestJson()
 
 void TestJson::run()
 {
-    FileJson file("../res/test/file.json");
+    FileJson file("./res/test/file.json");
 
 
     

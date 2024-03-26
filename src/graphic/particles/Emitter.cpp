@@ -97,7 +97,7 @@ void Emitter::init(string name, list<Particle*> &particles)
 {
 	// Load config
 	this->name = name;
-	string pathDir = "../res/sprites/emitter/" + name + "/";
+	string pathDir = "./res/sprites/emitter/" + name + "/";
 	FileCFG* fCFG = new FileCFG(pathDir + "info.cfg");
 
 	fCFG->select("general");

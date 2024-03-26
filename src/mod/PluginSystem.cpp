@@ -8,7 +8,7 @@
 #include "graphic/models/Model.h"
 #include "game/entities/Entity.h"
 
-// #define PLUGIN_PATH "../res/plugins/"
+// #define PLUGIN_PATH "./res/plugins/"
 #define PLUGIN_PATH "./"
 
 using namespace std;

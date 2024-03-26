@@ -43,7 +43,7 @@ StaticTerrain::~StaticTerrain()
 void StaticTerrain::init(string name)
 {
 	// Load config
-	string pathDir = "../res/terrains/static/" + name + "/";
+	string pathDir = "./res/terrains/static/" + name + "/";
 	FileCFG* fCFG = new FileCFG(pathDir + "info.cfg");
 	
 	fCFG->select("terrain");
@@ -74,9 +74,9 @@ void StaticTerrain::init(string name)
 	vector<vec3> vertices;
 	vector<vec2> uvs;
 	vector<unsigned int> indices;
-	for(int z = 0; z < depth; z++)
+	for (int z = 0; z < depth; z++)
 	{
-		for(int x = 0; x < width; x++)
+		for (int x = 0; x < width; x++)
 		{
 			float height = (float)data[z*width + x] / 255.0f * heightScale;
 			float xc = x * CELLSPACE;
@@ -86,9 +86,9 @@ void StaticTerrain::init(string name)
 			uvs.push_back(vec2(x * 1.0 / width, z * 1.0 / depth));
 		}
 	}
-	for(int z = 0; z < depth - 1; z++)
+	for (int z = 0; z < depth - 1; z++)
 	{
-		for(int x = 0; x < width - 1; x++)
+		for (int x = 0; x < width - 1; x++)
 		{
 			indices.push_back((z) * width + (x));
 			indices.push_back((z + 1) * width + (x));

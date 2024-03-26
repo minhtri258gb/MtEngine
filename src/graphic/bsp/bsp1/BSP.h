@@ -181,11 +181,11 @@ public:
 	{}
 	~BSP_BIQUADRATIC_PATCH()
 	{
-		if(vertices)
+		if (vertices)
 			delete [] vertices; 
 		vertices=NULL;
 
-		if(indices)
+		if (indices)
 			delete [] indices;
 		indices=NULL;
 	}
@@ -265,7 +265,7 @@ public:
 	{}
 	~BSP_VISIBILITY_DATA()
 	{
-		if(bitset)
+		if (bitset)
 			delete [] bitset;
 		bitset=NULL;
 	}
@@ -385,39 +385,39 @@ public:
 	{}
 	~BSP()
 	{
-		if(vertices)
+		if (vertices)
 			delete [] vertices;
 		vertices=NULL;
 
-		if(faceDirectory)
+		if (faceDirectory)
 			delete [] faceDirectory;
 		faceDirectory=NULL;
 
-		if(polygonFaces)
+		if (polygonFaces)
 			delete [] polygonFaces;
 		polygonFaces=NULL;
 
-		if(meshIndices)
+		if (meshIndices)
 			delete [] meshIndices;
 		meshIndices=NULL;
 
-		if(meshFaces)
+		if (meshFaces)
 			delete [] meshFaces;
 		meshFaces=NULL;
 
-		if(patches)
+		if (patches)
 			delete [] patches;
 		patches=NULL;
 
-		// if(decalTextures) // #TODO
+		// if (decalTextures) // #TODO
 			// delete [] decalTextures; // #TODO
 		// decalTextures=NULL; // #TODO
 
-		// if(lightmapTextures) // #TODO
+		// if (lightmapTextures) // #TODO
 			// delete [] lightmapTextures; // #TODO
 		// lightmapTextures=NULL; // #TODO
 
-		if(entityString)
+		if (entityString)
 			delete [] entityString;
 		entityString=NULL;
 	}

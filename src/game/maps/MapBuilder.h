@@ -12,6 +12,7 @@ class MapBuilder
 public:
 
 	// Static
+  static Map* firstLoad();
   static Map* load(std::string name);
   static void clear(Map* pMap);
 

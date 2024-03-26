@@ -44,8 +44,8 @@ void Sprite::load(string name)
 	impl->VAO.setCount(1);
 
 	// Texture
-	// impl->texture.init("../res/textures/particles/christopher-carlson-charge-ring.jpg", true);
-	impl->texture.init("../res/textures/particles/aHEiB5kn3N-yZ9VdtQPeXA.jpeg", true);
+	// impl->texture.init("./res/textures/particles/christopher-carlson-charge-ring.jpg", true);
+	impl->texture.init("./res/textures/particles/aHEiB5kn3N-yZ9VdtQPeXA.jpeg", true);
 }
 
 void Sprite::update()

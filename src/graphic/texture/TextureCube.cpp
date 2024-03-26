@@ -33,7 +33,7 @@ void TextureCube::init(string filepath, bool _flip)
 	int pos = filepath.find_last_of('.') - 1;
 
 	string lstChar = "RLUDBF"; // RLUDBF // RLUDFB
-	for(int i=0; i<6; i++)
+	for (int i=0; i<6; i++)
 	{
 		filepath[pos] = lstChar[i];
 		textures[i] = filepath;

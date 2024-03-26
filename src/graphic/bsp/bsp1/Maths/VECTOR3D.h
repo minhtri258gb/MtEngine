@@ -136,7 +136,7 @@ public:
 	{	x*=rhs;	y*=rhs;	z*=rhs;	}
 	
 	void operator/=(const float rhs)
-	{	if(rhs==0.0f)
+	{	if (rhs==0.0f)
 			return;
 		else
 		{	x/=rhs; y/=rhs; z/=rhs;	}

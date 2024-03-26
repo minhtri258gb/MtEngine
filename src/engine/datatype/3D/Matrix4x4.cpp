@@ -309,11 +309,11 @@ void Matrix4x4::decompose(Vector3& position, Quaternion& rotation, Vector3& scal
 	
 	if (determinant() < 0)
 		scaling = -scaling;
-	if(scaling.x)
+	if (scaling.x)
 		vCols0 /= scaling.x;
-	if(scaling.y)
+	if (scaling.y)
 		vCols1 /= scaling.y;
-	if(scaling.z)
+	if (scaling.z)
 		vCols2 /= scaling.z;
 
 	// build a 3x3 rotation matrix

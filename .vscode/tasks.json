@@ -1,17 +1,26 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "Build",
-			"type": "shell",
-			"command": "meson",
-			"args": [
-				"compile"
-			],
-			"group": "build",
-			"options": {
-				"cwd": "${workspaceFolder}/build"
-			}
-		}
-	]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "meson",
+            "args": [
+                "compile"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}/bin"
+            }
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "bin\\main.exe",
+            "group": "test",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        }
+    ]
 }

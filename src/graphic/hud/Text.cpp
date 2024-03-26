@@ -88,11 +88,11 @@ void Text::init(string content, vec2 position, float scale, vec3 color)
 
 		// Init Font
 		FT_Library ft;
-		if(FT_Init_FreeType(&ft))
+		if (FT_Init_FreeType(&ft))
 			throw error("Could not init FreeType Library");
 		
 		FT_Face face;
-		if(FT_New_Face(ft, "res/font/Desyrel.ttf", 0, &face))
+		if (FT_New_Face(ft, "res/font/Desyrel.ttf", 0, &face))
 			throw error("Failed to load font");
 		
 		FT_Set_Pixel_Sizes(face, 0, 48);
@@ -100,7 +100,7 @@ void Text::init(string content, vec2 position, float scale, vec3 color)
 		for (GLubyte c = 32; c < 128; c++)
 		{
 			// Load character glyph
-			if(FT_Load_Char(face, c, FT_LOAD_RENDER))
+			if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 				throw error("Failed to load Glyph");
 			
 			FT_GlyphSlot g = face->glyph;
@@ -159,11 +159,11 @@ void Text::render()
 
 	vec2 offset = impl->position;
 
-	for(auto c : impl->content)
+	for (auto c : impl->content)
 	{
 		Character ch = characters[c];
 
-		if(c == 10) // new line
+		if (c == 10) // new line
 		{
 			offset.x = impl->position.x;
 			offset.y -= 50.0f * impl->scale;

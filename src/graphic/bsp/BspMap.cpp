@@ -37,9 +37,9 @@ public:
 BspMap::BspMap()
 {
 	// Component
-	// impl->map = new bsp("../res/bsp/de_dust2.bsp");
-	// impl->map = new bsp("../res/bsp/css_cs_deadhouse_1.0/cs_deadhouse.bsp");
-	// impl->map = new bsp("../res/bsp/source/CS_Sklad_Top-X/maps/cs_sklad_top-x.bsp");
+	// impl->map = new bsp("./res/bsp/de_dust2.bsp");
+	// impl->map = new bsp("./res/bsp/css_cs_deadhouse_1.0/cs_deadhouse.bsp");
+	// impl->map = new bsp("./res/bsp/source/CS_Sklad_Top-X/maps/cs_sklad_top-x.bsp");
 
 	// Implement
 	impl = new BspMapImpl();
@@ -56,7 +56,7 @@ BspMap::~BspMap()
 
 void BspMap::init(string name)
 {
-	impl->map_ = new Bsp("../res/EngineQuakeIII/maps/test1.bsp");// #TODO tao nhung chua xoa
+	impl->map_ = new Bsp("./res/EngineQuakeIII/maps/test1.bsp");// #TODO tao nhung chua xoa
 }
 
 void BspMap::update()

@@ -59,7 +59,7 @@ void bezier::tessellate(int subdivisions)
     }
 
     int col = 0;
-    for(int j = 0; j <= subdivisions; ++j)
+    for (int j = 0; j <= subdivisions; ++j)
     {
       float a = (float)j / subdivisions;
 
@@ -77,7 +77,7 @@ void bezier::tessellate(int subdivisions)
   // maybe use degenerated triangle strips to merge
   for (int row = 0; row < subdivisions; ++row)
   {
-    for(int col = 0; col <= subdivisions; ++col)	{
+    for (int col = 0; col <= subdivisions; ++col)	{
       int g = (row * (subdivisions1) + col) * 2 + 1;
       int h = (row * (subdivisions1) + col) * 2;
       m_indexes[g] = row       * subdivisions1 + col;

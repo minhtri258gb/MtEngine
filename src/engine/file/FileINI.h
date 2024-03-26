@@ -2,16 +2,15 @@
 #define __MT_FILE_INI_H__
 
 namespace mt {
-namespace engine {
 
-class FileIni {
+class FileINI {
 
 public:
 
 	// Forward
-	FileIni();
-	FileIni(std::string filepath);
-	~FileIni();
+	FileINI();
+	FileINI(std::string filepath);
+	~FileINI();
 	void load(std::string filepath);
 
 	// Native
@@ -24,11 +23,11 @@ public:
 private:
 
 	// Variable
-	class FileIniImpl;
-	FileIniImpl* impl;
+	class FileINIImpl;
+	FileINIImpl* impl;
 
 };
 
-}}
+}
 
 #endif

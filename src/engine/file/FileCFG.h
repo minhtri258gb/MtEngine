@@ -8,19 +8,24 @@ class FileCFG
 public:
 
 	// Constructor
+	FileCFG();
 	FileCFG(std::string);
 	~FileCFG();
 
-	// Get / Set
-	void select(std::string);
-	std::string get(std::string);
-	bool getBool(std::string);
-	int getInt(std::string);
-	uint getUInt(std::string);
-	float getFloat(std::string);
-	vec2 getVec2(std::string);
-	vec3 getVec3(std::string);
+	void select(std::string session);
+	void addSession(std::string key);
+	void set(std::string key, std::string value);
+	void save(std::string filepath);
+
+	std::string get(std::string key);
+	bool getBool(std::string key);
+	int getInt(std::string key);
+	uint getUInt(std::string key);
+	float getFloat(std::string key);
+	vec2 getVec2(std::string key);
+	vec3 getVec3(std::string key);
 	std::map<std::string, std::string>* getPtr();
+
 
 private:
 

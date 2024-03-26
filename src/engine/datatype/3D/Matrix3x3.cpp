@@ -68,7 +68,7 @@ float Matrix3x3::determinant() const
 Matrix3x3& Matrix3x3::inverse()
 {
     float det = determinant();
-    if(det == 0.0f)
+    if (det == 0.0f)
 		throw MathException("Khong the invert ma tran nay", __FILE__, __LINE__);
 
     float invdet = 1.0f / det;

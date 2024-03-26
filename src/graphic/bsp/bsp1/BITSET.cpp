@@ -17,7 +17,7 @@
 bool BITSET::Init(int numberOfBits)
 {
 	//Delete any memory allocated to bits
-	if(bits)
+	if (bits)
 		delete [] bits;
 	bits=nullptr;
 
@@ -26,7 +26,7 @@ bool BITSET::Init(int numberOfBits)
 
 	//Create memory
 	bits=new unsigned char[numBytes];
-	if(!bits)
+	if (!bits)
 	{
 		// errorLog.OutputError("Unable to allocate space for a bitset of %d bits", numberOfBits);
 		return false;

@@ -319,7 +319,7 @@ AnimationModel::AnimationModel()
 
 	//load model file
 	Assimp::Importer importer;
-	const char* filePath = "../res/models/man/model.dae";
+	const char* filePath = "./res/models/man/model.dae";
 	const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
@@ -367,7 +367,7 @@ AnimationModel::AnimationModel()
 	this->impl->VAO.addIndices(indices_tmp);
 	this->impl->VAO.unbind();
 
-	this->impl->texture.init("../res/models/man/diffuse.png");
+	this->impl->texture.init("./res/models/man/diffuse.png");
 
 	this->impl->currentPose.resize(this->impl->boneCount, this->impl->identity); // use this for no animation
 }

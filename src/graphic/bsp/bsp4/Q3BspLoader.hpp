@@ -30,7 +30,7 @@ void Q3BspLoader::LoadLump(Q3BspMap *map, LumpTypes lType, std::vector<T> &conta
 
     container.reserve(numElements);
 
-    for(int i = 0; i < numElements; i++)
+    for (int i = 0; i < numElements; i++)
     {
         T element;
         fstream.read( (char*)&element, sizeof(T) );

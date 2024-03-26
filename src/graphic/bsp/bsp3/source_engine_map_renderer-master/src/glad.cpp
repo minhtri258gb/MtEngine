@@ -74,7 +74,7 @@ int open_gl(void) {
 #endif
 
     unsigned int index = 0;
-    for(index = 0; index < (sizeof(NAMES) / sizeof(NAMES[0])); index++) {
+    for (index = 0; index < (sizeof(NAMES) / sizeof(NAMES[0])); index++) {
         libGL = dlopen(NAMES[index], RTLD_NOW | RTLD_GLOBAL);
 
         if(libGL != NULL) {
@@ -164,7 +164,7 @@ static int get_exts(void) {
             return 0;
         }
 
-        for(index = 0; index < (unsigned)num_exts_i; index++) {
+        for (index = 0; index < (unsigned)num_exts_i; index++) {
             const char *gl_str_tmp = (const char*)glGetStringi(GL_EXTENSIONS, index);
             size_t len = strlen(gl_str_tmp);
 
@@ -186,7 +186,7 @@ static int get_exts(void) {
 static void free_exts(void) {
     if (exts_i != NULL) {
         int index;
-        for(index = 0; index < num_exts_i; index++) {
+        for (index = 0; index < num_exts_i; index++) {
             free((char *)exts_i[index]);
         }
         free((void *)exts_i);
@@ -223,7 +223,7 @@ static int has_ext(const char *ext) {
     } else {
         int index;
         if(exts_i == NULL) return 0;
-        for(index = 0; index < num_exts_i; index++) {
+        for (index = 0; index < num_exts_i; index++) {
             const char *e = exts_i[index];
 
             if(exts_i[index] != NULL && strcmp(e, ext) == 0) {

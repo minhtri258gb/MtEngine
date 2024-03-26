@@ -43,7 +43,7 @@ void Camera::update()
 		angle = angle ^ quat(angleQ, vec3(0,1,0));
 		angleQ = yoffset * sensitivity;
 		quat _tmp = quat(angleQ, vec3(1,0,0)) ^ angle;
-		if(_tmp.x * _tmp.x + _tmp.z * _tmp.z < 0.48f)
+		if (_tmp.x * _tmp.x + _tmp.z * _tmp.z < 0.48f)
 			angle = _tmp;
 		angle = angle.normalize();
 
@@ -84,7 +84,7 @@ void Camera::update()
 		// normalize(this->right);
 
 		// Velocity
-		// if(abs(this->velocity.x) < 0.1f && abs(this->velocity.y) < 0.1f && abs(this->velocity.z) < 0.1f)
+		// if (abs(this->velocity.x) < 0.1f && abs(this->velocity.y) < 0.1f && abs(this->velocity.z) < 0.1f)
 		// 	this->velocity = vec3();
 		// else
 		// 	this->velocity *= 0.01f;//0.8f;

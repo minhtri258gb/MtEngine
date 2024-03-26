@@ -1,29 +1,72 @@
 #define __MT_MAP_BUILDER_CPP__
 
+#define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
+
 #include "common.h"
-#include "MapBuilder.h"
 
 #include "engine/file/FileCFG.h"
-
-#include "./LobbyMap.h"
+#include "engine/exception/LoadException.h"
+#include "MapBuilder.h"
+#include "LobbyMap.h"
+#include "AreaBoundMap.h"
 
 using namespace std;
+using namespace mt;
 using namespace mt::game;
 
 
-Map* MapBuilder::load(std::string name)
+Map* MapBuilder::firstLoad()
 {
-  // Read config
-	FileCFG* fCFG = new FileCFG("../res/maps/"+name+".cfg");
-	
-	fCFG->select("general");
-	string type = fCFG->get("type");
+	string mapName = "lobby"; // lobby is default
 
-  // Return
-  return new LobbyMap(name);
+	// Tải file state.ini
+	FileCFG* fCFG = nullptr;
+
+	try
+	{
+		fCFG = new FileCFG("./res/state.cfg");
+		fCFG->select("last");
+		mapName = fCFG->get("map");
+	}
+	catch (LoadException e)
+	{
+		// Nếu chưa có file thì tạo file với state mặc định
+		delete fCFG;
+		fCFG = new FileCFG();
+		fCFG->addSession("last");
+		fCFG->set("map", mapName);
+		fCFG->save("./res/state.cfg");
+	}
+	
+	// Return
+	delete fCFG;
+	return MapBuilder::load(mapName);
 }
 
-void MapBuilder::clear(Map* pMap)
+Map* MapBuilder::load(string mapName)
 {
-  delete pMap;
+	// Read type of map
+	string configPath = "./res/maps/" + mapName + ".cfg";
+	FileCFG* fCFG = new FileCFG(configPath);
+	fCFG->select("general");
+	string type = fCFG->get("type");
+	delete fCFG;
+
+	// Load map
+	Map* map = nullptr;
+	if (type == "lobby")
+	{
+		map = new LobbyMap(mapName);
+	}
+	else if (type == "area_bound")
+	{
+		map = new AreaBoundMap(mapName);
+	}
+
+	// Return
+	return map;
+}
+
+void MapBuilder::clear(Map* pMap) {
+	delete pMap;
 }

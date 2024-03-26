@@ -17,7 +17,7 @@ void VECTOR2D::Normalize()
 	float scalefactor;
 	length=GetLength();
 
-	if(length==1 || length==0)			//return if length is 1 or 0
+	if (length==1 || length==0)			//return if length is 1 or 0
 		return;
 
 	scalefactor = 1.0f/length;
@@ -41,7 +41,7 @@ VECTOR2D operator*(float scaleFactor, const VECTOR2D & rhs)
 
 bool VECTOR2D::operator==(const VECTOR2D & rhs) const
 {
-	if(x==rhs.x && y==rhs.y)
+	if (x==rhs.x && y==rhs.y)
 		return true;
 
 	return false;

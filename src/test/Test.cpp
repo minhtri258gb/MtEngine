@@ -170,7 +170,7 @@ void Test::run()
 	// Test CFG File
 	// try {
 
-	// 	FileCFG* fCFG = new FileCFG("../res/terrains/static/hm1/info.cfg");
+	// 	FileCFG* fCFG = new FileCFG("./res/terrains/static/hm1/info.cfg");
 
 	// 	fCFG->select("terrain");
 	// 	string name = fCFG->get("name");

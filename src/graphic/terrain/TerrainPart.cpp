@@ -46,7 +46,7 @@ TerrainPart::TerrainPart()
 
 	// Init Texture
 	this->heightScale = 50.0f;
-	impl->heightMapTex.init("../res/terrains/static/chadvernon/Untitled1.png");
+	impl->heightMapTex.init("./res/terrains/static/chadvernon/texture.png");
 	
 }
 

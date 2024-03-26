@@ -88,7 +88,7 @@ Q3BspMap::~Q3BspMap()
 void Q3BspMap::Init()
 {
   m_missingTex = new mt::graphic::Texture(); // #TODO Co new nhung chua delete !!!!!!!!!!!
-  m_missingTex->init("../res/textures/default.png");
+  m_missingTex->init("./res/textures/default.png");
   
   // load textures
   LoadTextures();
@@ -249,7 +249,7 @@ int Q3BspMap::FindCameraLeaf(const Math::Vector3f & cameraPosition) const
   while(leafIndex >= 0)
   {
     // children.x - front node; children.y - back node
-    if(PointPlanePos( planes[nodes[leafIndex].plane].normal.x,
+    if (PointPlanePos( planes[nodes[leafIndex].plane].normal.x,
               planes[nodes[leafIndex].plane].normal.y,
               planes[nodes[leafIndex].plane].normal.z,
               planes[nodes[leafIndex].plane].dist, 
@@ -282,20 +282,20 @@ void Q3BspMap::CalculateVisibleFaces(mt::vec3 _cameraPosition)
   for (const auto &rl : m_renderLeaves)
   {
     //if the leaf is not in the PVS - skip it
-    if( !HasRenderFlag( Q3RenderSkipPVS ) && !ClusterVisible(cameraCluster, rl.visCluster) )
+    if ( !HasRenderFlag( Q3RenderSkipPVS ) && !ClusterVisible(cameraCluster, rl.visCluster) )
       continue;
 
     //if this leaf does not lie in the frustum - skip it
-    // if( !HasRenderFlag( Q3RenderSkipFC ) && !m_frustum.BoxInFrustum(  rl.boundingBoxVertices ) )
+    // if ( !HasRenderFlag( Q3RenderSkipFC ) && !m_frustum.BoxInFrustum(  rl.boundingBoxVertices ) )
     //     continue;
 
     // mt::vec3 point[8];
     // for (int i=0; i<8; i++) {
     //   point[i] = mt::vec3(rl.boundingBoxVertices[i].m_x, rl.boundingBoxVertices[i].m_y, rl.boundingBoxVertices[i].m_z);
     // }
-    // if( !HasRenderFlag( Q3RenderSkipFC ) && !mt::graphic::Graphic::ins.camera.frustumCulling.cube2(point))
+    // if ( !HasRenderFlag( Q3RenderSkipFC ) && !mt::graphic::Graphic::ins.camera.frustumCulling.cube2(point))
     //   continue;
-    // if( !HasRenderFlag( Q3RenderSkipFC ))
+    // if ( !HasRenderFlag( Q3RenderSkipFC ))
     //   continue;
 
     //loop through faces in this leaf and them to visibility set
@@ -304,7 +304,7 @@ void Q3BspMap::CalculateVisibleFaces(mt::vec3 _cameraPosition)
       int idx = leafFaces[ rl.firstFace + j ].face;
       Q3FaceRenderable *face = &m_renderFaces[ leafFaces[ rl.firstFace + j ].face ];
 
-      if(std::find( m_visibleFaces.begin(), m_visibleFaces.end(), face ) == m_visibleFaces.end() )
+      if (std::find( m_visibleFaces.begin(), m_visibleFaces.end(), face ) == m_visibleFaces.end() )
         m_visibleFaces.push_back( face );
     }
   }
@@ -332,7 +332,7 @@ void Q3BspMap::LoadTextures()
     // m_textures[f.texture] = TextureManager::GetInstance()->LoadTexture(nameJPG.c_str());
     m_textures[f.texture] = new mt::graphic::Texture();
     try {
-      m_textures[f.texture]->init(("../res/EngineQuakeIII/"+nameJPG).c_str());
+      m_textures[f.texture]->init(("./res/EngineQuakeIII/"+nameJPG).c_str());
     } catch(mt::Exception e) {
       m_textures[f.texture] = NULL;
     }
@@ -345,7 +345,7 @@ void Q3BspMap::LoadTextures()
       // m_textures[f.texture] = TextureManager::GetInstance()->LoadTexture(nameTGA.c_str());
       m_textures[f.texture] = new mt::graphic::Texture();
       try {
-        m_textures[f.texture]->init(("../res/EngineQuakeIII/"+nameTGA).c_str());
+        m_textures[f.texture]->init(("./res/EngineQuakeIII/"+nameTGA).c_str());
       } catch(mt::Exception e) {
         m_textures[f.texture] = NULL;
       }
@@ -422,9 +422,9 @@ void Q3BspMap::SetLightmapGamma(float gamma)
 
       float scale = 1.0f;
       float temp;
-      if( r > 1.0f && (temp = (1.0f/r) ) < scale) scale = temp;
-      if( g > 1.0f && (temp = (1.0f/g) ) < scale) scale = temp;
-      if( b > 1.0f && (temp = (1.0f/b) ) < scale) scale = temp;
+      if ( r > 1.0f && (temp = (1.0f/r) ) < scale) scale = temp;
+      if ( g > 1.0f && (temp = (1.0f/g) ) < scale) scale = temp;
+      if ( b > 1.0f && (temp = (1.0f/b) ) < scale) scale = temp;
 
       scale *= 255.0f;
       r *= scale;
