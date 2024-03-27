@@ -1,6 +1,6 @@
 #define __MT_GAME_CPP__
 
-// #define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
+#define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
 
 #include <iostream>
 #include <vector>

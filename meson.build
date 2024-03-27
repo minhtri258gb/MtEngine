@@ -7,18 +7,25 @@ project('MT Engine', 'cpp',
 cpp = meson.get_compiler('cpp')
 dir_base = meson.current_source_dir()
 dir_lib = join_paths(dir_base, 'lib')
+dir_lib_msys2 = 'D:/Programs/MSYS2/mingw64/lib'
 
 # Include
-dir_includes = ['./src', './inc', './inc/bullet']
+dir_includes = [
+	'./src',
+	'./inc',
+	'D:/Programs/MSYS2/mingw64/include',
+	'D:/Programs/MSYS2/mingw64/include/bullet',
+	'D:/Programs/MSYS2/mingw64/include/freetype2'
+]
 
 
 # Dependencies
-assimp = cpp.find_library('assimp', dirs: dir_lib)
-freetype = cpp.find_library('freetype', dirs: dir_lib)
-glfw3 = cpp.find_library('glfw3', dirs: dir_lib)
-bullet_collision = cpp.find_library('BulletCollision', dirs: dir_lib)
-bullet_dynamics = cpp.find_library('BulletDynamics', dirs: dir_lib)
-linear_math = cpp.find_library('LinearMath', dirs: dir_lib)
+assimp = cpp.find_library('assimp', dirs: dir_lib_msys2)
+freetype = cpp.find_library('freetype', dirs: dir_lib_msys2)
+glfw3 = cpp.find_library('glfw3', dirs: dir_lib_msys2)
+bullet_collision = cpp.find_library('BulletCollision', dirs: dir_lib_msys2)
+bullet_dynamics = cpp.find_library('BulletDynamics', dirs: dir_lib_msys2)
+linear_math = cpp.find_library('LinearMath', dirs: dir_lib_msys2)
 bass = cpp.find_library('bass', dirs: dir_lib)
 
 
