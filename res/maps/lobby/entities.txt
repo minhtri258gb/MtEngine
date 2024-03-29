@@ -1,0 +1,68 @@
+; ValveModel <name> 3<origin> <angle y> <scale>
+; ModelV0 <name> 3<origin> <angle y> <scale>
+; ModelV1 <name> 3<origin> <angle y> <scale>
+
+;Tent zbeam1 1000 1000 1000.0 0 1.0 // LineShape
+;Tent zbeam2 1000 1000 900.0 0 1.0 // LineShape
+;Tent laserbeam 1000 1000 800.0 0 1.0 // LineShape
+;Tent snow 792 327 500.0 0 1.0 // Emitter
+
+
+;Weapon VALVE/weapons/famas 100.0
+;Weapon VALVE/chick 1.0
+;Weapon VALVE/lightmonter 1.0
+
+; TestEntityBoxShape origin3 angle scale
+;TentBox BOXSHAPE/cube 4096 4096 0 0 500.0
+;TentBox BOXSHAPE/brown-wood 0 0 0 0 500.0
+;TentBox BOXSHAPE/crop_gravel 0 8192 0 0 500.0
+;TentBox BOXSHAPE/hexagonal-marble 8192 0 0 0 500.0
+;TentBox BOXSHAPE/TCR012 8192 8192 0 0 500.0
+
+; TestEntityStaticModel origin3 angle scale
+;TentSmdl STATIC/boulder 1644 1863 0 0 10.0
+;TentSmdl STATIC/bunny 1644 1863 0 0 10.0
+;TentSmdl STATIC/Creature/dragon 1000 1000 100 0 10.0
+;TentSmdl STATIC/fantasy_house 1644 1863 0 0 10.0
+;TentSmdl STATIC/crate 1644 1863 0 0 100.0
+;TentSmdl STATIC/human/male 1644 1863 -100.0 0 43.0
+;TentSmdl STATIC/cars/xedua 1644 1863 -100.0 0 70.0
+;TentSmdl STATIC/casa02 1644 1863 -100.0 0 24.0
+;TentSmdl STATIC/merchtent 1644 1863 -100.0 0 100.0
+;TentSmdl STATIC/spongebob/sb_ball 1644 1863 -100.0 0 100.0
+;TentSmdl STATIC/spongebob/spongebob 1644 1563 -100.0 0 100.0
+;TentSmdl STATIC/phuongtien/wood_cart 1644 1863 -90.0 0 18.0
+;TentSmdl STATIC/Naturals/crystals 1644 1863 -90.0 0 8.0
+;TentSmdl STATIC/Architecture/3pl90nmkl3sw-building_04_all 3753.95 6665.86 -10.0 0 65.0
+;TentSmdl STATIC/zamek 3753.95 6665.86 -100.0 0 100.0
+;TentSmdl STATIC/Architecture/simple_house 3753.95 6665.86 -100.0 0 100.0
+
+;NPC STATIC/Creature/human/male 1000 3000 0 0 43.0
+
+;ValveModel VALVE/characters/aflock 1844 1863 50 0 1.0
+;ValveModel VALVE/characters/floater 1244 1863 -50 0 1.0
+;ValveModel VALVE/characters/FlyingGoomba 1444 1863 -30 0 1.0
+;ValveModel VALVE/materials/crystal 1644 1763 -80 0 1.0
+;ValveModel VALVE/vehicles/arcticorange 1644 2263 50 0 1.0
+
+;ModelV0 spongebob 120 50 40 0 30.0
+;ModelV0 spongebob 300 50 300 0 60.0
+;ModelV0 spongebob -100 50 200 0 80.0
+
+;ModelV0 crate 0 50 128 0 30.0
+;ModelV0 wall 256 50 128 0 40.0
+
+;ModelV0 cube 128 400 128 0 30.0
+;ModelV0 cube 128 800 128 0 30.0
+;ModelV0 cube 128 1200 128 0 30.0
+;ModelV0 cube 128 1600 128 0 30.0
+;ModelV0 cube 128 2000 128 0 30.0
+;ModelV0 cube 128 2400 128 0 30.0
+
+;ModelV1 testbox 150 50 150 0 30.0
+;ModelV1 chick 300 50 300 0 1.0
+;ModelV1 lightmonter -150 50 150 0 1.0
+;ModelV1 helicopter_orange -150 50 -150 0 1.0
+
+; Particles <name> <numRowTex> <numParticles> 2<scale> <gravity> 2<timeLife> 6<spawnZone> 6<force>
+;Particles star 1 50 10.0 25.0 1.2 3.0 -1000.0 1000.0 -1000.0 1000.0 1000.0 1000.0 -100.0 -200.0 -100.0 100.0 -800.0 100.0

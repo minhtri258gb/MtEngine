@@ -1,8 +1,9 @@
 bin/*
 inc/*
 lib/*
-res/*
-!res/shaders
+res/add/*
+res/skybox/*
+res/terrains/*
 add
 old
 tools
