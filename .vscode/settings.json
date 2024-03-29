@@ -80,6 +80,8 @@
 		"span": "cpp",
 		"typeindex": "cpp",
 		"variant": "cpp",
-		"*.ipp": "cpp"
+		"*.ipp": "cpp",
+		"charconv": "cpp",
+		"format": "cpp"
 	}
 }

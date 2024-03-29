@@ -9,11 +9,11 @@
 			"program": "${workspaceFolder}/bin/main.exe",
 			"args": [],
 			"stopAtEntry": false,
-			"cwd": "${workspaceFolder}/bin",
+			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": false,
 			"MIMode": "gdb",
-			"miDebuggerPath": "D:/Programs/MSYS2/mingw64/bin/gdb.exe",
+			"miDebuggerPath": "D:\\Programs\\MSYS2\\mingw64\\bin\\gdb.exe",
 			"setupCommands": [
 				{
 					"description": "Enable pretty-printing for gdb",

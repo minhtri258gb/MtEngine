@@ -1,12 +1,13 @@
 #define __MT_MAP_BUILDER_CPP__
 
-#define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
-
 #include "common.h"
 
 #include "engine/file/FileCFG.h"
 #include "engine/exception/LoadException.h"
+
 #include "MapBuilder.h"
+
+#include "TestMap.h"
 #include "LobbyMap.h"
 #include "AreaBoundMap.h"
 
@@ -54,14 +55,12 @@ Map* MapBuilder::load(string mapName)
 
 	// Load map
 	Map* map = nullptr;
-	if (type == "lobby")
-	{
+	if (type == "test")
+		map = new TestMap(mapName);
+	else if (type == "lobby")
 		map = new LobbyMap(mapName);
-	}
 	else if (type == "area_bound")
-	{
 		map = new AreaBoundMap(mapName);
-	}
 
 	// Return
 	return map;

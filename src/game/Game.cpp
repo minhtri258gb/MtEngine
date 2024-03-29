@@ -1,15 +1,15 @@
 #define __MT_GAME_CPP__
 
-#define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
+// #define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
 
 #include <iostream>
 #include <vector>
 #include <map>
 
+#include "common.h"
+
 #include "engine/Timer.h"
 #include "engine/math/Math.h"
-#include "engine/datatype/3D/Math3D.h"
-#include "engine/exception/Exception.h"
 #include "graphic/Graphic.h"
 #include "physic/Physic.h"
 #include "Game.h"

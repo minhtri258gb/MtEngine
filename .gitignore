@@ -1,8 +1,9 @@
-/add
-/bin
-/inc
-/lib
-/old
-/res
-/tools
-/del
+bin/*
+inc/*
+lib/*
+res/*
+!res/shaders
+add
+old
+tools
+del

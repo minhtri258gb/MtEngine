@@ -16,6 +16,7 @@ public:
 	void addSession(std::string key);
 	void set(std::string key, std::string value);
 	void save(std::string filepath);
+	std::vector<std::string> values();
 
 	std::string get(std::string key);
 	bool getBool(std::string key);

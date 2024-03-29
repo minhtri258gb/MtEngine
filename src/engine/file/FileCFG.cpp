@@ -1,18 +1,16 @@
 #define __MT_FILE_CFG_CPP__
 
-#include "common.h"
-
 #include <sstream>
 #include <fstream>
 
-#include "engine/datatype/3D/Math3D.h"
+#include "common.h"
+
 #include "engine/exception/LoadException.h"
+
 #include "FileCFG.h"
 
 using namespace std;
 using namespace mt;
-
-typedef unsigned int uint;
 
 
 FileCFG::FileCFG()
@@ -120,6 +118,19 @@ void FileCFG::save(string filepath)
 	}
 
 	file.close();
+}
+
+vector<string> FileCFG::values()
+{
+	vector<string> res;
+
+	// Validate
+	short sizeArr = m_sessions.size();
+	if (this->sessionID == sizeArr)
+		return res;
+
+	res = m_value[sessionID];
+	return res;
 }
 
 string FileCFG::get(string key)
@@ -247,8 +258,15 @@ void FileCFG::load(string filename)
 		else
 		{
 			int pos = line.find("=");
-			sessionKey.push_back(line.substr(0, pos));
-			sessionValue.push_back(line.substr(pos+1, line.length()-pos-1));
+			if (pos >= 0)
+			{
+				sessionKey.push_back(line.substr(0, pos));
+				sessionValue.push_back(line.substr(pos+1, line.length()-pos-1));
+			}
+			else
+			{
+				sessionValue.push_back(line);
+			}
 		}
 	}
 	if (session)

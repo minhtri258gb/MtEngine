@@ -1,11 +1,13 @@
-#define __MT_AREA_BOUND_MAP_CPP__
+#define __MT_TEST_MAP_CPP__
+
+#include <sstream>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "common.h"
 #include "graphic/Graphic.h"
-#include "AreaBoundMap.h"
+#include "TestMap.h"
 
 #include "graphic/sky/SkyBox.h"
 #include "graphic/terrain/StaticTerrain.h"
@@ -27,18 +29,15 @@ using namespace mt::graphic;
 using namespace mt::game;
 
 
-class AreaBoundMap::AreaBoundMapImpl
+class TestMap::TestMapImpl
 {
 public:
 
 	// General
 	string name;
-	int size;
-	vec3 playerPos = vec3();
 
 	// Enviroment
 	SkyBox* sky;
-	string skyName;
 	StaticTerrain* terrainStatic;
 	Terrain* terrain;
 	BspSourceMap* sourceMap;
@@ -49,29 +48,14 @@ public:
 	vector<Entity*> lstEntities;
 };
 
-AreaBoundMap::AreaBoundMap(string name)
+TestMap::TestMap(string name)
 {
 	// Implement
-	impl = new AreaBoundMapImpl();
+	impl = new TestMapImpl();
 	impl->name = name;
-
-	// Load config
-	string configPath = "./res/maps/" + name + ".cfg";
-	FileCFG* fCFG = new FileCFG(configPath);
-
-	// Set general
-	fCFG->select("general");
-	impl->size = fCFG->getInt("size");
-	impl->playerPos = fCFG->getVec3("player_posotion");
-
-	// Set enviroment
-	fCFG->select("enviroment");
-	impl->skyName = fCFG->get("skybox");
-
-	delete fCFG;
 }
 
-AreaBoundMap::~AreaBoundMap()
+TestMap::~TestMap()
 {
 	// // Xoa debug physic
 	// if (this->physicDebug)
@@ -101,25 +85,33 @@ AreaBoundMap::~AreaBoundMap()
 	delete impl;
 }
 
-void AreaBoundMap::load()
+void TestMap::load()
 {
 	if (!this->needLoading)
 		return;
 	
 	this->needLoading = false; // or not maybe
 
-	// Data config
-	// string pathDir = "./res/terrains/static/lobby/";
-	// FileCFG* fCFG = new FileCFG(pathDir + "info.cfg");
-	
-	// fCFG->select("general");
-	// string terrainName = fCFG->get("type");
-	// unsigned int size = fCFG->getUInt("size");
-	
+	// Load config
+	string configPath = "./res/maps/" + impl->name + ".cfg";
+	FileCFG fCFG(configPath);
+
+	// Set general
+	fCFG.select("general");
+	int size = fCFG.getInt("size");
+
+	// Set player position
+	vec3 playerPos = fCFG.getVec3("player_posotion");
+	Graphic::ins.camera.position = playerPos;
+
+
+	// Load enviroment
+	fCFG.select("enviroment");
 
 	// =================== Sky ===================
+	string skyName = fCFG.get("skybox");
 	impl->sky = new SkyBox();
-	impl->sky->init(impl->skyName);
+	impl->sky->init(skyName);
 
 	// =================== Terrain Static ===================
 	// impl->terrainStatic = new StaticTerrain();
@@ -147,12 +139,44 @@ void AreaBoundMap::load()
 	// groundEnt->init();
 	// this->lstEntitiesStatic.push_back(groundEnt);
 
+	// Load entities
+	fCFG.select("entities");
+	vector<string> lstEntCfg = fCFG.values();
+	for (short i=0, sz=lstEntCfg.size(); i<sz; i++)
+	{
+		string entCfg = lstEntCfg.at(i);
+		stringstream geek(entCfg);
+
+		string entType, entName;
+		float x, y, z, angle, scale;
+		geek >> entType >> entName >> x >> y >> z >> angle >> scale;
+		vec3 pos = vec3(x, y, z);
+		vec3 scale3 = vec3(scale, scale, scale);
+
+		if (entType == "ModelV0")
+		{
+
+		}
+		else if (entType == "ModelV1")
+		{
+
+		}
+		else if (entType == "Particles")
+		{
+
+		}
+		else
+		{
+
+		}
+	}
+
 	// =================== Ent Box ===================
 	// TestEnt* boxEnt1 = new TestEnt("box");
 	// boxEnt1->position = vec3(0,50,-2);
 	// boxEnt1->scale = vec3(1,1,1);
 	// boxEnt1->init();
-	// this->lstEntitiesStatic.push_back(boxEnt1);
+	// impl->lstEntities.push_back(boxEnt1);
 
 	// =================== Ent Box ===================
 	// TestEnt* boxEnt2 = new TestEnt("box");
@@ -371,13 +395,10 @@ void AreaBoundMap::load()
 	// HUD - Text
 	// #TODO
 
-	// Set player position
-	Graphic::ins.camera.position = impl->playerPos;
-
 	// #EXTRA
 }
 
-void AreaBoundMap::clear()
+void TestMap::clear()
 {
 	for (Entity *ent : impl->lstEntities)
 		delete ent;
@@ -428,7 +449,7 @@ void AreaBoundMap::clear()
 	// #EXTRA
 }
 
-void AreaBoundMap::update()
+void TestMap::update()
 {
 	// float timeStep = Time::ins->getTimeStep();
 
@@ -450,7 +471,7 @@ void AreaBoundMap::update()
 		ent->update();
 }
 
-void AreaBoundMap::render()
+void TestMap::render()
 {
 	if (impl->sky)
 		impl->sky->render();

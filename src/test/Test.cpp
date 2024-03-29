@@ -5,29 +5,50 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "common.h"
+
+#include "engine/exception/LoadException.h"
+
 #include "Test.h"
 #include "file/TestJson.h"
 #include "audio/Audio.h"
 #include "technique/TestTechnique.h"
 #include "thread/Thread.h"
-#include "engine/file/FileCFG.h"
 #include "engine/utils/DevUtils.h"
+
+#include "TestFileCFG.h"
 
 using namespace std;
 using namespace mt;
+using namespace mt::engine;
 using namespace mt::test;
 
 void Test::run()
 {
-
-
 	// ===============================================================================================
-	// Test Dot Product MT vs GLM
-	vec4 a1(1,2,3,4), a2(2,3,4,5);
-	cout << "MT: " << a1 * a2 << endl;
+	try
+	{
+		TestFileCFG test;
+		test.run();
+	}
+	catch (Exception e)
+	{
+		cerr << "[ERROR]: " << e.getMessage() << endl;
+	}
+	catch (string e)
+	{
+		cerr << "[ERROR]: " << e << endl;
+	}
+	catch (exception e)
+	{
+		cerr << "[ERROR]: " << e.what() << '\n';
+	}
+	// ==============================================================================================
+	// // Test Dot Product MT vs GLM
+	// vec4 a1(1,2,3,4), a2(2,3,4,5);
+	// cout << "MT: " << a1 * a2 << endl;
 
-	glm::vec4 b1(1,2,3,4), b2(2,3,4,5);
-	cout << "GLM: " << glm::dot(b1, b2) << endl;
+	// glm::vec4 b1(1,2,3,4), b2(2,3,4,5);
+	// cout << "GLM: " << glm::dot(b1, b2) << endl;
 
 
 	// ############# FRUSTUM: ...
@@ -165,33 +186,6 @@ void Test::run()
 	// cout << ma[ 8] << '\t' << ma[ 9] << '\t' << ma[10] << '\t' << ma[11] << '\t' << endl;
 	// cout << ma[12] << '\t' << ma[13] << '\t' << ma[14] << '\t' << ma[15] << '\t' << endl;
 	
-
-	// ===============================================================================================
-	// Test CFG File
-	// try {
-
-	// 	FileCFG* fCFG = new FileCFG("./res/terrains/static/hm1/info.cfg");
-
-	// 	fCFG->select("terrain");
-	// 	string name = fCFG->get("name");
-	// 	int number = fCFG->getInt("number");
-	// 	float floata = fCFG->getFloat("float");
-
-	// 	fCFG->select("map");
-	// 	bool aa = fCFG->getBool("where");
-	// 	vec3 origin = fCFG->getVec3("origin");
-
-	// 	cout << "str: " << name << endl;
-	// 	cout << "int: " << number << endl;
-	// 	cout << "float: " << floata << endl;
-	// 	cout << "bool: " << aa << endl;
-	// 	cout << "vec3: " << origin.x << " " << origin.y << " " << origin.z << endl;
-
-	// 	delete fCFG;
-
-	// } catch (string e) {
-	// 	cout << "[src/test/Test.cpp] " << e << endl;
-	// }
 	// ===============================================================================================
 
 	// TestJson test; // faild hien loi nhung build duoc

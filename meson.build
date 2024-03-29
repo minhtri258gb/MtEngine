@@ -20,7 +20,7 @@ dir_includes = [
 
 
 # Dependencies
-assimp = cpp.find_library('assimp', dirs: dir_lib_msys2)
+assimp = cpp.find_library('assimpd', dirs: dir_lib)
 freetype = cpp.find_library('freetype', dirs: dir_lib_msys2)
 glfw3 = cpp.find_library('glfw3', dirs: dir_lib_msys2)
 bullet_collision = cpp.find_library('BulletCollision', dirs: dir_lib_msys2)
@@ -130,6 +130,7 @@ mtgame = library('mtgame',
 		,'./src/game/Command.cpp'
 		,'./src/game/maps/MapBuilder.cpp'
 		,'./src/game/maps/Map.cpp'
+		,'./src/game/maps/TestMap.cpp'
 		,'./src/game/maps/LobbyMap.cpp'
 		,'./src/game/maps/AreaBoundMap.cpp'
 		,'./src/game/entities/Entity.cpp'
@@ -163,6 +164,7 @@ mttest = library('mttest',
 		,'./src/test/audio/Sound.cpp'
 		,'./src/test/technique/TestTechnique.cpp'
 		,'./src/test/thread/Thread.cpp'
+		,'./src/test/TestFileCFG.cpp'
 	],
 	include_directories: dir_includes,
 	link_with: mtengine,

@@ -18,6 +18,19 @@
 			"options": {
 				"cwd": "${workspaceFolder}/bin"
 			}
+		},
+		{
+			"label": "Meson Config",
+			"type": "shell",
+			"command": "meson",
+			"args": [
+				"setup",
+				"bin"
+			],
+			"group": "build",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			}
 		}
 	]
 }
