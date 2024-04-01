@@ -116,20 +116,40 @@ void Game::framework()
 		// input
 		Graphic::ins.processInput();
 
+		#ifdef LOG
+		LOG
+		#endif
+
 		// input network
 
 		// loading
 		this->map->load();
 
+		#ifdef LOG
+		LOG
+		#endif
+		
 		// Physic
 		Physic::ins.update();
 
+		#ifdef LOG
+		LOG
+		#endif
+		
 		// Pre Process
 		Graphic::ins.camera.update();
 
+		#ifdef LOG
+		LOG
+		#endif
+		
 		// Map update
 		this->map->update();
 
+		#ifdef LOG
+		LOG
+		#endif
+		
 		// rendering commands here
 		Graphic::ins.renderPre();
 

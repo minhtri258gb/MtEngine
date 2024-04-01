@@ -13,9 +13,6 @@ class GroundEnt : public Entity
 
 public:
 
-	// Properties
-	vec3 position;
-
 	// Forward
 	GroundEnt(std::string name);
 	~GroundEnt();

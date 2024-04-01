@@ -5,6 +5,8 @@
 #include "common.h"
 #include "Timer.h"
 
+using namespace std::chrono;
+using namespace std::chrono::_V2;
 using namespace mt::engine;
 
 class Timer::TimerImpl
@@ -14,7 +16,7 @@ public:
 	long lastTime;
 	float elapsedTime;
 
-	std::chrono::_V2::system_clock::time_point startCount;
+	system_clock::time_point startCount;
 };
 
 Timer Timer::ins;
@@ -66,12 +68,12 @@ float Timer::getTimePassed()
 
 void Timer::startCount()
 {
-	impl->startCount = std::chrono::high_resolution_clock::now();
+	impl->startCount = high_resolution_clock::now();
 }
 
 long long Timer::stopCount()
 {
-	std::chrono::_V2::system_clock::time_point stop = std::chrono::high_resolution_clock::now();
-	std::chrono::microseconds duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - impl->startCount);
+	time_point stop = high_resolution_clock::now();
+	microseconds duration = duration_cast<microseconds>(stop - impl->startCount);
 	return duration.count();
 }

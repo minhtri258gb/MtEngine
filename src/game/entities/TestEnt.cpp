@@ -3,10 +3,11 @@
 #include "common.h"
 // #include "engine/Engine.h"
 #include "graphic/Graphic.h"
-// #include "module/physic/Physic.h"
+#include "physic/Physic.h"
 #include "physic/body/RigidBody.h"
 #include "TestEnt.h"
 
+using namespace std;
 using namespace mt::graphic;
 using namespace mt::physic;
 using namespace mt::game;
@@ -19,15 +20,15 @@ public:
 	RigidBody* body;
 };
 
-TestEnt::TestEnt(std::string _name)
+TestEnt::TestEnt(string _name)
 {
 	// Implement
 	impl = new TestEntImpl();
 
 	// Default
 	this->name = _name;
-	this->position = vec3(0,0,0);
-	this->angle = quat();
+	this->pos = vec3();
+	this->rot = quat();
 	this->scale = vec3(1,1,1);
 }
 
@@ -43,22 +44,21 @@ void TestEnt::init()
 	impl->model = Graphic::ins.modelMgr.cache(this->name);
 
 	// Body
-	float radius = 1.0f;
-	impl->body = new RigidBody();
-	impl->body->initSphere(this->position, radius);
-	impl->body->action(true);
+	impl->body = Physic::ins.createBox(this->pos, this->rot, this->scale, 1);
+	Physic::ins.add(impl->body);
 }
 
 void TestEnt::update()
 {
 	// Update physic location
-	this->position = impl->body->getOrigin();
+	impl->body->getTransForm(&this->pos, &this->rot);
+	// this->pos = impl->body->getOrigin();
 }
 
 void TestEnt::render()
 {
-	impl->model->position = this->position;
-	impl->model->angle = this->angle;
+	impl->model->pos = this->pos;
+	impl->model->rot = this->rot;
 	impl->model->scale = this->scale;
 	impl->model->render();
 }

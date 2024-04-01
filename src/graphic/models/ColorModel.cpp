@@ -53,8 +53,8 @@ void ColorModel::render()
 
 	// Model mattrix
 	mat4 matModel;
-	matModel.translate(this->position);
-	matModel.rotate(this->angle);
+	matModel.translate(this->pos);
+	matModel.rotate(this->rot);
 	matModel.scale(this->scale);
 	shader.setMat4(2, matModel);
 

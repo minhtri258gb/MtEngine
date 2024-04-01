@@ -68,6 +68,76 @@ void Physic::update()
 	impl->dynamicsWorld->stepSimulation(Timer::ins.getTimePassed(), 1);
 }
 
+RigidBody* Physic::createPlane(vec3 pos, vec3 normal, float scale, float mass)
+{
+	btTransform transform;
+	transform.setIdentity();
+	transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
+	
+	btVector3 inertia(0, 0, 0);
+
+	bool isDynamic = (mass != 0.f);
+
+	RigidBody* body = new RigidBody();
+
+	body->impl->shape = new btStaticPlaneShape(btVector3(normal.x, normal.y, normal.z), scale);
+	if (isDynamic)
+		body->impl->shape->calculateLocalInertia(mass, inertia);
+
+	btDefaultMotionState* motionState = new btDefaultMotionState(transform);
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, body->impl->shape, inertia);
+	body->impl->body = new btRigidBody(rigidBodyCI);
+
+	return body;
+}
+
+RigidBody* Physic::createSphere(vec3 pos, float radius, float mass)
+{
+	btTransform transform;
+	transform.setIdentity();
+	transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
+	
+	btVector3 inertia(0, 0, 0);
+
+	bool isDynamic = (mass != 0.f);
+
+	RigidBody* body = new RigidBody();
+
+	body->impl->shape = new btSphereShape(radius);
+	if (isDynamic)
+		body->impl->shape->calculateLocalInertia(mass, inertia);
+
+	btDefaultMotionState* motionState = new btDefaultMotionState(transform);
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, body->impl->shape, inertia);
+	body->impl->body = new btRigidBody(rigidBodyCI);
+
+	return body;
+}
+
+RigidBody* Physic::createBox(vec3 pos, quat rot, vec3 scale, float mass)
+{
+	btTransform transform;
+	transform.setIdentity();
+	transform.setRotation(btQuaternion(rot.x, rot.y, rot.z, rot.w));
+	transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
+	
+	btVector3 inertia(0, 0, 0);
+
+	bool isDynamic = (mass != 0.f);
+
+	RigidBody* body = new RigidBody();
+
+	body->impl->shape = new btBoxShape(btVector3(scale.x, scale.y, scale.z));
+	if (isDynamic)
+		body->impl->shape->calculateLocalInertia(mass, inertia);
+
+	btDefaultMotionState* motionState = new btDefaultMotionState(transform);
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, body->impl->shape, inertia);
+	body->impl->body = new btRigidBody(rigidBodyCI);
+
+	return body;
+}
+
 void Physic::add(RigidBody* body)
 {
 	impl->dynamicsWorld->addRigidBody(body->impl->body);
@@ -76,4 +146,5 @@ void Physic::add(RigidBody* body)
 void Physic::remove(RigidBody* body)
 {
 	impl->dynamicsWorld->removeRigidBody(body->impl->body);
+	delete body;
 }

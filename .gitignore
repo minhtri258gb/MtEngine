@@ -1,9 +1,25 @@
 bin/*
+bin_old/*
 inc/*
+inc_old/*
 lib/*
+lib_old/*
 res/add/*
+res/fonts/*
+res/ground/*
+res/lenflare/*
+res/lineshape/*
+res/models/*
 res/skybox/*
+res/scenes/*
+res/sprites/*
 res/terrains/*
+res/terraininf/*
+res/test/*
+res/textures/*
+src/physic/BulletPhysic.rar
+src/physic/ReactPhysics3D (err).rar
+src/physic/ode.rar
 add
 old
 tools

@@ -10,8 +10,8 @@ class Model
 public:
 
 	// Variables
-	vec3 position;
-	quat angle;
+	vec3 pos;
+	quat rot;
 	vec3 scale;
 
 	// Forwards

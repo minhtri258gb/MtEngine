@@ -81,14 +81,14 @@ Model* ModelBuilder::createBox()
 	SimpleModel *model = new SimpleModel();
 
 	vector<vec3> vertices;
-	vertices.push_back(vec3( 2.0f,  2.0f,  2.0f));
-	vertices.push_back(vec3( 2.0f,  2.0f, -2.0f));
-	vertices.push_back(vec3( 2.0f, -2.0f,  2.0f));
-	vertices.push_back(vec3( 2.0f, -2.0f, -2.0f));
-	vertices.push_back(vec3(-2.0f,  2.0f,  2.0f));
-	vertices.push_back(vec3(-2.0f,  2.0f, -2.0f));
-	vertices.push_back(vec3(-2.0f, -2.0f,  2.0f));
-	vertices.push_back(vec3(-2.0f, -2.0f, -2.0f));
+	vertices.push_back(vec3( 1.0f,  1.0f,  1.0f));
+	vertices.push_back(vec3( 1.0f,  1.0f, -1.0f));
+	vertices.push_back(vec3( 1.0f, -1.0f,  1.0f));
+	vertices.push_back(vec3( 1.0f, -1.0f, -1.0f));
+	vertices.push_back(vec3(-1.0f,  1.0f,  1.0f));
+	vertices.push_back(vec3(-1.0f,  1.0f, -1.0f));
+	vertices.push_back(vec3(-1.0f, -1.0f,  1.0f));
+	vertices.push_back(vec3(-1.0f, -1.0f, -1.0f));
 	
 	// vector<vec2> texcoords; // crash
 	// texcoords.push_back(vec2(1.0f, 1.0f));

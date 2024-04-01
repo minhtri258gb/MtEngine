@@ -11,6 +11,9 @@ public:
 
 	// Variables
 	std::string name;
+	vec3 pos;
+	quat rot;
+	vec3 scale;
 
 	// Forward
 	Entity();

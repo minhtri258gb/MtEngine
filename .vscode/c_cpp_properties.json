@@ -6,7 +6,7 @@
                 "${workspaceFolder}/inc/**",
                 "${workspaceFolder}/src/**",
                 "D:/Programs/MSYS2/mingw64/include/**",
-                "D:/Programs/MSYS2/mingw64/include/bullet/**",
+                // "D:/Programs/MSYS2/mingw64/include/bullet/**",
                 "D:/Programs/MSYS2/mingw64/include/freetype2/**"
             ],
             "defines": [

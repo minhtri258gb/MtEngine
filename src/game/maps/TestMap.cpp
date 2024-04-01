@@ -118,8 +118,8 @@ void TestMap::load()
 	// impl->terrainStatic->init("chadvernon");
 
 	// =================== Terrain QuadTree ===================
-	impl->terrain = new Terrain();
-	impl->terrain->init("something");
+	// impl->terrain = new Terrain();
+	// impl->terrain->init("something");
 
 	// =================== BSP Source Map ===================
 	// impl->sourceMap = new BspSourceMap();
@@ -134,10 +134,10 @@ void TestMap::load()
 	// impl->bspMap->init("de_dust2");
 
 	// =================== Ent Ground ===================
-	// GroundEnt* groundEnt = new GroundEnt("matdat");
-	// groundEnt->position = vec3(0,-5,0);
-	// groundEnt->init();
-	// this->lstEntitiesStatic.push_back(groundEnt);
+	GroundEnt* groundEnt = new GroundEnt("matdat");
+	groundEnt->pos = vec3(0,-5,0);
+	groundEnt->init();
+	impl->lstEntities.push_back(groundEnt);
 
 	// Load entities
 	fCFG.select("entities");
@@ -146,14 +146,22 @@ void TestMap::load()
 	{
 		string entCfg = lstEntCfg.at(i);
 		stringstream geek(entCfg);
-
 		string entType, entName;
-		float x, y, z, angle, scale;
-		geek >> entType >> entName >> x >> y >> z >> angle >> scale;
-		vec3 pos = vec3(x, y, z);
-		vec3 scale3 = vec3(scale, scale, scale);
+		geek >> entType >> entName;
 
-		if (entType == "ModelV0")
+		if (entType == "Test")
+		{
+			float x, y, z, rx, ry, rz, scale;
+			geek >> x >> y >> z >> rx >> ry >> rz >> scale;
+
+			TestEnt* ent = new TestEnt(entName);
+			ent->pos = vec3(x, y, z);
+			ent->rot = quat(rx, ry, rz);
+			ent->scale = vec3(scale, scale, scale);
+			ent->init();
+			impl->lstEntities.push_back(ent);
+		}
+		else if (entType == "ModelV0")
 		{
 
 		}
@@ -170,18 +178,6 @@ void TestMap::load()
 
 		}
 	}
-
-	// =================== Ent Box ===================
-	// TestEnt* boxEnt1 = new TestEnt("box");
-	// boxEnt1->position = vec3(0,50,-2);
-	// boxEnt1->scale = vec3(1,1,1);
-	// boxEnt1->init();
-	// impl->lstEntities.push_back(boxEnt1);
-
-	// =================== Ent Box ===================
-	// TestEnt* boxEnt2 = new TestEnt("box");
-	// boxEnt2->position = vec3(128.0, 0.0, 0.0);
-	// this->lstEntitiesStatic.push_back(boxEnt2);
 
 	// =================== Ent Box ===================
 	// TestEnt* boxEnt3 = new TestEnt("box");
@@ -390,7 +386,7 @@ void TestMap::load()
 	// ent002->originE = vec3(0, 0, 0);
 	// ent002->velocityB = vec3(-1, 3, -1);
 	// ent002->velocityE = vec3(1, 3, 1);
-	// this->lstEntitiesDynamic.push_back(ent002);
+	// impl->lstEntities.push_back(ent002);
 
 	// HUD - Text
 	// #TODO

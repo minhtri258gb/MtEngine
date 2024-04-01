@@ -27,6 +27,9 @@ bullet_collision = cpp.find_library('BulletCollision', dirs: dir_lib_msys2)
 bullet_dynamics = cpp.find_library('BulletDynamics', dirs: dir_lib_msys2)
 linear_math = cpp.find_library('LinearMath', dirs: dir_lib_msys2)
 bass = cpp.find_library('bass', dirs: dir_lib)
+# reactphysics3d = cpp.find_library('reactphysics3d', dirs: dir_lib)
+# ode = cpp.find_library('ode_double', dirs: dir_lib_msys2)
+# newton_dynamic = cpp.find_library('dNewton', dirs: dir_lib_msys2)
 
 
 mtengine = library('mtengine',
@@ -142,7 +145,7 @@ mtgame = library('mtgame',
 	],
 	include_directories: dir_includes,
 	link_with: [mtengine, mtphysic, mtgraphic],
-	dependencies: [bullet_collision, bullet_dynamics, linear_math],
+	dependencies: [],
 )
 
 mtmod = library('mtmod',

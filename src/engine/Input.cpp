@@ -24,21 +24,21 @@ public:
 Input::Input()
 {
 	// Implement
-	this->impl = new InputImpl();
+	impl = new InputImpl();
 }
 
 Input::~Input()
 {
 	// Implement
-	delete this->impl;
+	delete impl;
 }
 
 void Input::resetStatus()
 {
-	this->impl->keyPress.reset();
-	this->impl->keyRelease.reset();
-	this->impl->dx = 0.0;
-	this->impl->dy = 0.0;
+	impl->keyPress.reset();
+	impl->keyRelease.reset();
+	impl->dx = 0.0;
+	impl->dy = 0.0;
 }
 
 void Input::keyPress(int idkey, bool state)
@@ -49,46 +49,48 @@ void Input::keyPress(int idkey, bool state)
 			cout << "key: " << idkey << endl;
 		#endif
 
-		this->impl->keyPress.set(idkey, true);
-		this->impl->keyHold.set(idkey, true);
+		impl->keyPress.set(idkey, true);
+		impl->keyHold.set(idkey, true);
 	}
 	else
 	{
-		this->impl->keyRelease.set(idkey, true);
-		this->impl->keyHold.set(idkey, false);
+		impl->keyRelease.set(idkey, true);
+		impl->keyHold.set(idkey, false);
 	}
 }
 
 void Input::cursorPos(double xpos, double ypos)
 {
-	this->impl->dx = xpos - this->impl->mx;
-	this->impl->dy = this->impl->my - ypos;
+	impl->dx = xpos - impl->mx;
+	impl->dy = impl->my - ypos;
 
-	this->impl->mx = xpos;
-	this->impl->my = ypos;
+	impl->mx = xpos;
+	impl->my = ypos;
+
+	// cout << vec2(impl->dx, impl->dy).length() << endl;
 }
 
 bool Input::checkPress(int idkey)
 {
-	return this->impl->keyPress.test(idkey);
+	return impl->keyPress.test(idkey);
 }
 
 bool Input::checkHold(int idkey)
 {
-	return this->impl->keyHold.test(idkey);
+	return impl->keyHold.test(idkey);
 }
 
 bool Input::checkRelease(int idkey)
 {
-	return this->impl->keyRelease.test(idkey);
+	return impl->keyRelease.test(idkey);
 }
 
 double Input::getCursorX()
 {
-	return this->impl->dx;
+	return impl->dx;
 }
 
 double Input::getCursorY()
 {
-	return this->impl->dy;
+	return impl->dy;
 }

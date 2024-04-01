@@ -14,10 +14,14 @@
 			"args": [
 				"compile"
 			],
-			"group": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
 			"options": {
 				"cwd": "${workspaceFolder}/bin"
-			}
+			},
+			"problemMatcher": []
 		},
 		{
 			"label": "Meson Config",

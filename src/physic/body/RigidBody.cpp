@@ -23,7 +23,8 @@ public:
 RigidBody::RigidBody()
 {
 	// Implement
-	this->impl = new RigidBodyImpl();
+	impl = new RigidBodyImpl();
+	impl->isAction = false;
 }
 
 RigidBody::~RigidBody()
@@ -36,36 +37,7 @@ RigidBody::~RigidBody()
 	delete impl->shape;
 
 	// Implement
-	delete this->impl;
-}
-
-void RigidBody::initPlane(vec3 _origin, quat _angle, vec3 _normal)
-{
-	impl->isAction = false;
-
-	impl->shape = new btStaticPlaneShape(btVector3(_normal.x, _normal.y, _normal.z), 1);
-	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(
-			btQuaternion(_angle.x, _angle.y, _angle.z, _angle.w),
-			btVector3(_origin.x, _origin.y, _origin.z)
-	));
-	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(0, motionState, impl->shape, btVector3(0, 0, 0));
-	impl->body = new btRigidBody(rigidBodyCI);
-}
-
-void RigidBody::initSphere(vec3 _origin, float _radius)
-{
-	impl->isAction = false;
-
-	impl->shape = new btSphereShape(_radius);
-	
-	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(_origin.x, _origin.y, _origin.z)));
-	
-	btScalar mass = 1;
-	btVector3 inertia(0, 0, 0);
-	impl->shape->calculateLocalInertia(mass, inertia);
-
-	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, impl->shape, inertia);
-	impl->body = new btRigidBody(rigidBodyCI);
+	delete impl;
 }
 
 void RigidBody::close()
@@ -88,6 +60,20 @@ void RigidBody::action(bool toogle)
 		else
 			Physic::ins.remove(this);
 	}
+}
+
+void RigidBody::getTransForm(vec3 *origin, quat *angle)
+{
+	btTransform t;
+	impl->body->getMotionState()->getWorldTransform(t);
+
+	btVector3 pos = t.getOrigin();
+	origin->x = pos.getX();
+	origin->y = pos.getY();
+	origin->z = pos.getZ();
+
+	btQuaternion rot = t.getRotation();
+	*angle = quat(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
 }
 
 vec3 RigidBody::getOrigin()

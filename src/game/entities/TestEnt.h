@@ -12,11 +12,6 @@ class TestEnt : public Entity
 
 public:
 
-	// Properties
-	vec3 position;
-	quat angle;
-	vec3 scale;
-
 	// Constructor
 	TestEnt(std::string name);
 	~TestEnt();

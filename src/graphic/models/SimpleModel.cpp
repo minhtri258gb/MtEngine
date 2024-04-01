@@ -79,8 +79,8 @@ void SimpleModel::render()
 
 	// Model mattrix
 	mat4 matModel;
-	matModel.translate(this->position); // matModel = glm::translate(matModel, this->position);
-	matModel.rotate(this->angle); // matModel *= glm::mat4_cast(this->angle);
+	matModel.translate(this->pos); // matModel = glm::translate(matModel, this->position);
+	matModel.rotate(this->rot); // matModel *= glm::mat4_cast(this->angle);
 	matModel.scale(this->scale); // matModel = glm::scale(matModel, this->scale);
 	this->shader.setMat4(2, matModel);
 

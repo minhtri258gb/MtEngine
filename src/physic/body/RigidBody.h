@@ -14,14 +14,13 @@ public:
 	RigidBody();
 	~RigidBody();
 
-	void initPlane(vec3 origin, quat angle, vec3 normal);
-	void initSphere(vec3 origin, float radius);
 	void close();
 
 	void update();
 
 	void action(bool);
 
+	void getTransForm(vec3 *origin, quat *angle);
 	vec3 getOrigin();
 
 private:

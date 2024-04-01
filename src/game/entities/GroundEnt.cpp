@@ -3,6 +3,7 @@
 #include "common.h"
 // #include "engine/Engine.h"
 #include "graphic/Graphic.h"
+#include "physic/Physic.h"
 #include "physic/body/RigidBody.h"
 #include "GroundEnt.h"
 
@@ -21,16 +22,22 @@ public:
 
 GroundEnt::GroundEnt(string name)
 {
-	// Impl
-	this->impl = new GroundEntImpl();
+	// Implement
+	impl = new GroundEntImpl();
 
 	// Default
-	this->position = vec3();
+	this->name = name;
+	this->pos = vec3();
+	this->rot = quat();
+	this->scale = vec3(80,80,80);
 }
 
 GroundEnt::~GroundEnt()
 {
-	delete impl->body;
+	Physic::ins.remove(impl->body);
+
+	// Implement
+	delete impl;
 }
 
 void GroundEnt::init()
@@ -39,9 +46,8 @@ void GroundEnt::init()
 	impl->model = Graphic::ins.modelMgr.cache("plane");
 
 	// Body
-	impl->body = new RigidBody();
-	impl->body->initPlane(this->position, quat(), vec3(0,1,0));
-	impl->body->action(true);
+	impl->body = Physic::ins.createPlane(this->pos, vec3(0,1,0), 1, 0);
+	Physic::ins.add(impl->body);
 }
 
 void GroundEnt::update()
@@ -51,9 +57,8 @@ void GroundEnt::update()
 
 void GroundEnt::render()
 {
-	impl->model->position = this->position;
-	// this->model->angle = quat(0,1,0); // #TODO
-	impl->model->angle = quat(0,0,0,1); // #TODO
-	impl->model->scale = vec3(80,80,80); // #TODO
+	impl->model->pos = this->pos;
+	impl->model->rot = this->rot;
+	impl->model->scale = this->scale;
 	impl->model->render();
 }

@@ -9,6 +9,7 @@
 #include "Graphic.h"
 
 using namespace std;
+using namespace mt;
 using namespace mt::engine;
 using namespace mt::graphic;
 
