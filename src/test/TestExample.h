@@ -7,14 +7,7 @@ namespace test {
 class TestExample
 {
 public:
-
-	// Forward
 	void run();
-
-	// Native
-
-	// Stock
-
 };
 
 }}

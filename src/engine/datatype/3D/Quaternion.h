@@ -19,6 +19,7 @@ public:
 	~Quaternion();
 
 	// Natives
+	float length2() const;
 	Quaternion normalize() const;
 	Quaternion conjugate() const;
 	static Quaternion interpolate(const Quaternion& start, const Quaternion& end, float factor);
@@ -30,14 +31,15 @@ public:
 	void set(const Matrix3x3& m);
 	void set(const Quaternion& q);
 	bool equal(const Quaternion& r, double epsilon = 1e-6) const;
+	Quaternion lerp(const Quaternion& q, float factor);
 	Quaternion slerp(const Quaternion& q, float factor);
 
 	// Operator
-	float operator * (const Quaternion&) const;
+	float operator * (const Quaternion&) const; // Dot
 	Quaternion operator * (float) const;
-	Quaternion operator ^ (const Quaternion&) const;
-    bool operator == (const Quaternion&) const;
-    bool operator != (const Quaternion&) const;
+	Quaternion operator ^ (const Quaternion&) const; // Cross
+	bool operator == (const Quaternion&) const;
+	bool operator != (const Quaternion&) const;
 
 	// Other
 	friend class Vector3;

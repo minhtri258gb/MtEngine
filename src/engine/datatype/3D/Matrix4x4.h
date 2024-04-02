@@ -68,14 +68,14 @@ public:
 
 	// Operator
 	Vector3 operator * (const Vector3&) const;
-    Matrix4x4 operator * (const float&) const;
-    Matrix4x4 operator * (const Matrix4x4&) const;
-    Matrix4x4 operator + (const Matrix4x4&) const;
-    Matrix4x4& operator *= (const Matrix4x4&);
+	Matrix4x4 operator * (const float&) const;
+	Matrix4x4 operator * (const Matrix4x4&) const;
+	Matrix4x4 operator + (const Matrix4x4&) const;
+	Matrix4x4& operator *= (const Matrix4x4&);
 	bool operator == (const Matrix4x4&) const;
 	bool operator != (const Matrix4x4&) const;
-    float operator [] (unsigned int index) const;
-    float& operator [] (unsigned int index);
+	float operator [] (unsigned int index) const;
+	float& operator [] (unsigned int index);
 
 private:
 

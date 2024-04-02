@@ -16,6 +16,7 @@
 #include "engine/utils/DevUtils.h"
 
 #include "TestFileCFG.h"
+#include "TestQuaternion.h"
 
 using namespace std;
 using namespace mt;
@@ -27,7 +28,7 @@ void Test::run()
 	// ===============================================================================================
 	try
 	{
-		TestFileCFG test;
+		TestQuaternion test;
 		test.run();
 	}
 	catch (Exception e)

@@ -327,7 +327,7 @@ void Matrix4x4::decompose(Vector3& position, Quaternion& rotation, Vector3& scal
 
 void Matrix4x4::decompose(Vector3& position, Quaternion& rotation) const
 {
-	const Matrix4x4& _this = *this;
+	// const Matrix4x4& _this = *this;
 	
 	position.x = m[3];
 	position.y = m[7];

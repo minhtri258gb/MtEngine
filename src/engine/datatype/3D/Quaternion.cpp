@@ -54,6 +54,11 @@ Quaternion::~Quaternion()
 {
 }
 
+float Quaternion::length2() const
+{
+	return x*x + y*y + z*z + w*w;
+}
+
 Quaternion Quaternion::normalize() const
 {
 	float l = length();
@@ -91,7 +96,8 @@ Quaternion Quaternion::interpolate(const Quaternion& start, const Quaternion& en
 		sinom = sinf(omega);
 		sclp  = sinf((1.0f - factor) * omega) / sinom;
 		sclq  = sinf(factor * omega) / sinom;
-	} else
+	}
+	else
 	{
 		// Very close, do linear interp (because it's faster)
 		sclp = 1.0f - factor;
@@ -116,18 +122,27 @@ void Quaternion::set(float _x, float _y, float _z, float _w)
 
 void Quaternion::set(float pitch, float yaw, float roll)
 {
-	const float fSinPitch(sinf(pitch * 0.5f));
-	const float fCosPitch(cosf(pitch * 0.5f));
-	const float fSinYaw(sinf(yaw * 0.5f));
-	const float fCosYaw(cosf(yaw * 0.5f));
-	const float fSinRoll(sinf(roll * 0.5f));
-	const float fCosRoll(cosf(roll * 0.5f));
-	const float fCosPitchCosYaw(fCosPitch * fCosYaw);
-	const float fSinPitchSinYaw(fSinPitch * fSinYaw);
-	x = fSinRoll * fCosPitchCosYaw     - fCosRoll * fSinPitchSinYaw;
-	y = fCosRoll * fSinPitch * fCosYaw + fSinRoll * fCosPitch * fSinYaw;
-	z = fCosRoll * fCosPitch * fSinYaw - fSinRoll * fSinPitch * fCosYaw;
-	w = fCosRoll * fCosPitchCosYaw     + fSinRoll * fSinPitchSinYaw;
+	const float halfYaw = yaw * 0.5f;
+	const float halfPitch = pitch * 0.5f;
+	const float halfRoll = roll * 0.5f;
+	const float sinYaw = sinf(halfYaw);
+	const float cosYaw = cosf(halfYaw);
+	const float sinPitch = sinf(halfPitch);
+	const float cosPitch = cosf(halfPitch);
+	const float sinRoll = sinf(halfRoll);
+	const float cosRoll = cosf(halfRoll);
+
+	// Origin
+	// x = sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw;
+	// y = cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw;
+	// z = cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw;
+	// w = cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw;
+
+	// Ref bullet math
+	x = cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw;
+	y = cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw;
+	z = sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw;
+	w = cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw;
 }
 
 void Quaternion::set(float angle, Vector3 axis)
@@ -219,6 +234,14 @@ bool Quaternion::equal(const Quaternion& v, double epsilon) const
 		abs(y - v.y) <= epsilon &&
 		abs(z - v.z) <= epsilon &&
 		abs(w - v.w) <= epsilon;
+}
+
+Quaternion Quaternion::lerp(const Quaternion& q, float factor)
+{
+	if (factor < 0.f || factor > 1.f)
+		throw error("Factor not in range [0 - 1]");
+
+	return *this * (1.0f - factor) + (q * factor);
 }
 
 Quaternion Quaternion::slerp(const Quaternion& q, float factor)

@@ -8,12 +8,7 @@ class TestFileCFG
 {
 public:
 
-	// Forward
 	void run();
-
-	// Native
-
-	// Stock
 
 };
 

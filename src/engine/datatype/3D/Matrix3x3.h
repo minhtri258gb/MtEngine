@@ -45,7 +45,7 @@ public:
 	Matrix3x3& operator *= (const Matrix3x3&);
 	bool operator == (const Matrix3x3&) const;
 	bool operator != (const Matrix3x3&) const;
-    float operator [] (unsigned int index) const;
+	float operator [] (unsigned int index) const;
 	float& operator [] (unsigned int index);
 
 private:

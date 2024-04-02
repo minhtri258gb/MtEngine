@@ -98,7 +98,7 @@ void TestMap::load()
 
 	// Set general
 	fCFG.select("general");
-	int size = fCFG.getInt("size");
+	// int size = fCFG.getInt("size");
 
 	// Set player position
 	vec3 playerPos = fCFG.getVec3("player_posotion");

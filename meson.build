@@ -168,6 +168,7 @@ mttest = library('mttest',
 		,'./src/test/technique/TestTechnique.cpp'
 		,'./src/test/thread/Thread.cpp'
 		,'./src/test/TestFileCFG.cpp'
+		,'./src/test/TestQuaternion.cpp'
 	],
 	include_directories: dir_includes,
 	link_with: mtengine,
