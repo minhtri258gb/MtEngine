@@ -9,13 +9,6 @@
 #include "graphic/Graphic.h"
 #include "TestMap.h"
 
-#include "graphic/sky/SkyBox.h"
-#include "graphic/terrain/StaticTerrain.h"
-#include "graphic/terrain/Terrain.h"
-#include "graphic/bsp/BspSourceMap.h"
-#include "graphic/bsp/BspQuakeMap.h"
-#include "graphic/bsp/BspMap.h"
-
 #include "game/entities/TestEnt.h"
 #include "game/entities/GroundEnt.h"
 #include "game/entities/TestAnimEnt.h"
@@ -28,7 +21,6 @@ using namespace std;
 using namespace mt::graphic;
 using namespace mt::game;
 
-
 class TestMap::TestMapImpl
 {
 public:
@@ -36,14 +28,6 @@ public:
 	// General
 	string name;
 
-	// Enviroment
-	SkyBox* sky;
-	StaticTerrain* terrainStatic;
-	Terrain* terrain;
-	BspSourceMap* sourceMap;
-	BspQuakeMap* quakeMap;
-	BspMap* bspMap;
-	
 	// Entities
 	vector<Entity*> lstEntities;
 };
@@ -110,9 +94,10 @@ void TestMap::load()
 
 	// =================== Sky ===================
 	string skyName = fCFG.get("skybox");
-	impl->sky = new SkyBox();
-	impl->sky->init(skyName);
-
+	SkyBox* sky = new SkyBox();
+	sky->init(skyName);
+	Graphic::ins.scene.sky = sky;
+	
 	// =================== Terrain Static ===================
 	// impl->terrainStatic = new StaticTerrain();
 	// impl->terrainStatic->init("chadvernon");
@@ -401,45 +386,51 @@ void TestMap::clear()
 	impl->lstEntities.clear();
 
 	// Sky
-	if (impl->sky)
+	SkyBox* sky = Graphic::ins.scene.sky;
+	if (sky)
 	{
-		delete impl->sky;
-		impl->sky = nullptr;
+		delete sky;
+		sky = nullptr;
 	}
 
 	// Terrain Static
-	if (impl->terrainStatic)
+	StaticTerrain* terrainStatic = Graphic::ins.scene.terrainStatic;
+	if (terrainStatic)
 	{
-		delete impl->terrainStatic;
-		impl->terrainStatic = nullptr;
+		delete terrainStatic;
+		terrainStatic = nullptr;
 	}
 
 	// Terrain QuadTree
-	if (impl->terrain)
+	Terrain* terrain = Graphic::ins.scene.terrain;
+	if (terrain)
 	{
-		delete impl->terrain;
-		impl->terrain = nullptr;
+		delete terrain;
+		terrain = nullptr;
 	}
 
 	// BSP Source Map
-	if (impl->sourceMap)
+	BspSourceMap* sourceMap = Graphic::ins.scene.sourceMap;
+	if (sourceMap)
 	{
-		delete impl->sourceMap;
-		impl->sourceMap = nullptr;
+		delete sourceMap;
+		sourceMap = nullptr;
 	}
 
 	// BSP Quake Map
-	if (impl->quakeMap)
+	BspQuakeMap* quakeMap = Graphic::ins.scene.quakeMap;
+	if (quakeMap)
 	{
-		delete impl->quakeMap;
-		impl->quakeMap = nullptr;
+		delete quakeMap;
+		quakeMap = nullptr;
 	}
 
 	// BSP Map
-	if (impl->bspMap)
+	BspMap* bspMap = Graphic::ins.scene.bspMap;
+	if (bspMap)
 	{
-		delete impl->bspMap;
-		impl->bspMap = nullptr;
+		delete bspMap;
+		bspMap = nullptr;
 	}
 
 	// #EXTRA
@@ -454,43 +445,6 @@ void TestMap::update()
 	// // Enviroment update
 	// this->physicDebug->update();
 
-	if (impl->sourceMap)
-		impl->sourceMap->update();
-
-	if (impl->quakeMap)
-		impl->quakeMap->update();
-
-	if (impl->bspMap)
-		impl->bspMap->update();
-
 	for (Entity* ent : impl->lstEntities)
 		ent->update();
-}
-
-void TestMap::render()
-{
-	if (impl->sky)
-		impl->sky->render();
-	if (impl->terrainStatic)
-		impl->terrainStatic->render();
-	if (impl->terrain)
-		impl->terrain->render();
-	if (impl->sourceMap)
-		impl->sourceMap->render();
-	if (impl->quakeMap)
-		impl->quakeMap->render();
-	if (impl->bspMap)
-		impl->bspMap->render();
-
-	// Render nhieu lop doi voi graphic
-	// while (Graphic::ins->needRenderMore())
-	// {
-		// // rende renviroment
-		// this->physicDebug->render();
-		// this->terrain->render();
-
-		// Draw some cubes around
-		for (Entity* ent : impl->lstEntities)
-			ent->render();
-	// }
 }

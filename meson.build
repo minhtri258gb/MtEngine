@@ -127,6 +127,15 @@ mtphysic = library('mtphysic',
 	dependencies: [bullet_collision, bullet_dynamics, linear_math],
 )
 
+mtaudio = library('mtaudio',
+	[
+		'./src/audio/Audio.cpp'
+	],
+	include_directories: dir_includes,
+	link_with: [mtengine, mtgraphic],
+	dependencies: [bass],
+)
+
 mtgame = library('mtgame',
 	[
 		'./src/game/Game.cpp'
@@ -144,7 +153,7 @@ mtgame = library('mtgame',
 		,'./src/game/entities/GroundEnt.cpp'
 	],
 	include_directories: dir_includes,
-	link_with: [mtengine, mtphysic, mtgraphic],
+	link_with: [mtengine, mtaudio, mtphysic, mtgraphic],
 	dependencies: [],
 )
 

@@ -104,7 +104,7 @@ void Camera::update()
 		Graphic::ins.shaderProgramMgr.setSceneView(Graphic::ins.scene.view);
 
 		// Update frustum culling
-		this->frustumCulling.update();
+		// this->frustumCulling.update();
 	}
 }
 

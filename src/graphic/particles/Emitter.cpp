@@ -186,8 +186,8 @@ void Emitter::render(list<Particle*> &particles)
 	impl->texture.bind(); // Bind Texture
 	this->shader.setVec2I(3, vec2i(impl->texture.getColumn(), impl->texture.getRow())); // Uniform colrowNum
 
-	int maxParticle = particles.size();
-	int bufferSize = maxParticle * INSTANCE_DATA_LENGTH;
+	// int maxParticle = particles.size();
+	// int bufferSize = maxParticle * INSTANCE_DATA_LENGTH;
 	vector<vec3> positions;
 	vector<float> scales;
 	vector<float> progress;

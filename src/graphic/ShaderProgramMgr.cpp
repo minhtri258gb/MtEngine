@@ -33,18 +33,18 @@ void ShaderProgramMgr::init()
 {
 	// Simple Model
 	SimpleModel::shader.init("simple",	ShaderProgram::SHADER_TYPE::VERTEX |
-																			ShaderProgram::SHADER_TYPE::FRAGMENT);
+										ShaderProgram::SHADER_TYPE::FRAGMENT);
 	SimpleModel::shader.use();
-	SimpleModel::shader.addLocation("proj");				// 0
-	SimpleModel::shader.addLocation("view");				// 1
-	SimpleModel::shader.addLocation("model");				// 2
+	SimpleModel::shader.addLocation("proj");		// 0
+	SimpleModel::shader.addLocation("view");		// 1
+	SimpleModel::shader.addLocation("model");		// 2
 	SimpleModel::shader.addLocation("ourTexture");	// 3
-	SimpleModel::shader.addLocation("camPos");			// 4
+	SimpleModel::shader.addLocation("camPos");		// 4
 	SimpleModel::shader.setInt(3, 0);
 
 	// Animation Model
 	AnimationModel::shader.init("skinning",	ShaderProgram::SHADER_TYPE::VERTEX |
-																					ShaderProgram::SHADER_TYPE::FRAGMENT);
+											ShaderProgram::SHADER_TYPE::FRAGMENT);
 	AnimationModel::shader.use();
 	AnimationModel::shader.addLocation("proj");			// 0
 	AnimationModel::shader.addLocation("view");			// 1
@@ -55,28 +55,28 @@ void ShaderProgramMgr::init()
 	
 	// SkyBox
 	SkyBox::shader.init("skybox",	ShaderProgram::SHADER_TYPE::VERTEX |
-																ShaderProgram::SHADER_TYPE::FRAGMENT);
+									ShaderProgram::SHADER_TYPE::FRAGMENT);
 	SkyBox::shader.use();
 	SkyBox::shader.addLocation("proj");			// 0
 	SkyBox::shader.addLocation("view");			// 1
 
 	// Static Terrain
 	StaticTerrain::shader.init("terrain_static",	ShaderProgram::SHADER_TYPE::VERTEX |
-																								ShaderProgram::SHADER_TYPE::FRAGMENT);
+													ShaderProgram::SHADER_TYPE::FRAGMENT);
 	StaticTerrain::shader.use();
-	StaticTerrain::shader.addLocation("proj");				// 0
-	StaticTerrain::shader.addLocation("view");				// 1
+	StaticTerrain::shader.addLocation("proj");			// 0
+	StaticTerrain::shader.addLocation("view");			// 1
 	StaticTerrain::shader.addLocation("ourTexture");	// 2
 	StaticTerrain::shader.setInt(2, 0);
 
 	// Terrain QuaTree
 	Terrain::shader.init("terrain",	ShaderProgram::SHADER_TYPE::VERTEX |
-																	ShaderProgram::SHADER_TYPE::FRAGMENT |
-																	ShaderProgram::SHADER_TYPE::TESS_CONTROL |
-																	ShaderProgram::SHADER_TYPE::TESS_EVALUATION);
+									ShaderProgram::SHADER_TYPE::FRAGMENT |
+									ShaderProgram::SHADER_TYPE::TESS_CONTROL |
+									ShaderProgram::SHADER_TYPE::TESS_EVALUATION);
 	Terrain::shader.use();
-	Terrain::shader.addLocation("proj");					// 0
-	Terrain::shader.addLocation("view");					// 1
+	Terrain::shader.addLocation("proj");				// 0
+	Terrain::shader.addLocation("view");				// 1
 	Terrain::shader.addLocation("ourTexture");		// 2
 	Terrain::shader.addLocation("heightMapTex");	// 3
 	Terrain::shader.addLocation("heightScale");		// 4
@@ -85,60 +85,60 @@ void ShaderProgramMgr::init()
 
 	// BspSourceMap
 	BspSourceMap::shader.init("bsp_source",	ShaderProgram::SHADER_TYPE::VERTEX |
-																					ShaderProgram::SHADER_TYPE::FRAGMENT);
+											ShaderProgram::SHADER_TYPE::FRAGMENT);
 	BspSourceMap::shader.use();
-	BspSourceMap::shader.addLocation("proj");		// 0
-	BspSourceMap::shader.addLocation("view");		// 1
+	BspSourceMap::shader.addLocation("proj");	// 0
+	BspSourceMap::shader.addLocation("view");	// 1
 	BspSourceMap::shader.addLocation("model");	// 2
 
 	// BspQuakeMap
 	BspQuakeMap::shader.init("bsp_quake",	ShaderProgram::SHADER_TYPE::VERTEX |
-																				ShaderProgram::SHADER_TYPE::FRAGMENT);
+											ShaderProgram::SHADER_TYPE::FRAGMENT);
 	BspQuakeMap::shader.use();
-	BspQuakeMap::shader.addLocation("proj");				// 0
-	BspQuakeMap::shader.addLocation("view");				// 1
-	BspQuakeMap::shader.addLocation("model");				// 2
+	BspQuakeMap::shader.addLocation("proj");		// 0
+	BspQuakeMap::shader.addLocation("view");		// 1
+	BspQuakeMap::shader.addLocation("model");		// 2
 	BspQuakeMap::shader.addLocation("ourTexture");	// 3
 	BspQuakeMap::shader.setInt(3, 0);
 
 	// BspMap
 	BspMap::shader.init("bsp",	ShaderProgram::SHADER_TYPE::VERTEX |
-															ShaderProgram::SHADER_TYPE::FRAGMENT);
+								ShaderProgram::SHADER_TYPE::FRAGMENT);
 	BspMap::shader.use();
-	BspMap::shader.addLocation("proj");				// 0
-	BspMap::shader.addLocation("view");				// 1
-	BspMap::shader.addLocation("model");			// 2
+	BspMap::shader.addLocation("proj");			// 0
+	BspMap::shader.addLocation("view");			// 1
+	BspMap::shader.addLocation("model");		// 2
 	BspMap::shader.addLocation("ourTexture");	// 3
 	BspMap::shader.setInt(3, 0);
 
 	// Sprite
 	Sprite::shader.init("particles",	ShaderProgram::SHADER_TYPE::VERTEX |
-																		ShaderProgram::SHADER_TYPE::FRAGMENT |
-																		ShaderProgram::SHADER_TYPE::GEOMETRY);
+										ShaderProgram::SHADER_TYPE::FRAGMENT |
+										ShaderProgram::SHADER_TYPE::GEOMETRY);
 	Sprite::shader.use();
-	Sprite::shader.addLocation("proj");				// 0
-	Sprite::shader.addLocation("view");				// 1
+	Sprite::shader.addLocation("proj");			// 0
+	Sprite::shader.addLocation("view");			// 1
 	Sprite::shader.addLocation("cameraPos");	// 2
 	Sprite::shader.addLocation("ourTexture");	// 3
 	Sprite::shader.setInt(3, 0);
 
 	// Emitter
 	Emitter::shader.init("emitter",	ShaderProgram::SHADER_TYPE::VERTEX |
-																	ShaderProgram::SHADER_TYPE::FRAGMENT |
-																	ShaderProgram::SHADER_TYPE::GEOMETRY);
+									ShaderProgram::SHADER_TYPE::FRAGMENT |
+									ShaderProgram::SHADER_TYPE::GEOMETRY);
 	Emitter::shader.use();
-	Emitter::shader.addLocation("proj");				// 0
-	Emitter::shader.addLocation("view");				// 1
-	Emitter::shader.addLocation("cameraPos");		// 2
-	Emitter::shader.addLocation("colrowNum");		// 3
+	Emitter::shader.addLocation("proj");		// 0
+	Emitter::shader.addLocation("view");		// 1
+	Emitter::shader.addLocation("cameraPos");	// 2
+	Emitter::shader.addLocation("colrowNum");	// 3
 	Emitter::shader.addLocation("ourTexture");	// 4
 	Emitter::shader.setInt(4, 0);
 
 	// Text
 	Text::shader.use();
-	Text::shader.addLocation("proj");				// 0
+	Text::shader.addLocation("proj");		// 0
 	Text::shader.addLocation("ourTexture");	// 1
-	Text::shader.addLocation("color");			// 2
+	Text::shader.addLocation("color");		// 2
 
 	// #EXTRA
 }

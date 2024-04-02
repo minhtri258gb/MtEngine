@@ -1,11 +1,17 @@
 #define __MT_MODEL_BUILDER_CPP__
 
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <assimp/Importer.hpp>
+
 #include "common.h"
-#include "../Graphic.h"
-#include "ModelBuilder.h"
-#include "SimpleModel.h"
+#include "engine/file/FileCFG.h"
+#include "graphic/Graphic.h"
+#include "graphic/models/ModelBuilder.h"
+#include "graphic/models/SimpleModel.h"
 
 using namespace std;
+using namespace mt;
 using namespace mt::graphic;
 
 class ModelBuilder::ModelBuilderImpl
@@ -26,11 +32,40 @@ ModelBuilder::~ModelBuilder()
 	delete this->impl;
 }
 
-Model* ModelBuilder::loadModel(std::string name)
+Model* ModelBuilder::loadModel(string name)
 {
 	Model* model = this->createDefaultModel(name);
 	if (!model)
 	{
+		// // Load config
+		// string modelDir = "./res/models/" + name + "/";
+		// string configPath = modelDir + "info.cfg";
+		// FileCFG fCFG(configPath);
+		// fCFG.select("general");
+		// string modelFile = fCFG.get("model");
+
+		// // Load model
+		// string modelPath = modelDir + modelFile;
+		// Assimp::Importer importer;
+		// const aiScene* scene = importer.ReadFile(modelPath,
+		// 	  aiProcess_Triangulate
+		// 	| aiProcess_FlipUVs
+		// 	| aiProcess_GenSmoothNormals
+		// );
+
+		// if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		// 	throw error(importer.GetErrorString());
+		
+		// aiMesh* mesh = scene->mMeshes[0];
+
+		// vector<Vertex> vertices = {};
+		// vector<uint> indices = {};
+		// uint boneCount = 0;
+		// Animation animation;
+		// uint vao = 0;
+		// Bone skeleton;
+		// uint diffuseTexture;
+
 		// Create memory
 		SimpleModel *newModel = new SimpleModel();
 

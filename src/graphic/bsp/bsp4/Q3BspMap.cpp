@@ -301,7 +301,7 @@ void Q3BspMap::CalculateVisibleFaces(mt::vec3 _cameraPosition)
     //loop through faces in this leaf and them to visibility set
     for (int j = 0; j < rl.numFaces; ++j)
     {
-      int idx = leafFaces[ rl.firstFace + j ].face;
+      // int idx = leafFaces[ rl.firstFace + j ].face;
       Q3FaceRenderable *face = &m_renderFaces[ leafFaces[ rl.firstFace + j ].face ];
 
       if (std::find( m_visibleFaces.begin(), m_visibleFaces.end(), face ) == m_visibleFaces.end() )

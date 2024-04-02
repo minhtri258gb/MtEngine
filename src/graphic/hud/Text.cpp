@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include <ft2build.h>
-#include FT_FREETYPE_H
+#include <freetype/freetype.h>
 
 #include "common.h"
 #include "engine/Config.h"
@@ -26,10 +26,10 @@ using namespace mt::graphic;
 
 struct Character
 {
-	unsigned int TextureID;  // ID handle of the glyph texture
-	vec2i Size;      		 // Size of glyph
-	vec2i Bearing;   		 // Offset from baseline to left/top of glyph
-	unsigned int Advance;    // Offset to advance to next glyph
+	unsigned int TextureID;		// ID handle of the glyph texture
+	vec2i Size;					// Size of glyph
+	vec2i Bearing;				// Offset from baseline to left/top of glyph
+	unsigned int Advance;		// Offset to advance to next glyph
 };
 
 bool isInit = false;

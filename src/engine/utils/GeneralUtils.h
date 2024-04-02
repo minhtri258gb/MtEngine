@@ -8,13 +8,13 @@ class GeneralUtils {
 
 public:
 
-  // Swap value
-  template <class T> static inline void swap(T &a, T &b)
-  {
-    T t = a;
-    a = b;
-    b = t;
-  }
+	// Swap value
+	template <class T> static inline void swap(T &a, T &b)
+	{
+		T t = a;
+		a = b;
+		b = t;
+	}
 
 };
 

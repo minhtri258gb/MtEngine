@@ -66,13 +66,13 @@ void cbk_mouse_button(GLFWwindow *window, int button, int action, int mods)
 Graphic::Graphic()
 {
 	// Impliment
-	this->impl = new GraphicImpl();
+	impl = new GraphicImpl();
 }
 
 Graphic::~Graphic()
 {
 	// Impliment
-	delete this->impl;
+	delete impl;
 }
 
 void Graphic::init()
@@ -88,36 +88,45 @@ void Graphic::init()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	//glfwWindowHint(GLFW_SAMPLES, 4);
 
-	this->impl->gl_window = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
-	if (this->impl->gl_window == NULL)
+	impl->gl_window = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
+	// impl->gl_window = glfwCreateWindow(width, height, name.c_str(), glfwGetPrimaryMonitor(), NULL);
+	if (impl->gl_window == NULL)
 	{
 		glfwTerminate();
 		throw error("Failed to create GLFW window");
 	}
-	glfwMakeContextCurrent(this->impl->gl_window);
+	glfwMakeContextCurrent(impl->gl_window);
+
+	// Set icon
+	// GLFWimage icons[2];
+	// icons[0].pixels = stbi_load("res/system/logo.ico", &icons[0].width, &icons[0].height, 0, 4);
+	// if(icons[0].pixels) {
+	// 	icons[1] = icons[0];
+	// 	glfwSetWindowIcon(window, 2, icons);
+	// }
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
 		throw error("Failed to initialize GLAD");
-	}
 
 	glViewport(0, 0, width, height);
 
-	glfwSetFramebufferSizeCallback(this->impl->gl_window, cbk_framebuffer_size);
-	glfwSetCursorPosCallback(this->impl->gl_window, cbk_cursor_pos);
-	glfwSetKeyCallback(this->impl->gl_window, cbk_key);
-	glfwSetMouseButtonCallback(this->impl->gl_window, cbk_mouse_button);
+	glfwSetFramebufferSizeCallback(impl->gl_window, cbk_framebuffer_size);
+	glfwSetCursorPosCallback(impl->gl_window, cbk_cursor_pos);
+	glfwSetKeyCallback(impl->gl_window, cbk_key);
+	glfwSetMouseButtonCallback(impl->gl_window, cbk_mouse_button);
 
-	glfwSetInputMode(this->impl->gl_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetInputMode(this->impl->gl_window, GLFW_STICKY_KEYS, GLFW_TRUE);
+	glfwSetInputMode(impl->gl_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(impl->gl_window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
 	// Set default
-	glfwSetCursorPos(this->impl->gl_window, 0, 0);
+	glfwSetCursorPos(impl->gl_window, 0, 0);
 	this->cullFaceToogle(true);
 	this->cullFaceBack(true);
 	this->cullFaceClock(true);
 	this->setDepthTest();
+	// glEnable(GL_MULTISAMPLE);
 
 	// Init component
 	this->shaderProgramMgr.init();
@@ -148,10 +157,39 @@ void Graphic::close()
 	glfwTerminate();
 }
 
+void Graphic::update()
+{
+	this->scene.update();
+}
+
+void Graphic::render()
+{
+	// Bật buffer Đổ bóng
+	// Render bóng
+	// Tắt buffer Đổ bóng
+
+	// Bật buffer phản chiếu
+	// Render cảnh ngược
+	// Tắt buffer phản chiếu
+
+	// Bật buffer cảnh
+	this->scene.render();
+	// Tắt buffer cảnh
+
+	// Render màn hình cảnh
+
+	// Render HUD
+}
+
+void Graphic::addModel(Model* model, vec3* pos, quat* rot, vec3* scale)
+{
+	this->scene.lstModel.push_back(ModelRender(model, pos, rot, scale));
+}
+
 void Graphic::processInput()
 {
-	if (glfwGetKey(this->impl->gl_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(this->impl->gl_window, true);
+	if (glfwGetKey(impl->gl_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(impl->gl_window, true);
 }
 
 void Graphic::renderPre()
@@ -164,12 +202,12 @@ void Graphic::renderPost()
 {
 	Input::ins.resetStatus(); // end frame key press
 	glfwPollEvents(); // start frame key press
-	glfwSwapBuffers(this->impl->gl_window);
+	glfwSwapBuffers(impl->gl_window);
 }
 
 bool Graphic::checkWindow()
 {
-	return !glfwWindowShouldClose(this->impl->gl_window);
+	return !glfwWindowShouldClose(impl->gl_window);
 }
 
 double Graphic::getTime()
@@ -230,6 +268,7 @@ void Graphic::blendFunc(int value)
 	switch (value)
 	{
 		case 1: glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); break;
+		case 2: glBlendFunc(GL_SRC_ALPHA, GL_ONE); break;
 		default: break;
 	}
 }

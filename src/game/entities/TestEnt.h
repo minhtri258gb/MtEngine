@@ -19,7 +19,6 @@ public:
 	// Forward
 	void init();
 	void update();
-	void render();
 
 	// Native
 

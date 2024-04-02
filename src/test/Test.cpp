@@ -39,7 +39,7 @@ void Test::run()
 	{
 		cerr << "[ERROR]: " << e << endl;
 	}
-	catch (exception e)
+	catch (std::exception e)
 	{
 		cerr << "[ERROR]: " << e.what() << '\n';
 	}

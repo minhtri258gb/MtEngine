@@ -42,6 +42,7 @@ void TestEnt::init()
 {
 	// Model
 	impl->model = Graphic::ins.modelMgr.cache(this->name);
+	Graphic::ins.addModel(impl->model, &this->pos, &this->rot, &this->scale);
 
 	// Body
 	impl->body = Physic::ins.createBox(this->pos, this->rot, this->scale, 1);
@@ -53,12 +54,4 @@ void TestEnt::update()
 	// Update physic location
 	impl->body->getTransForm(&this->pos, &this->rot);
 	// this->pos = impl->body->getOrigin();
-}
-
-void TestEnt::render()
-{
-	impl->model->pos = this->pos;
-	impl->model->rot = this->rot;
-	impl->model->scale = this->scale;
-	impl->model->render();
 }

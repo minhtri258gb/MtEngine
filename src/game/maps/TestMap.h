@@ -17,7 +17,6 @@ public:
 	void load();
 	void clear();
 	void update();
-	void render();
 
 private:
 

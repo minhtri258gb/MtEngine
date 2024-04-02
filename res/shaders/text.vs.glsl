@@ -9,7 +9,7 @@ uniform mat4 projection;
 
 void main(void)
 {
-    gl_Position = projection * vec4(position.xy, 0.0, 1.0);
+	gl_Position = projection * vec4(position.xy, 0.0, 1.0);
 
-    uvcoord = position.zw;
+	uvcoord = position.zw;
 }

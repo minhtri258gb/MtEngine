@@ -6,7 +6,7 @@
 
 int main()
 {
-	#if 0
+	#if 1
 	mt::game::Game program; // ENGINE
 	#else
 	mt::test::Test program; // TEST

@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "Screen.h"
 #include "Camera.h"
+#include "hud/Text.h"
 
 namespace mt {
 namespace graphic {
@@ -22,12 +23,17 @@ public:
 	Scene scene;
 	Screen screen;
 	Camera camera;
+	Text text;
 
 	// Forward
 	Graphic();
 	~Graphic();
 	void init();
 	void close();
+	void update();
+	void render();
+
+	void addModel(Model* model, vec3* pos, quat* rot, vec3* scale);
 
 	void processInput();
 	void renderPre();

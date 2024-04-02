@@ -72,7 +72,7 @@ void Game::run()
 	
 		cerr << "[ERROR]: " << e.getMessage() << '\n';
 	}
-	catch (std::exception e)
+	catch (exception e)
 	{
 		
 		#ifdef LOG
@@ -157,8 +157,19 @@ void Game::framework()
 		LOG
 		#endif
 
+		// Bind Buffer
+
 		// Map render
-		this->map->render();
+		// this->map->render();
+
+		// End Bind
+
+		// Render Screen PostProcess
+
+		// Render HUD
+
+		// Graphic
+		Graphic::ins.render();
 
 		#ifdef LOG
 		LOG
