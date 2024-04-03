@@ -23,6 +23,11 @@ SimpleModel::SimpleModel()
 {
 	// Implement
 	impl = new SimpleModelImpl();
+
+	// Default
+	this->pos = vec3();
+	this->rot = quat();
+	this->scale = vec3(1, 1, 1);
 }
 
 SimpleModel::~SimpleModel()
@@ -66,7 +71,7 @@ void SimpleModel::loadTexture(string filepath)
 	impl->texture.init(filepath);
 }
 
-void SimpleModel::render()
+void SimpleModel::render(vec3 _pos, quat _rot, vec3 _scale)
 {
 	// Frustumcull
 	// if (!Graphic::ins.camera.frustumCulling.sphere(position, 0)); // #TODO
@@ -77,11 +82,15 @@ void SimpleModel::render()
 	// Shader
 	this->shader.use();
 
+	vec3 finalPos = this->pos + _pos;
+	quat finalRot = this->rot ^ _rot;
+	vec3 finalScale = vec3(this->scale.x * _scale.x, this->scale.z * _scale.z, this->scale.z * _scale.z);
+
 	// Model mattrix
 	mat4 matModel;
-	matModel.translate(this->pos); // matModel = glm::translate(matModel, this->position);
-	matModel.rotate(this->rot); // matModel *= glm::mat4_cast(this->angle);
-	matModel.scale(this->scale); // matModel = glm::scale(matModel, this->scale);
+	matModel.translate(finalPos); // matModel = glm::translate(matModel, this->position);
+	matModel.rotate(finalRot); // matModel *= glm::mat4_cast(this->angle);
+	matModel.scale(finalScale); // matModel = glm::scale(matModel, this->scale);
 	this->shader.setMat4(2, matModel);
 
 	// Texture

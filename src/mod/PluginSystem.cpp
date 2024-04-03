@@ -71,7 +71,7 @@ void PluginSystem::run()
 				Model* mdl = dynamic_cast<Model*>(base);
 				if (mdl)
 				{
-					mdl->render();
+					// mdl->render();
 				}
 			}
 			else if (type == PluginBase::PLUGIN_TYPE::ENTITY)

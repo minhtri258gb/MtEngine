@@ -17,7 +17,7 @@ public:
 	// Forwards
 	Model();
 	virtual ~Model();
-	virtual void render();
+	virtual void render(vec3 pos, quat rot, vec3 scale);
 
 	// Natives
 

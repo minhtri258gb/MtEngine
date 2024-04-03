@@ -40,14 +40,14 @@ float Vector3::length() const
 
 Vector3 Vector3::normalize()
 {
-    return *this / length();
+	return *this / length();
 }
 
 Vector3 Vector3::rotate(const Quaternion& _q)
 {
 	Quaternion q2(x, y, z, 0.0f), q = _q, qinv = q.conjugate();
 	q = q ^ q2 ^ qinv;
-	return Vector3(q.x,q.y,q.z);
+	return Vector3(q.x, q.y, q.z);
 }
 
 void Vector3::set(float _x, float _y, float _z)
@@ -66,10 +66,10 @@ void Vector3::set(const Vector3 &v)
 
 bool Vector3::equal(const Vector3& v, double epsilon) const
 {
-    return
-        abs(x - v.x) <= epsilon &&
-        abs(y - v.y) <= epsilon &&
-        abs(z - v.z) <= epsilon;
+	return
+		abs(x - v.x) <= epsilon &&
+		abs(y - v.y) <= epsilon &&
+		abs(z - v.z) <= epsilon;
 }
 
 Vector3 Vector3::mix(const Vector3& v, float factor)
@@ -109,34 +109,34 @@ Vector3 Vector3::operator ^ (const Vector3& v) const
 
 const Vector3& Vector3::operator += (const Vector3& v)
 {
-    x += v.x;
+	x += v.x;
 	y += v.y;
 	z += v.z;
-    return *this;
+	return *this;
 }
 
 const Vector3& Vector3::operator -= (const Vector3& v)
 {
-    x -= v.x;
+	x -= v.x;
 	y -= v.y;
 	z -= v.z;
-    return *this;
+	return *this;
 }
 
 const Vector3& Vector3::operator *= (float f)
 {
-    x *= f;
+	x *= f;
 	y *= f;
 	z *= f;
-    return *this;
+	return *this;
 }
 
 const Vector3& Vector3::operator /= (float f)
 {
-    x /= f;
+	x /= f;
 	y /= f;
 	z /= f;
-    return *this;
+	return *this;
 }
 
 bool Vector3::operator == (const Vector3& v) const
@@ -163,7 +163,7 @@ float Vector3::operator [] (unsigned int index) const
 		stringstream err_msg;
 		err_msg << "index = " << index;
 		throw error(err_msg.str());
-    }
+	}
 }
 
 float& Vector3::operator [] (unsigned int index)
@@ -180,7 +180,7 @@ float& Vector3::operator [] (unsigned int index)
 Vector3& Vector3::operator = (const Vector3 &v)
 {
 	this->set(v);
-    return *this;
+	return *this;
 }
 
 Vector3 Vector3::operator - ()

@@ -43,6 +43,9 @@ Model* ModelBuilder::loadModel(string name)
 		FileCFG fCFG(configPath);
 		fCFG.select("general");
 		string modelFile = fCFG.get("model");
+		vec3 modelPos = fCFG.getVec3("model_pos");
+		vec3 modelRot = fCFG.getVec3("model_rot");
+		vec3 modelScale = fCFG.getVec3("model_scale");
 
 		// Load model
 		string modelPath = modelDir + modelFile;
@@ -119,41 +122,11 @@ Model* ModelBuilder::loadModel(string name)
 		// 	vertices.push_back(vec3(aiVec3.x, aiVec3.y, aiVec3.z));
 		// }
 
-
-		// vector<Vertex> vertices = {};
-		// vector<uint> indices = {};
-		// uint boneCount = 0;
-		// Animation animation;
-		// uint vao = 0;
-		// Bone skeleton;
-		// uint diffuseTexture;
-
 		// Create memory
 		SimpleModel *newModel = new SimpleModel();
-
-		// Read config #TODO
-
-		// Read data #TODO
-		// vector<vec3> vertices;
-		// vertices.push_back(vec3( 0.5f,  0.5f, 0.0f));
-		// vertices.push_back(vec3( 0.5f, -0.5f, 0.0f));
-		// vertices.push_back(vec3(-0.5f, -0.5f, 0.0f));
-		// vertices.push_back(vec3(-0.5f,  0.5f, 0.0f));
-		
-		// vector<vec2> texcoords;
-		// texcoords.push_back(vec2(1.0f, 1.0f));
-		// texcoords.push_back(vec2(1.0f, 0.0f));
-		// texcoords.push_back(vec2(0.0f, 0.0f));
-		// texcoords.push_back(vec2(0.0f, 1.0f));
-		
-		// vector<unsigned int> indices;
-		// indices.push_back(0);
-		// indices.push_back(1);
-		// indices.push_back(3);
-		// indices.push_back(1);
-		// indices.push_back(2);
-		// indices.push_back(3);
-
+		newModel->pos = modelPos;
+		newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
+		newModel->scale = modelScale;
 		newModel->loadVAO(vertices, texcoords, indices);
 		newModel->loadTexture("./res/textures/wall.jpg");
 

@@ -138,7 +138,7 @@ void Quaternion::set(float pitch, float yaw, float roll)
 	// z = cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw;
 	// w = cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw;
 
-	// Ref bullet math
+	// Ref bullet math [X]
 	x = cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw;
 	y = cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw;
 	z = sinRoll * cosPitch * cosYaw - cosRoll * sinPitch * sinYaw;

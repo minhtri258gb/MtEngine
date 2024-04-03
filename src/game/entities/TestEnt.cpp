@@ -53,5 +53,4 @@ void TestEnt::update()
 {
 	// Update physic location
 	impl->body->getTransForm(&this->pos, &this->rot);
-	// this->pos = impl->body->getOrigin();
 }

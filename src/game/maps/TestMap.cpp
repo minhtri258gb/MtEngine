@@ -141,7 +141,7 @@ void TestMap::load()
 
 			TestEnt* ent = new TestEnt(entName);
 			ent->pos = vec3(x, y, z);
-			ent->rot = quat(rx, ry, rz);
+			ent->rot = quat(Math::toRadian(rx), Math::toRadian(ry), Math::toRadian(rz));
 			ent->scale = vec3(scale, scale, scale);
 			ent->init();
 			impl->lstEntities.push_back(ent);

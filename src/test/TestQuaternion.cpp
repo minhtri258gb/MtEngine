@@ -28,11 +28,11 @@ void TestQuaternion::run()
 {
 
 	// [X] Constructor with x, y, z, w
-	float x=1.5, y=1.1, z=1.2, w=1;
-	mt::quat mtQuat(x, y, z, w); // Quaternion(float x, float y, float z, float w)
-	glm::quat glQuat = glm::quat(w, x, y, z); // qua(T _w, T _x, T _y, T _z)
-	btQuaternion btQuat(x, y, z, w); // btQuaternion(const btScalar& _x, const btScalar& _y, const btScalar& _z, const btScalar& _w)
-	aiQuaternion aiQuat(w, x, y, z); // aiQuaterniont(ai_real pw, ai_real px, ai_real py, ai_real pz)
+	// float x=1.5, y=1.1, z=1.2, w=1;
+	// mt::quat mtQuat(x, y, z, w); // Quaternion(float x, float y, float z, float w)
+	// glm::quat glQuat = glm::quat(w, x, y, z); // qua(T _w, T _x, T _y, T _z)
+	// btQuaternion btQuat(x, y, z, w); // btQuaternion(const btScalar& _x, const btScalar& _y, const btScalar& _z, const btScalar& _w)
+	// aiQuaternion aiQuat(w, x, y, z); // aiQuaterniont(ai_real pw, ai_real px, ai_real py, ai_real pz)
 
 	// float x2=1.8, y2=2.1, z2=2.4, w2=1;
 	// quat mtQuat2(x2, y2, z2, w2); // Quaternion(float x, float y, float z, float w)
@@ -48,11 +48,20 @@ void TestQuaternion::run()
 	// aiQuaternion aiQuat(aiVector3D(x,y,z), angle); // aiQuaterniont(aiVector3D axis, ai_real angle)
 
 	// [ ] (gl ERR, ai Other) Constructor with pitch, yaw, roll
-	// float pitch=1, yaw=1.2, roll=1.4;
-	// mt::quat mtQuat(pitch, yaw, roll); // pitch, yaw, roll
+	float pitch=Math::toRadian(90), yaw=Math::toRadian(0), roll=Math::toRadian(0);
+	mt::quat mtQuat(pitch, yaw, roll); // pitch, yaw, roll
 	// glm::quat glQuat = glm::quat(glm::vec3(pitch, yaw, roll)); // ?
-	// btQuaternion btQuat(yaw, pitch, roll); // btQuaternion(const btScalar& yaw, const btScalar& pitch, const btScalar& roll)
+	btQuaternion btQuat(yaw, pitch, roll); // btQuaternion(const btScalar& yaw, const btScalar& pitch, const btScalar& roll)
 	// aiQuaternion aiQuat(pitch, yaw, roll); // aiQuaterniont(ai_real roty, ai_real rotz, ai_real rotx)
+
+	float pitch2=Math::toRadian(0), yaw2=Math::toRadian(0), roll2=Math::toRadian(90);
+	mt::quat mtQuat2(pitch2, yaw2, roll2); // pitch, yaw, roll
+	// glm::quat glQuat2 = glm::quat(w2, x2, y2, z2); // qua(T _w, T _x, T _y, T _z)
+	// btQuaternion btQuat2(x2, y2, z2, w2); // btQuaternion(const btScalar& _x, const btScalar& _y, const btScalar& _z, const btScalar& _w)
+	// aiQuaternion aiQuat2(w, x, y, z); // aiQuaterniont(ai_real pw, ai_real px, ai_real py, ai_real pz)
+
+	mtQuat = mtQuat ^ mtQuat2;
+
 
 	// [X] (bt Unkown) conjugate
 	// mtQuat = mtQuat.conjugate();
@@ -122,10 +131,10 @@ void TestQuaternion::run()
 	// btQuat = btQuat - btQuat2;
 
 	// Compare
-	cout << "mtQuat: [" << mtQuat.x << "] [" << mtQuat.y << "] [" << mtQuat.z << "] [" << mtQuat.w << "]\n";
-	cout << "glQuat: [" << glQuat.x << "] [" << glQuat.y << "] [" << glQuat.z << "] [" << glQuat.w << "]\n";
+	// cout << "mtQuat: [" << mtQuat.x << "] [" << mtQuat.y << "] [" << mtQuat.z << "] [" << mtQuat.w << "]\n";
+	// cout << "glQuat: [" << glQuat.x << "] [" << glQuat.y << "] [" << glQuat.z << "] [" << glQuat.w << "]\n";
 	// cout << "btQuat: [" << btQuat.getX() << "] [" << btQuat.getY() << "] [" << btQuat.getZ() << "] [" << btQuat.getW() << "]\n";
-	cout << "aiQuat: [" << aiQuat.x << "] [" << aiQuat.y << "] [" << aiQuat.z << "] [" << aiQuat.w << "]\n";
+	// cout << "aiQuat: [" << aiQuat.x << "] [" << aiQuat.y << "] [" << aiQuat.z << "] [" << aiQuat.w << "]\n";
 
 	// cout << "mtMat3: " << endl;
 	// cout << "\t" << mtMat3[0] << " " << mtMat3[1] << " " << mtMat3[2] << endl;

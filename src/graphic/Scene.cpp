@@ -58,13 +58,16 @@ void Scene::render()
 	{
 		if (!m.isActive)
 			continue;
+		vec3 pos;
+		quat rot;
+		vec3 scale = vec3(1,1,1);
 		if (m.pos != nullptr)
-			m.model->pos = *m.pos;
+			pos = *m.pos;
 		if (m.rot != nullptr)
-			m.model->rot = *m.rot;
+			rot = *m.rot;
 		if (m.scale != nullptr)
-			m.model->scale = *m.scale;
-		m.model->render();
+			scale = *m.scale;
+		m.model->render(pos, rot, scale);
 	}
 	
 }

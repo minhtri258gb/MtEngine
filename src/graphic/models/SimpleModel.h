@@ -26,7 +26,7 @@ public:
 	void loadTexture(std::string filepath);
 
 	// General
-	void render();
+	void render(vec3 pos, quat rot, vec3 scale);
 
 	// Other
 	friend class ModelBuilder;
