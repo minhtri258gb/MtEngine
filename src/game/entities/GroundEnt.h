@@ -18,7 +18,6 @@ public:
 	~GroundEnt();
 	void init();
 	void update();
-	void render();
 
 	// Native
 

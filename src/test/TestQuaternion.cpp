@@ -14,11 +14,14 @@
 #include <LinearMath/btQuaternion.h>
 #include <LinearMath/btMatrix3x3.h>
 
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <assimp/Importer.hpp>
+
 #include "common.h"
 #include "TestQuaternion.h"
 
 using namespace std;
-using namespace mt;
 using namespace mt::test;
 
 void TestQuaternion::run()
@@ -26,30 +29,37 @@ void TestQuaternion::run()
 
 	// [X] Constructor with x, y, z, w
 	float x=1.5, y=1.1, z=1.2, w=1;
-	quat mtQuat(x, y, z, w); // Quaternion(float x, float y, float z, float w)
+	mt::quat mtQuat(x, y, z, w); // Quaternion(float x, float y, float z, float w)
 	glm::quat glQuat = glm::quat(w, x, y, z); // qua(T _w, T _x, T _y, T _z)
 	btQuaternion btQuat(x, y, z, w); // btQuaternion(const btScalar& _x, const btScalar& _y, const btScalar& _z, const btScalar& _w)
-	
-	float x2=1.8, y2=2.1, z2=2.4, w2=1;
-	quat mtQuat2(x2, y2, z2, w2); // Quaternion(float x, float y, float z, float w)
-	glm::quat glQuat2 = glm::quat(w2, x2, y2, z2); // qua(T _w, T _x, T _y, T _z)
-	btQuaternion btQuat2(x2, y2, z2, w2); // btQuaternion(const btScalar& _x, const btScalar& _y, const btScalar& _z, const btScalar& _w)
+	aiQuaternion aiQuat(w, x, y, z); // aiQuaterniont(ai_real pw, ai_real px, ai_real py, ai_real pz)
 
-	// [X] Constructor with Angle Axis
+	// float x2=1.8, y2=2.1, z2=2.4, w2=1;
+	// quat mtQuat2(x2, y2, z2, w2); // Quaternion(float x, float y, float z, float w)
+	// glm::quat glQuat2 = glm::quat(w2, x2, y2, z2); // qua(T _w, T _x, T _y, T _z)
+	// btQuaternion btQuat2(x2, y2, z2, w2); // btQuaternion(const btScalar& _x, const btScalar& _y, const btScalar& _z, const btScalar& _w)
+	// aiQuaternion aiQuat2(w, x, y, z); // aiQuaterniont(ai_real pw, ai_real px, ai_real py, ai_real pz)
+
+	// [X] (gl Unkown) Constructor with Angle Axis
 	// float angle=PI/2.0f, x=20, y=10, z=30;
-	// quat mtQuat(angle, vec3(x,y,z)); // float angle, Vector3 axis
+	// mt::quat mtQuat(angle, mt::vec3(x,y,z)); // float angle, Vector3 axis
+	// // glm::quat glQuat(); // ???
 	// btQuaternion btQuat(btVector3(x,y,z), angle); // btQuaternion(const btVector3& _axis, const btScalar& _angle)
+	// aiQuaternion aiQuat(aiVector3D(x,y,z), angle); // aiQuaterniont(aiVector3D axis, ai_real angle)
 
-	// [ ] (glm ERR) Constructor with pitch, yaw, roll
+	// [ ] (gl ERR, ai Other) Constructor with pitch, yaw, roll
 	// float pitch=1, yaw=1.2, roll=1.4;
-	// quat mtQuat(pitch, yaw, roll); // pitch, yaw, roll
+	// mt::quat mtQuat(pitch, yaw, roll); // pitch, yaw, roll
 	// glm::quat glQuat = glm::quat(glm::vec3(pitch, yaw, roll)); // ?
 	// btQuaternion btQuat(yaw, pitch, roll); // btQuaternion(const btScalar& yaw, const btScalar& pitch, const btScalar& roll)
-	
+	// aiQuaternion aiQuat(pitch, yaw, roll); // aiQuaterniont(ai_real roty, ai_real rotz, ai_real rotx)
+
 	// [X] (bt Unkown) conjugate
 	// mtQuat = mtQuat.conjugate();
 	// glQuat = glm::conjugate(glQuat);
-	// btQuat = ?
+	// // btQuat = ?
+	// aiQuat = aiQuat.Conjugate();
+	
 
 	// [ ] (mt Unkown, bt is conjugate) inverse
 	// mtQuat = mtQuat. ?
@@ -107,14 +117,15 @@ void TestQuaternion::run()
 	// btQuat = btQuat + btQuat2;
 
 	// [X] Operator -
-	mtQuat = mtQuat - mtQuat2;
-	glQuat = glQuat - glQuat2;
-	btQuat = btQuat - btQuat2;
+	// mtQuat = mtQuat - mtQuat2;
+	// glQuat = glQuat - glQuat2;
+	// btQuat = btQuat - btQuat2;
 
 	// Compare
 	cout << "mtQuat: [" << mtQuat.x << "] [" << mtQuat.y << "] [" << mtQuat.z << "] [" << mtQuat.w << "]\n";
 	cout << "glQuat: [" << glQuat.x << "] [" << glQuat.y << "] [" << glQuat.z << "] [" << glQuat.w << "]\n";
-	cout << "btQuat: [" << btQuat.getX() << "] [" << btQuat.getY() << "] [" << btQuat.getZ() << "] [" << btQuat.getW() << "]\n";
+	// cout << "btQuat: [" << btQuat.getX() << "] [" << btQuat.getY() << "] [" << btQuat.getZ() << "] [" << btQuat.getW() << "]\n";
+	cout << "aiQuat: [" << aiQuat.x << "] [" << aiQuat.y << "] [" << aiQuat.z << "] [" << aiQuat.w << "]\n";
 
 	// cout << "mtMat3: " << endl;
 	// cout << "\t" << mtMat3[0] << " " << mtMat3[1] << " " << mtMat3[2] << endl;
@@ -175,4 +186,14 @@ void TestQuaternion::run()
 	// btQuaternion 	operator- () const
 	// btQuaternion 	farthest (const btQuaternion &qd) const
 	// btQuaternion 	nearest (const btQuaternion &qd) const
+
+	// Assimp
+	// aiMatrix3x3t< TReal > aiQuaterniont< TReal >::GetMatrix() const
+	// void aiQuaterniont< TReal >::Interpolate(aiQuaterniont< TReal > & pOut,const aiQuaterniont< TReal > & pStart,const aiQuaterniont< TReal > & pEnd,TReal 	pFactor )
+	// aiQuaterniont< TReal > & aiQuaterniont< TReal >::Normalize()
+	// bool aiQuaterniont< TReal >::operator!= (const aiQuaterniont< TReal > & o) const
+	// aiQuaterniont< TReal > aiQuaterniont< TReal >::operator* (const aiQuaterniont< TReal > & two) const
+	// bool aiQuaterniont< TReal >::operator== (const aiQuaterniont< TReal > & o) const
+	// aiVector3t< TReal > aiQuaterniont< TReal >::Rotate (const aiVector3t< TReal > & in)
+
 }

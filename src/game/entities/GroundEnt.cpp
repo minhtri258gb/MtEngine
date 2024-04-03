@@ -55,11 +55,3 @@ void GroundEnt::update()
 {
 
 }
-
-void GroundEnt::render()
-{
-	impl->model->pos = this->pos;
-	impl->model->rot = this->rot;
-	impl->model->scale = this->scale;
-	impl->model->render();
-}
