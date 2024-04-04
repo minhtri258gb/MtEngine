@@ -40,7 +40,7 @@ ColorModel::~ColorModel()
 	delete impl;
 }
 
-void ColorModel::loadVAO(vector<vec3> vertices, vector<vec2> colors, vector<unsigned int> indices)
+void ColorModel::loadVAO(vector<vec3> vertices, vector<vec4> colors, vector<unsigned int> indices)
 {
 	impl->VAO.init();
 	impl->VAO.bind();

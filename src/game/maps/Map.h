@@ -18,7 +18,6 @@ public:
 	virtual void load();
 	virtual void clear();
 	virtual void update();
-	virtual void render();
 
 	// Native
 	void setNeedLoad(bool);

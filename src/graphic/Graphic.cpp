@@ -135,7 +135,7 @@ void Graphic::init()
 	this->scene.init();
 
 	// Init Screen
-	this->screen.init();
+	// this->screen.init();
 
 	// Init Model
 	this->modelMgr.init();

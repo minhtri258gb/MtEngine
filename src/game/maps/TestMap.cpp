@@ -119,10 +119,9 @@ void TestMap::load()
 	// impl->bspMap->init("de_dust2");
 
 	// =================== Ent Ground ===================
-	// GroundEnt* groundEnt = new GroundEnt("matdat");
-	// groundEnt->pos = vec3(0,-5,0);
-	// groundEnt->init();
-	// impl->lstEntities.push_back(groundEnt);
+	GroundEnt* groundEnt = new GroundEnt("matdat");
+	groundEnt->init();
+	impl->lstEntities.push_back(groundEnt);
 
 	// Load entities
 	fCFG.select("entities");

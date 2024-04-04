@@ -1,6 +1,6 @@
 #version 440 core
 
-in vec2 f_texcoord;
+in vec4 f_color;
 in vec3 f_normal;
 in vec3 f_trans_position; // model * position
 
@@ -32,5 +32,5 @@ void main()
 	// fragColor = texture(ourTexture, f_texcoord) * lightColor * (diffuse + ambient + specular);
 	// // fragColor = texture(ourTexture, f_texcoord);
 
-	fragColor = vec4(1,1,1,1);
+	fragColor = f_color;
 }

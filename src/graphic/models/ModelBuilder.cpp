@@ -25,7 +25,6 @@ ModelBuilder::ModelBuilder()
 {
 	// Implement
 	this->impl = new ModelBuilderImpl();
-
 }
 
 ModelBuilder::~ModelBuilder()
@@ -99,7 +98,7 @@ Model* ModelBuilder::loadModel(string name)
 			// colors.push_back(color);
 
 			// vertices_arr[colIdx++].SetColor(colors.at(i));
-
+			colors.push_back(vec4(1, 1, 1, 1)); // #TODO Assimp load color
 		}
 
 		vector<unsigned int> indices;
@@ -149,18 +148,20 @@ Model* ModelBuilder::loadModel(string name)
 			newModel->pos = modelPos;
 			newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
 			newModel->scale = modelScale;
-			newModel->loadVAO(vertices, texcoords, indices);
+			newModel->loadVAO(vertices, colors, indices);
 
 			model = newModel; // Override class
 		}
 		else // simple
 		{
+			string textureFile = fCFG.get("texture");
+
 			SimpleModel *newModel = new SimpleModel();
 			newModel->pos = modelPos;
 			newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
 			newModel->scale = modelScale;
 			newModel->loadVAO(vertices, texcoords, indices);
-			newModel->loadTexture("./res/textures/wall.jpg");
+			newModel->loadTexture(modelDir + textureFile);
 
 			model = newModel; // Override class
 		}

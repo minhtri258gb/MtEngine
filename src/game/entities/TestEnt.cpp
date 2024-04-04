@@ -29,7 +29,7 @@ TestEnt::TestEnt(string _name)
 	this->name = _name;
 	this->pos = vec3();
 	this->rot = quat();
-	this->scale = vec3(1,1,1);
+	this->scale = vec3(1, 1, 1);
 }
 
 TestEnt::~TestEnt()
@@ -45,7 +45,7 @@ void TestEnt::init()
 	Graphic::ins.addModel(impl->model, &this->pos, &this->rot, &this->scale);
 
 	// Body
-	impl->body = Physic::ins.createBox(this->pos, this->rot, this->scale, 0); // #DEBUG
+	impl->body = Physic::ins.createBox(this->pos, this->rot, this->scale, 0.1);
 	Physic::ins.add(impl->body);
 }
 

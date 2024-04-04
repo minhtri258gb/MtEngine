@@ -23,7 +23,7 @@ public:
 	// Load custom
 	void loadVAO(
 		std::vector<vec3> vertices,
-		std::vector<vec2> colors,
+		std::vector<vec4> colors,
 		// std::vector<vec3> normals,
 		std::vector<unsigned int> indices
 	);

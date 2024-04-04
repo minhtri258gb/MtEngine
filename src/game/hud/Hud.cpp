@@ -1,36 +1,32 @@
-#define __MT_MAP_CPP__
+#define __MT_HUD_CPP__
 
 #include "common.h"
-#include "Map.h"
+#include "Hud.h"
 
 using namespace mt::game;
 
-Map::Map()
+Hud::Hud()
 {
-	this->needLoading = true;
+	// Default
+	this->isActive = true;
 }
 
-Map::~Map()
+Hud::~Hud()
 {
 	
 }
 
-void Map::load()
+void Hud::load()
 {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
 }
 
-void Map::clear()
+void Hud::clear()
 {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
 }
 
-void Map::update()
+void Hud::update()
 {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
-}
-
-void Map::setNeedLoad(bool _b)
-{
-	this->needLoading = _b;
 }

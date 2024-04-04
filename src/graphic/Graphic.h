@@ -4,7 +4,7 @@
 #include "ShaderProgramMgr.h"
 #include "models/ModelMgr.h"
 #include "Scene.h"
-#include "Screen.h"
+// #include "Screen.h"
 #include "Camera.h"
 #include "hud/Text.h"
 
@@ -21,7 +21,7 @@ public:
 	ShaderProgramMgr shaderProgramMgr;
 	ModelMgr modelMgr;
 	Scene scene;
-	Screen screen;
+	// Screen screen;
 	Camera camera;
 	Text text;
 

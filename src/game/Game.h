@@ -2,6 +2,7 @@
 #define __MT_GAME_H__
 
 #include "maps/Map.h"
+#include "hud/Screen.h"
 
 namespace mt {
 namespace game {
@@ -12,6 +13,7 @@ public:
 
 	// Variable
 	Map* map;
+	Screen screen;
 
 	// Forward
 	Game();

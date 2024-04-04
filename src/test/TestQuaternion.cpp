@@ -50,8 +50,8 @@ void TestQuaternion::run()
 	// [ ] (gl ERR, ai Other) Constructor with pitch, yaw, roll
 	float pitch=Math::toRadian(90), yaw=Math::toRadian(0), roll=Math::toRadian(0);
 	mt::quat mtQuat(pitch, yaw, roll); // pitch, yaw, roll
-	// glm::quat glQuat = glm::quat(glm::vec3(pitch, yaw, roll)); // ?
-	btQuaternion btQuat(yaw, pitch, roll); // btQuaternion(const btScalar& yaw, const btScalar& pitch, const btScalar& roll)
+	glm::quat glQuat = glm::quat(glm::vec3(pitch, yaw, roll)); // ?
+	// btQuaternion btQuat(yaw, pitch, roll); // btQuaternion(const btScalar& yaw, const btScalar& pitch, const btScalar& roll)
 	// aiQuaternion aiQuat(pitch, yaw, roll); // aiQuaterniont(ai_real roty, ai_real rotz, ai_real rotx)
 
 	float pitch2=Math::toRadian(0), yaw2=Math::toRadian(0), roll2=Math::toRadian(90);
@@ -61,7 +61,7 @@ void TestQuaternion::run()
 	// aiQuaternion aiQuat2(w, x, y, z); // aiQuaterniont(ai_real pw, ai_real px, ai_real py, ai_real pz)
 
 	mtQuat = mtQuat ^ mtQuat2;
-
+	
 
 	// [X] (bt Unkown) conjugate
 	// mtQuat = mtQuat.conjugate();

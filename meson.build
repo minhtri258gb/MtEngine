@@ -75,7 +75,7 @@ mtgraphic = library('mtgraphic',
 		'./src/graphic/glad.cpp'
 		,'./src/graphic/Graphic.cpp'
 		,'./src/graphic/Scene.cpp'
-		,'./src/graphic/Screen.cpp'
+		# ,'./src/graphic/Screen.cpp'
 		,'./src/graphic/Camera.cpp'
 		,'./src/graphic/ShaderProgram.cpp'
 		,'./src/graphic/ShaderProgramMgr.cpp'
@@ -158,6 +158,9 @@ mtgame = library('mtgame',
 		,'./src/game/entities/TestParticleEnt.cpp'
 		,'./src/game/entities/TestEmitterEnt.cpp'
 		,'./src/game/entities/GroundEnt.cpp'
+		,'./src/game/hud/Screen.cpp'
+		,'./src/game/hud/Hud.cpp'
+		,'./src/game/hud/HudFpsCount.cpp'
 	],
 	include_directories: dir_includes,
 	link_with: [mtengine, mtaudio, mtphysic, mtgraphic],
@@ -192,6 +195,6 @@ mttest = library('mttest',
 )
 
 executable('main', './src/main.cpp',
-	# include_directories: ['include'],
+	# include_directories: dir_includes,
 	link_with: [mttest, mtgame]
 )

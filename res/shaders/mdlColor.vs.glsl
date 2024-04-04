@@ -1,10 +1,10 @@
 #version 440 core
 
 layout (location = 0) in vec3 v_position;
-layout (location = 1) in vec2 v_texcoord;
+layout (location = 1) in vec4 v_color;
 layout (location = 2) in vec3 v_normal;
 
-out vec2 f_texcoord;
+out vec4 f_color;
 out vec3 f_normal;
 out vec3 f_trans_position; // model * position
 
@@ -18,7 +18,7 @@ void main()
 	f_trans_position = vec3(model * vec4(v_position, 1.0f));
 
 	// Pass
-	f_texcoord = v_texcoord;
+	f_color = v_color;
 	f_normal = v_normal;
 
 	// Main

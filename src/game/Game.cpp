@@ -97,6 +97,7 @@ void Game::init()
 	Physic::ins.init();
 
 	// Init component
+	this->screen.init();
 	this->map = MapBuilder::firstLoad();
 
 	// #EXTRA

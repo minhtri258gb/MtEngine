@@ -27,9 +27,9 @@ GroundEnt::GroundEnt(string name)
 
 	// Default
 	this->name = name;
-	this->pos = vec3();
+	this->pos = vec3(0, -5, 0);
 	this->rot = quat();
-	this->scale = vec3(80, 80, 80);
+	this->scale = vec3(100, 100, 100);
 }
 
 GroundEnt::~GroundEnt()
