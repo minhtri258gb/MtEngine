@@ -7,7 +7,9 @@
 #include "SimpleModel.h"
 
 using namespace std;
+using namespace mt;
 using namespace mt::graphic;
+
 
 ShaderProgram SimpleModel::shader;
 
@@ -18,6 +20,7 @@ public:
 	VertexArrayObject VAO;
 	Texture texture;
 };
+
 
 SimpleModel::SimpleModel()
 {
@@ -82,31 +85,26 @@ void SimpleModel::render(vec3 _pos, quat _rot, vec3 _scale)
 	// Shader
 	this->shader.use();
 
+	// Model mattrix
 	vec3 finalPos = this->pos + _pos;
 	quat finalRot = _rot ^ this->rot;
 	vec3 finalScale = vec3(this->scale.x * _scale.x, this->scale.z * _scale.z, this->scale.z * _scale.z);
-
 	// cout << "===============" << endl;
-
 	// cout << "this->rot: "
 	// 	<< this->rot.x << " "
 	// 	<< this->rot.y << " "
 	// 	<< this->rot.z << " "
 	// 	<< this->rot.w << endl;
-
 	// cout << "_rot: "
 	// 	<< _rot.x << " "
 	// 	<< _rot.y << " "
 	// 	<< _rot.z << " "
 	// 	<< _rot.w << endl;
-
 	// cout << "finalRot: "
 	// 	<< finalRot.x << " "
 	// 	<< finalRot.y << " "
 	// 	<< finalRot.z << " "
 	// 	<< finalRot.w << endl;
-
-	// Model mattrix
 	mat4 matModel;
 	matModel.translate(finalPos); // matModel = glm::translate(matModel, this->position);
 	matModel.rotate(finalRot); // matModel *= glm::mat4_cast(this->angle);

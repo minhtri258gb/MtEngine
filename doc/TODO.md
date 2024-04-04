@@ -1,4 +1,10 @@
 
+# StackTrace
+* backward-cpp-1.6
+	- ref: https://github.com/bombela/backward-cpp
+* cpptrace-0.5.2
+	- ref: https://github.com/jeremy-rifkin/cpptrace
+
 # Quaternion
 * Combile
 	- [ ] test thử lại thử đổi chiều phép quay xem

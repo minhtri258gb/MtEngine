@@ -5,6 +5,7 @@
 #include "common.h"
 #include "ShaderProgramMgr.h"
 #include "models/SimpleModel.h"
+#include "models/ColorModel.h"
 #include "models/animation/AnimationModel.h"
 #include "sky/SkyBox.h"
 #include "terrain/StaticTerrain.h"
@@ -32,8 +33,8 @@ ShaderProgramMgr::~ShaderProgramMgr()
 void ShaderProgramMgr::init()
 {
 	// Simple Model
-	SimpleModel::shader.init("simple",	ShaderProgram::SHADER_TYPE::VERTEX |
-										ShaderProgram::SHADER_TYPE::FRAGMENT);
+	SimpleModel::shader.init("mdlSimple",	ShaderProgram::SHADER_TYPE::VERTEX |
+											ShaderProgram::SHADER_TYPE::FRAGMENT);
 	SimpleModel::shader.use();
 	SimpleModel::shader.addLocation("proj");		// 0
 	SimpleModel::shader.addLocation("view");		// 1
@@ -41,6 +42,15 @@ void ShaderProgramMgr::init()
 	SimpleModel::shader.addLocation("ourTexture");	// 3
 	SimpleModel::shader.addLocation("camPos");		// 4
 	SimpleModel::shader.setInt(3, 0);
+
+	// Color Model
+	ColorModel::shader.init("mdlColor",	ShaderProgram::SHADER_TYPE::VERTEX |
+										ShaderProgram::SHADER_TYPE::FRAGMENT);
+	ColorModel::shader.use();
+	ColorModel::shader.addLocation("proj");		// 0
+	ColorModel::shader.addLocation("view");		// 1
+	ColorModel::shader.addLocation("model");		// 2
+	ColorModel::shader.addLocation("camPos");		// 3
 
 	// Animation Model
 	AnimationModel::shader.init("skinning",	ShaderProgram::SHADER_TYPE::VERTEX |
@@ -145,28 +155,17 @@ void ShaderProgramMgr::init()
 
 void ShaderProgramMgr::close()
 {
-	// SkyBox
+	// Enviroment
 	SkyBox::shader.close();
-
-	// Static Terrain
 	StaticTerrain::shader.close();
-
-	// Terrain QuaTree
 	Terrain::shader.close();
-
-	// BspSourceMap
 	BspSourceMap::shader.close();
-
-	// BspQuakeMap
 	BspQuakeMap::shader.close();
-
-	// BspMap
 	BspMap::shader.close();
 
-	// Simple Model
+	// Model
 	SimpleModel::shader.close();
-	
-	// Animation Model
+	ColorModel::shader.close();
 	AnimationModel::shader.close();
 
 	// Sprite
@@ -185,6 +184,8 @@ void ShaderProgramMgr::setSceneProj(mat4 value)
 {
 	SimpleModel::shader.use();
 	SimpleModel::shader.setMat4(0, value);
+	ColorModel::shader.use();
+	ColorModel::shader.setMat4(0, value);
 	AnimationModel::shader.use();
 	AnimationModel::shader.setMat4(0, value);
 	Sprite::shader.use();
@@ -209,6 +210,8 @@ void ShaderProgramMgr::setSceneView(mat4 value)
 {
 	SimpleModel::shader.use();
 	SimpleModel::shader.setMat4(1, value);
+	ColorModel::shader.use();
+	ColorModel::shader.setMat4(1, value);
 	AnimationModel::shader.use();
 	AnimationModel::shader.setMat4(1, value);
 	Sprite::shader.use();
@@ -246,6 +249,8 @@ void ShaderProgramMgr::setCameraPosition(vec3 value)
 {
 	SimpleModel::shader.use();
 	SimpleModel::shader.setVec3(4, value);
+	ColorModel::shader.use();
+	ColorModel::shader.setVec3(3, value);
 
 	Sprite::shader.use();
 	Sprite::shader.setVec3(2, value);

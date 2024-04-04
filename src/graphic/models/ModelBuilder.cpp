@@ -9,6 +9,7 @@
 #include "graphic/Graphic.h"
 #include "graphic/models/ModelBuilder.h"
 #include "graphic/models/SimpleModel.h"
+#include "graphic/models/ColorModel.h"
 
 using namespace std;
 using namespace mt;
@@ -24,6 +25,7 @@ ModelBuilder::ModelBuilder()
 {
 	// Implement
 	this->impl = new ModelBuilderImpl();
+
 }
 
 ModelBuilder::~ModelBuilder()
@@ -42,6 +44,7 @@ Model* ModelBuilder::loadModel(string name)
 		string configPath = modelDir + "info.cfg";
 		FileCFG fCFG(configPath);
 		fCFG.select("general");
+		string type = fCFG.get("type");
 		string modelFile = fCFG.get("model");
 		vec3 modelPos = fCFG.getVec3("model_pos");
 		vec3 modelRot = fCFG.getVec3("model_rot");
@@ -63,13 +66,16 @@ Model* ModelBuilder::loadModel(string name)
 		aiMesh* mesh = scene->mMeshes[0]; // #HARD chỉ load 1 mesh
 
 		vector<vec3> vertices;
+		vector<vec4> colors;
 		vector<vec2> texcoords;
 		vector<vec3> normals;
 		for (unsigned int i=0; i<mesh->mNumVertices; i++)
 		{
+			// Vertices
 			aiVector3D vertice = mesh->mVertices[i];
 			vertices.push_back(vec3(vertice.x, vertice.y, vertice.z));
 
+			// TexCoord
 			if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
 			{
 				aiVector3D texcoord = mesh->mTextureCoords[0][i];
@@ -78,8 +84,22 @@ Model* ModelBuilder::loadModel(string name)
 			else
 				texcoords.push_back(vec2(0.0f, 0.0f));
 			
+			// Normal
 			aiVector3D normal = mesh->mNormals[i];
 			normals.push_back(vec3(normal.x, normal.y, normal.z));
+
+			// Color
+			// aiVector3D color = mesh->mColors[i];
+			// colors.push_back(vec3(0, 0, 0));
+			// const aiMaterial *mtl = scene->mMaterials[mesh->mMaterialIndex];
+			// vec4 color = vec4(1,1,1,1);
+			// aiColor4D diffuse;
+			// if (AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
+			// 	color = vec4(diffuse.r, diffuse.g, diffuse.b, diffuse.a);
+			// colors.push_back(color);
+
+			// vertices_arr[colIdx++].SetColor(colors.at(i));
+
 		}
 
 		vector<unsigned int> indices;
@@ -122,16 +142,28 @@ Model* ModelBuilder::loadModel(string name)
 		// 	vertices.push_back(vec3(aiVec3.x, aiVec3.y, aiVec3.z));
 		// }
 
-		// Create memory
-		SimpleModel *newModel = new SimpleModel();
-		newModel->pos = modelPos;
-		newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
-		newModel->scale = modelScale;
-		newModel->loadVAO(vertices, texcoords, indices);
-		newModel->loadTexture("./res/textures/wall.jpg");
+		// Create model
+		if (type == "color")
+		{
+			ColorModel *newModel = new ColorModel();
+			newModel->pos = modelPos;
+			newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
+			newModel->scale = modelScale;
+			newModel->loadVAO(vertices, texcoords, indices);
 
-		// Override class
-		model = newModel;
+			model = newModel; // Override class
+		}
+		else // simple
+		{
+			SimpleModel *newModel = new SimpleModel();
+			newModel->pos = modelPos;
+			newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
+			newModel->scale = modelScale;
+			newModel->loadVAO(vertices, texcoords, indices);
+			newModel->loadTexture("./res/textures/wall.jpg");
+
+			model = newModel; // Override class
+		}
 	}
 	return model;
 }

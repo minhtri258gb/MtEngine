@@ -82,6 +82,7 @@
 		"variant": "cpp",
 		"*.ipp": "cpp",
 		"charconv": "cpp",
-		"format": "cpp"
+		"format": "cpp",
+		"stacktrace": "cpp"
 	}
 }

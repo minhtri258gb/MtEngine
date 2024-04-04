@@ -21,10 +21,15 @@ public:
 	~ColorModel();
 
 	// Load custom
-	void loadVAO(std::vector<vec3> vertices, std::vector<unsigned int> indices);
+	void loadVAO(
+		std::vector<vec3> vertices,
+		std::vector<vec2> colors,
+		// std::vector<vec3> normals,
+		std::vector<unsigned int> indices
+	);
 
 	// General
-	void render();
+	void render(vec3 pos, quat rot, vec3 scale);
 
 	// Other
 	friend class ModelBuilder;

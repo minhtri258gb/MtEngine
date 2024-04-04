@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <stacktrace>
 
 #include "common.h"
 
@@ -72,7 +73,7 @@ void Game::run()
 	
 		cerr << "[ERROR]: " << e.getMessage() << '\n';
 	}
-	catch (exception e)
+	catch (exception &e)
 	{
 		
 		#ifdef LOG

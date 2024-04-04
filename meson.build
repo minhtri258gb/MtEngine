@@ -1,6 +1,12 @@
 
 project('MT Engine', 'cpp',
 	version: '1.0.0',
+	default_options : [
+		'c_std=gnu23',
+		'cpp_std=gnu++2a',
+		'warning_level=3',
+		'b_ndebug=true',
+	],
 	license: 'MIT'
 )
 
@@ -61,6 +67,7 @@ mtengine = library('mtengine',
 		,'./src/engine/utils/StringUtils.cpp'
 	],
 	include_directories: dir_includes
+	# dependencies: [zstd, dwarf, cpptrace]
 )
 
 mtgraphic = library('mtgraphic',
