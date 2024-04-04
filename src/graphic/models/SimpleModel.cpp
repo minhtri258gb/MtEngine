@@ -83,8 +83,28 @@ void SimpleModel::render(vec3 _pos, quat _rot, vec3 _scale)
 	this->shader.use();
 
 	vec3 finalPos = this->pos + _pos;
-	quat finalRot = this->rot ^ _rot;
+	quat finalRot = _rot ^ this->rot;
 	vec3 finalScale = vec3(this->scale.x * _scale.x, this->scale.z * _scale.z, this->scale.z * _scale.z);
+
+	// cout << "===============" << endl;
+
+	// cout << "this->rot: "
+	// 	<< this->rot.x << " "
+	// 	<< this->rot.y << " "
+	// 	<< this->rot.z << " "
+	// 	<< this->rot.w << endl;
+
+	// cout << "_rot: "
+	// 	<< _rot.x << " "
+	// 	<< _rot.y << " "
+	// 	<< _rot.z << " "
+	// 	<< _rot.w << endl;
+
+	// cout << "finalRot: "
+	// 	<< finalRot.x << " "
+	// 	<< finalRot.y << " "
+	// 	<< finalRot.z << " "
+	// 	<< finalRot.w << endl;
 
 	// Model mattrix
 	mat4 matModel;

@@ -73,7 +73,7 @@ void RigidBody::getTransForm(vec3 *origin, quat *angle)
 	origin->z = pos.getZ();
 
 	btQuaternion rot = t.getRotation();
-	*angle = quat(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
+	*angle = quat(rot.getX(), rot.getY(), rot.getZ(), rot.getW());
 }
 
 vec3 RigidBody::getOrigin()

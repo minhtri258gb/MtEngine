@@ -45,7 +45,7 @@ void TestEnt::init()
 	Graphic::ins.addModel(impl->model, &this->pos, &this->rot, &this->scale);
 
 	// Body
-	impl->body = Physic::ins.createBox(this->pos, this->rot, this->scale, 1);
+	impl->body = Physic::ins.createBox(this->pos, this->rot, this->scale, 0); // #DEBUG
 	Physic::ins.add(impl->body);
 }
 
