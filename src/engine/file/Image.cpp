@@ -1,6 +1,6 @@
 #define __MT_IMAGE_CPP__
 
-#include <stb/stb_image.h>
+#include <stb_image.h>
 
 #include "common.h"
 #include "Image.h"

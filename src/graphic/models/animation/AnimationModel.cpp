@@ -10,7 +10,7 @@
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
 
-#include <stb/stb_image.h>
+#include <stb_image.h>
 
 #include "common.h"
 #include "engine/Config.h"

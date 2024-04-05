@@ -80,7 +80,7 @@ Model* ModelBuilder::loadModel(string name)
 		vector<uint> indices;
 
 		string ext = FilePathUtils::getExtension(modelPath);
-		if (ext == "gbl" || ext == "glft")
+		if (ext == "glb" || ext == "glft")
 			impl->loadByTinyGLFT(modelPath, vertices, colors, texcoords, normals, indices);
 		else
 			impl->loadByAssimp(modelPath, vertices, colors, texcoords, normals, indices);
@@ -308,16 +308,18 @@ void ModelBuilder::ModelBuilderImpl::loadByTinyGLFT(
 
 	bool isLoaded = false;
 	if (StringUtils::endWith(modelPath, "glft"))
-		isLoaded = loader.LoadBinaryFromFile(&model, &err, &warn, modelPath.c_str());
-	else
 		isLoaded = loader.LoadASCIIFromFile(&model, &err, &warn, modelPath.c_str());
+	else
+		isLoaded = loader.LoadBinaryFromFile(&model, &err, &warn, modelPath.c_str());
 	
 	if (!warn.empty())
 		cout << "[WARNING] " << warn << endl;
 	if (!err.empty())
-		throw error(err);
+		cout << "[ERROR] " << err << endl;
 	if (!isLoaded)
 		throw error("Faild to load Model with tinyglft");
 	
+	int a=1;
+
 	// #TODO
 }
