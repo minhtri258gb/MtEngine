@@ -69,6 +69,7 @@ mtengine = library('mtengine',
 		,'./src/engine/file/FileCFG.cpp'
 		,'./src/engine/file/FileINI.cpp'
 		,'./src/engine/utils/StringUtils.cpp'
+		,'./src/engine/utils/FilePathUtils.cpp'
 	],
 	include_directories: dir_includes
 	# dependencies: [zstd, dwarf, cpptrace]

@@ -4,9 +4,12 @@
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
 
+#include <tiny_gltf.h>
+
 #include "common.h"
 #include "engine/file/FileCFG.h"
 #include "engine/utils/StringUtils.h"
+#include "engine/utils/FilePathUtils.h"
 #include "graphic/Graphic.h"
 #include "graphic/models/ModelBuilder.h"
 #include "graphic/models/SimpleModel.h"
@@ -21,6 +24,14 @@ class ModelBuilder::ModelBuilderImpl
 {
 public:
 	void loadByAssimp(
+		string modelPath
+		,vector<vec3>& vertices
+		,vector<vec4>& colors
+		,vector<vec2>& texcoords
+		,vector<vec3>& normals
+		,vector<uint>& indices
+	);
+	void loadByTinyGLFT(
 		string modelPath
 		,vector<vec3>& vertices
 		,vector<vec4>& colors
@@ -68,10 +79,10 @@ Model* ModelBuilder::loadModel(string name)
 		vector<vec3> normals;
 		vector<uint> indices;
 
-		// #TODO load with tinyGLFT
-		// if (StringUtils::endWith(modelFile, ".glb"))
-		// 	int a = 1;
-		// else
+		string ext = FilePathUtils::getExtension(modelPath);
+		if (ext == "gbl" || ext == "glft")
+			impl->loadByTinyGLFT(modelPath, vertices, colors, texcoords, normals, indices);
+		else
 			impl->loadByAssimp(modelPath, vertices, colors, texcoords, normals, indices);
 
 		// Create model
@@ -189,6 +200,8 @@ Model* ModelBuilder::createPlane()
 	return model;
 }
 
+
+// ModelBuilderImpl
 void ModelBuilder::ModelBuilderImpl::loadByAssimp(
 	string modelPath
 	,vector<vec3>& vertices
@@ -278,4 +291,33 @@ void ModelBuilder::ModelBuilderImpl::loadByAssimp(
 	// 	vertices.push_back(vec3(aiVec3.x, aiVec3.y, aiVec3.z));
 	// }
 
+}
+
+void ModelBuilder::ModelBuilderImpl::loadByTinyGLFT(
+		string modelPath
+		,vector<vec3>& vertices
+		,vector<vec4>& colors
+		,vector<vec2>& texcoords
+		,vector<vec3>& normals
+		,vector<uint>& indices
+) {
+	tinygltf::Model model;
+	tinygltf::TinyGLTF loader;
+	string err;
+	string warn;
+
+	bool isLoaded = false;
+	if (StringUtils::endWith(modelPath, "glft"))
+		isLoaded = loader.LoadBinaryFromFile(&model, &err, &warn, modelPath.c_str());
+	else
+		isLoaded = loader.LoadASCIIFromFile(&model, &err, &warn, modelPath.c_str());
+	
+	if (!warn.empty())
+		cout << "[WARNING] " << warn << endl;
+	if (!err.empty())
+		throw error(err);
+	if (!isLoaded)
+		throw error("Faild to load Model with tinyglft");
+	
+	// #TODO
 }
