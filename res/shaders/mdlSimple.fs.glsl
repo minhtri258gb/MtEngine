@@ -14,7 +14,7 @@ uniform vec3 lightPos = vec3(-200.0f, 500.0f, -400.0f); // #TODO
 void main()
 {
 	// Ambient light
-	float ambient = 0.50f;
+	float ambient = 1.0f;
 
 	// Cal diffuse light
 	vec3 normal = normalize(f_normal);

@@ -25,6 +25,7 @@ public:
 	float getFloat(std::string key);
 	vec2 getVec2(std::string key);
 	vec3 getVec3(std::string key);
+	vec4 getVec4(std::string key);
 	std::map<std::string, std::string>* getPtr();
 
 

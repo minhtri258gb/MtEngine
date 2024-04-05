@@ -47,7 +47,7 @@ void GroundEnt::init()
 	Graphic::ins.addModel(impl->model, &this->pos, &this->rot, &this->scale);
 
 	// Body
-	impl->body = Physic::ins.createPlane(this->pos, vec3(0,1,0), 1, 0);
+	impl->body = Physic::ins.create("shape/plane", this->pos, this->rot, this->scale);
 	Physic::ins.add(impl->body);
 }
 

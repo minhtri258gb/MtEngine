@@ -13,6 +13,7 @@ public:
 	// Native
 	static int parseInt(std::string);
 	// static std::string format(char *fmt, ...);
+	static bool endWith(std::string str, std::string substr);
 
 	// Stock
 

@@ -55,6 +55,8 @@ Download and Install Python
 	- link: https://github.com/metayeti/mINI
 	- download release: mINI.zip
 	- mINI.zip/src/mini -> ./inc
+- tinygltf
+	- link: https://github.com/syoyo/tinygltf
 
 # Variable Enviroment
 - D:\Programs\MSYS2\mingw64\bin

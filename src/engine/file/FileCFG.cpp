@@ -225,6 +225,19 @@ vec3 FileCFG::getVec3(string key)
 	return vec3(x, y, z);
 }
 
+vec4 FileCFG::getVec4(string key)
+{
+	string data = get(key);
+	if (!data.length())
+		return vec4();
+
+	stringstream geek(data);
+	float x, y, z, w;
+	geek >> x >> y >> z >> w;
+
+	return vec4(x, y, z, w);
+}
+
 void FileCFG::load(string filename)
 {
 	ifstream fCFG;

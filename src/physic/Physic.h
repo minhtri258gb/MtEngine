@@ -22,9 +22,7 @@ public:
 
 	void update();
 
-	RigidBody* createPlane(vec3 pos, vec3 normal, float scale, float mass);
-	RigidBody* createSphere(vec3 pos, float radius, float mass);
-	RigidBody* createBox(vec3 pos, quat rot, vec3 scale, float mass);
+	RigidBody* create(std::string name, vec3 pos, quat rot, vec3 scale);
 	
 	void add(RigidBody*);
 	void remove(RigidBody*);

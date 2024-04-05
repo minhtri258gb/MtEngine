@@ -26,16 +26,20 @@ dir_includes = [
 
 
 # Dependencies
-assimp = cpp.find_library('assimpd', dirs: dir_lib)
-freetype = cpp.find_library('freetype', dirs: dir_lib_msys2)
 glfw3 = cpp.find_library('glfw3', dirs: dir_lib_msys2)
+assimp = cpp.find_library('assimpd', dirs: dir_lib)
+tinygltf = cpp.find_library('tinygltf', dirs: dir_lib)
+freetype = cpp.find_library('freetype', dirs: dir_lib_msys2)
+
 bullet_collision = cpp.find_library('BulletCollision', dirs: dir_lib_msys2)
 bullet_dynamics = cpp.find_library('BulletDynamics', dirs: dir_lib_msys2)
 linear_math = cpp.find_library('LinearMath', dirs: dir_lib_msys2)
-bass = cpp.find_library('bass', dirs: dir_lib)
+
 # reactphysics3d = cpp.find_library('reactphysics3d', dirs: dir_lib)
 # ode = cpp.find_library('ode_double', dirs: dir_lib_msys2)
 # newton_dynamic = cpp.find_library('dNewton', dirs: dir_lib_msys2)
+
+bass = cpp.find_library('bass', dirs: dir_lib)
 
 
 mtengine = library('mtengine',
@@ -121,7 +125,7 @@ mtgraphic = library('mtgraphic',
 	],
 	include_directories: dir_includes,
 	link_with: mtengine,
-	dependencies: [assimp, freetype, glfw3],
+	dependencies: [tinygltf, assimp, freetype, glfw3],
 )
 
 mtphysic = library('mtphysic',

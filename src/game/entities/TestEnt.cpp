@@ -1,7 +1,7 @@
 #define __MT_TEST_ENTITY_CPP__
 
 #include "common.h"
-// #include "engine/Engine.h"
+#include "engine/file/FileCFG.h"
 #include "graphic/Graphic.h"
 #include "physic/Physic.h"
 #include "physic/body/RigidBody.h"
@@ -45,7 +45,7 @@ void TestEnt::init()
 	Graphic::ins.addModel(impl->model, &this->pos, &this->rot, &this->scale);
 
 	// Body
-	impl->body = Physic::ins.createBox(this->pos, this->rot, this->scale, 0.1);
+	impl->body = Physic::ins.create(this->name, this->pos, this->rot, this->scale);
 	Physic::ins.add(impl->body);
 }
 

@@ -44,3 +44,11 @@ int StringUtils::parseInt(std::string str)
 //     va_end(ap);
 //     return max;
 // }
+
+bool StringUtils::endWith(std::string str, std::string substr)
+{
+	if (str.length() >= substr.length())
+		return (0 == str.compare (str.length() - substr.length(), substr.length(), substr));
+	else
+		return false;
+}

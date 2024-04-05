@@ -1,4 +1,9 @@
 
+# Commit
+
+# Physic body plane
+- [Chưa test] Đã sửa lỗi phương trình mặt phẳng planeConst thay vì tham số scale
+
 # StackTrace
 * backward-cpp-1.6
 	- ref: https://github.com/bombela/backward-cpp

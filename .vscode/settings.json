@@ -83,6 +83,7 @@
 		"*.ipp": "cpp",
 		"charconv": "cpp",
 		"format": "cpp",
-		"stacktrace": "cpp"
+		"stacktrace": "cpp",
+		"stdfloat": "cpp"
 	}
 }
