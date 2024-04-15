@@ -16,6 +16,7 @@ public:
 	// Forwards
 	Input();
 	~Input();
+
 	void resetStatus();
 
 	// Natives
@@ -27,6 +28,9 @@ public:
 
 	double getCursorX();
 	double getCursorY();
+
+	// Get / Set
+	void setCallBackKeypress(void (*_func)(int key, bool state));
 
 private:
 

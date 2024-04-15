@@ -10,6 +10,7 @@
 using namespace std;
 using namespace mt::engine;
 
+
 Input Input::ins;
 
 class Input::InputImpl
@@ -19,6 +20,8 @@ public:
 	bitset<354> keyHold;
 	bitset<354> keyRelease;
 	double mx, my, dx, dy;
+
+	void (*cbkKeypress)(int key, bool state); // Callback function pointer
 };
 
 Input::Input()
@@ -41,7 +44,7 @@ void Input::resetStatus()
 	impl->dy = 0.0;
 }
 
-void Input::keyPress(int idkey, bool state)
+void Input::keyPress(int key, bool state)
 {
 	if (state)
 	{
@@ -49,14 +52,17 @@ void Input::keyPress(int idkey, bool state)
 			cout << "key: " << idkey << endl;
 		#endif
 
-		impl->keyPress.set(idkey, true);
-		impl->keyHold.set(idkey, true);
+		impl->keyPress.set(key, true);
+		impl->keyHold.set(key, true);
 	}
 	else
 	{
-		impl->keyRelease.set(idkey, true);
-		impl->keyHold.set(idkey, false);
+		impl->keyRelease.set(key, true);
+		impl->keyHold.set(key, false);
 	}
+
+	// Call cbk
+	impl->cbkKeypress(key, state);
 }
 
 void Input::cursorPos(double xpos, double ypos)
@@ -93,4 +99,9 @@ double Input::getCursorX()
 double Input::getCursorY()
 {
 	return impl->dy;
+}
+
+void Input::setCallBackKeypress(void (*_func)(int key, bool state))
+{
+	impl->cbkKeypress = _func;
 }

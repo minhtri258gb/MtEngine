@@ -14,8 +14,13 @@ public:
 
 	// System
 	std::string resource_dir;
+	std::string system_path;
 	std::string shader_path;
 	std::string skybox_path;
+	std::string terrain_path;
+	std::string model_path;
+	std::string font_path;
+	std::string map_path;
 
 	// Window
 	int windowWidth;

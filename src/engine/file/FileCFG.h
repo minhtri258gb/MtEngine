@@ -16,6 +16,7 @@ public:
 	void addSession(std::string key);
 	void set(std::string key, std::string value);
 	void save(std::string filepath);
+	std::vector<std::string> keys();
 	std::vector<std::string> values();
 
 	std::string get(std::string key);
@@ -26,7 +27,6 @@ public:
 	vec2 getVec2(std::string key);
 	vec3 getVec3(std::string key);
 	vec4 getVec4(std::string key);
-	std::map<std::string, std::string>* getPtr();
 
 
 private:

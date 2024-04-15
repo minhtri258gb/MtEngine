@@ -1,4 +1,4 @@
-#define __MT_TEST_QUATERNION_CPP__
+#define __MT_TEST_MATH_CPP__
 
 #define GLM_ENABLE_EXPERIMENTAL
 
@@ -19,13 +19,85 @@
 #include <assimp/Importer.hpp>
 
 #include "common.h"
-#include "TestQuaternion.h"
+#include "engine/math/Math.h"
+#include "TestMath.h"
 
 using namespace std;
 using namespace mt::test;
 
-void TestQuaternion::run()
+
+void show(mt::mat3 m)
 {
+	cout << "mtMat3: " << endl;
+	cout << "\t" << m[0] << " " << m[1] << " " << m[2] << endl;
+	cout << "\t" << m[3] << " " << m[4] << " " << m[5] << endl;
+	cout << "\t" << m[6] << " " << m[7] << " " << m[8] << endl;
+}
+void show(mt::mat4 m)
+{
+	cout << "mtMat4: " << endl;
+	cout << "\t" << m[ 0] << " " << m[ 1] << " " << m[ 2] << " " << m[ 3] << endl;
+	cout << "\t" << m[ 4] << " " << m[ 5] << " " << m[ 6] << " " << m[ 7] << endl;
+	cout << "\t" << m[ 8] << " " << m[ 9] << " " << m[10] << " " << m[11] << endl;
+	cout << "\t" << m[12] << " " << m[13] << " " << m[14] << " " << m[15] << endl;
+}
+void show(glm::mat3 m)
+{
+	cout << "glMat3: " << endl;
+	cout << "\t" << m[0][0] << " " << m[0][1] << " " << m[0][2] << endl;
+	cout << "\t" << m[1][0] << " " << m[1][1] << " " << m[1][2] << endl;
+	cout << "\t" << m[2][0] << " " << m[2][1] << " " << m[2][2] << endl;
+}
+void show(glm::mat4 m)
+{
+	cout << "glMat4: " << endl;
+	cout << "\t" << m[0][0] << " " << m[0][1] << " " << m[0][2] << " " << m[0][3] << endl;
+	cout << "\t" << m[1][0] << " " << m[1][1] << " " << m[1][2] << " " << m[1][3] << endl;
+	cout << "\t" << m[2][0] << " " << m[2][1] << " " << m[2][2] << " " << m[2][3] << endl;
+	cout << "\t" << m[3][0] << " " << m[3][1] << " " << m[3][2] << " " << m[3][3] << endl;
+}
+void show(btMatrix3x3 m)
+{
+	cout << "btMat3: " << endl;
+	cout << "\t" << m[0][0] << " " << m[0][1] << " " << m[0][2] << endl;
+	cout << "\t" << m[1][0] << " " << m[1][1] << " " << m[1][2] << endl;
+	cout << "\t" << m[2][0] << " " << m[2][1] << " " << m[2][2] << endl;
+}
+
+void matrix_proj()
+{
+	float width = 1280.0f;
+	float height = 720.0f;
+	float aspect = width / height;
+	float fovy = mt::Math::toRadian(80.0);
+
+	mt::mat4 mtMat4;
+	mtMat4.perspective(fovy, aspect, 0.1f, 99999.0f);
+	
+	glm::mat4 glMat4 = glm::perspective(fovy, aspect, 0.1f, 99999.0f);
+
+	show(mtMat4);
+	show(glMat4);
+}
+
+void matrix_ortho()
+{
+	float width = 1280.0f;
+	float height = 720.0f;
+
+	mt::mat4 mtMat4;
+	mtMat4.ortho(0, width, 0, height);
+
+	glm::mat4 glMat4 = glm::ortho(0, (int)width, 0, (int)height);
+
+	show(mtMat4);
+	show(glMat4);
+}
+
+void TestMath::run()
+{
+	// matrix_proj(); // PASS
+	matrix_ortho();
 
 	// [X] Constructor with x, y, z, w
 	// float x=1.5, y=1.1, z=1.2, w=1;
@@ -48,19 +120,19 @@ void TestQuaternion::run()
 	// aiQuaternion aiQuat(aiVector3D(x,y,z), angle); // aiQuaterniont(aiVector3D axis, ai_real angle)
 
 	// [ ] (gl ERR, ai Other) Constructor with pitch, yaw, roll
-	float pitch=Math::toRadian(90), yaw=Math::toRadian(0), roll=Math::toRadian(0);
-	mt::quat mtQuat(pitch, yaw, roll); // pitch, yaw, roll
-	glm::quat glQuat = glm::quat(glm::vec3(pitch, yaw, roll)); // ?
+	// float pitch=Math::toRadian(90), yaw=Math::toRadian(0), roll=Math::toRadian(0);
+	// mt::quat mtQuat(pitch, yaw, roll); // pitch, yaw, roll
+	// glm::quat glQuat = glm::quat(glm::vec3(pitch, yaw, roll)); // ?
 	// btQuaternion btQuat(yaw, pitch, roll); // btQuaternion(const btScalar& yaw, const btScalar& pitch, const btScalar& roll)
 	// aiQuaternion aiQuat(pitch, yaw, roll); // aiQuaterniont(ai_real roty, ai_real rotz, ai_real rotx)
 
-	float pitch2=Math::toRadian(0), yaw2=Math::toRadian(0), roll2=Math::toRadian(90);
-	mt::quat mtQuat2(pitch2, yaw2, roll2); // pitch, yaw, roll
+	// float pitch2=Math::toRadian(0), yaw2=Math::toRadian(0), roll2=Math::toRadian(90);
+	// mt::quat mtQuat2(pitch2, yaw2, roll2); // pitch, yaw, roll
 	// glm::quat glQuat2 = glm::quat(w2, x2, y2, z2); // qua(T _w, T _x, T _y, T _z)
 	// btQuaternion btQuat2(x2, y2, z2, w2); // btQuaternion(const btScalar& _x, const btScalar& _y, const btScalar& _z, const btScalar& _w)
 	// aiQuaternion aiQuat2(w, x, y, z); // aiQuaterniont(ai_real pw, ai_real px, ai_real py, ai_real pz)
 
-	mtQuat = mtQuat ^ mtQuat2;
+	// mtQuat = mtQuat ^ mtQuat2;
 	
 
 	// [X] (bt Unkown) conjugate
@@ -135,19 +207,6 @@ void TestQuaternion::run()
 	// cout << "glQuat: [" << glQuat.x << "] [" << glQuat.y << "] [" << glQuat.z << "] [" << glQuat.w << "]\n";
 	// cout << "btQuat: [" << btQuat.getX() << "] [" << btQuat.getY() << "] [" << btQuat.getZ() << "] [" << btQuat.getW() << "]\n";
 	// cout << "aiQuat: [" << aiQuat.x << "] [" << aiQuat.y << "] [" << aiQuat.z << "] [" << aiQuat.w << "]\n";
-
-	// cout << "mtMat3: " << endl;
-	// cout << "\t" << mtMat3[0] << " " << mtMat3[1] << " " << mtMat3[2] << endl;
-	// cout << "\t" << mtMat3[3] << " " << mtMat3[4] << " " << mtMat3[5] << endl;
-	// cout << "\t" << mtMat3[6] << " " << mtMat3[7] << " " << mtMat3[8] << endl;
-	// cout << "glMat3: " << endl;
-	// cout << "\t" << glMat3[0][0] << " " << glMat3[0][1] << " " << glMat3[0][2] << endl;
-	// cout << "\t" << glMat3[1][0] << " " << glMat3[1][1] << " " << glMat3[1][2] << endl;
-	// cout << "\t" << glMat3[2][0] << " " << glMat3[2][1] << " " << glMat3[2][2] << endl;
-	// cout << "btMat3: " << endl;
-	// cout << "\t" << btMat3[0][0] << " " << btMat3[0][1] << " " << btMat3[0][2] << endl;
-	// cout << "\t" << btMat3[1][0] << " " << btMat3[1][1] << " " << btMat3[1][2] << endl;
-	// cout << "\t" << btMat3[2][0] << " " << btMat3[2][1] << " " << btMat3[2][2] << endl;
 
 	// cout << "mtMat4: " << endl;
 	// cout << "\t" << mtMat4[ 0] << " " << mtMat4[ 1] << " " << mtMat4[ 2] << " " << mtMat4[ 3] << endl;

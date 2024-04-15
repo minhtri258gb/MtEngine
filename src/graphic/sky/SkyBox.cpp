@@ -2,6 +2,7 @@
 
 #include "common.h"
 #include "engine/Config.h"
+#include "engine/file/FileCFG.h"
 #include "../Graphic.h"
 #include "SkyBox.h"
 #include "../buffer/VertexArrayObject.h"
@@ -43,7 +44,7 @@ SkyBox::~SkyBox()
 void SkyBox::init(string name)
 {
 	// Data
-	// CFGFile fCFG("res/skybox/" + name + "/info.cfg");
+	FileCFG fCFG(Config::ins.skybox_path + name + "/info.cfg");
 
 	// Mesh sky
 	float size = 1024.0f;

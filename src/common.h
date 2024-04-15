@@ -14,6 +14,7 @@
 #include "engine/exception/Exception.h"
 
 typedef unsigned int uint;
+typedef void (*function)();
 
 // #EXTRA
 

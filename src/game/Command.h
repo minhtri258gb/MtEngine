@@ -8,21 +8,10 @@ class Command
 {
 public:
 
-	// Variables
-	static Command ins;
+	static void setFuncMap(std::map<std::string, function>* map);
 
-	// Forwards
-	Command();
-	~Command();
-
-	// Natives
-
-private:
-
-	// Variables
-	class CommandImpl;
-	CommandImpl* impl;
-
+	static void cmd_void();
+	static void cmd_debug_frustumcull();
 };
 
 }}

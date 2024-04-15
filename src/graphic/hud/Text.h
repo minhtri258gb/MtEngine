@@ -12,10 +12,14 @@ public:
 
 	// Variables
 	static ShaderProgram shader;
+
+	// Static method
+	static void initText();
 	
 	// Forwards
 	Text();
 	~Text();
+
 	void init(std::string content, vec2 position, float scale, vec3 color);
 	void close();
 	void render();
@@ -28,6 +32,7 @@ private:
 	// Variable
 	class TextImpl;
 	TextImpl* impl;
+
 };
 
 }}

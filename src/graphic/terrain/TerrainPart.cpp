@@ -2,19 +2,20 @@
 
 #include "common.h"
 #include "engine/Timer.h"
-#include "../Graphic.h"
-#include "TerrainQuad.h"
-#include "../buffer/VertexArrayObject.h"
-#include "../texture/Texture.h"
-#include "TerrainPart.h"
+#include "graphic/Graphic.h"
+#include "graphic/buffer/VertexArrayObject.h"
+#include "graphic/texture/Texture.h"
+#include "graphic//terrain/TerrainQuad.h"
+#include "graphic//terrain/TerrainPart.h"
 
-// Import nguoc
+// Inv Import
 #include "Terrain.h"
 
 using namespace std;
 using namespace mt;
 using namespace mt::engine;
 using namespace mt::graphic;
+
 
 class TerrainPart::TerrainPartImpl
 {
@@ -45,8 +46,8 @@ TerrainPart::TerrainPart()
 	impl->VAO.setCount(4); // luu 4 diem tai vs.shader
 
 	// Init Texture
-	this->heightScale = 50.0f;
-	impl->heightMapTex.init("./res/terrains/static/chadvernon/texture.png");
+	this->heightScale = 50.0f; // #TODO config
+	impl->heightMapTex.init("./res/terrains/static/chadvernon/heightmap.png");
 	
 }
 

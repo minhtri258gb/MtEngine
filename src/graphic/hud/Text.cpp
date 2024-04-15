@@ -8,21 +8,15 @@
 
 #include "common.h"
 #include "engine/Config.h"
-#include "../Graphic.h"
+#include "graphic/Graphic.h"
+#include "graphic/buffer/VertexArrayObject.h"
 #include "Text.h"
-
-#include "../buffer/VertexArrayObject.h"
-
-// #include "../../Main.h"
-// #include "../../system/System.h"
-// #include "../../graphic/Graphic.h"
-// #include "../../graphic/Window.h"
-// #include "../../graphic/Scene.h"
 
 using namespace std;
 using namespace mt;
 using namespace mt::engine;
 using namespace mt::graphic;
+
 
 struct Character
 {
@@ -32,14 +26,14 @@ struct Character
 	unsigned int Advance;		// Offset to advance to next glyph
 };
 
-bool isInit = false;
 ShaderProgram Text::shader;
-VertexArrayObject VAO;
-map<char, Character> characters;
 
 class Text::TextImpl
 {
 public:
+
+	static VertexArrayObject VAO;
+	static map<char, Character> characters;
 
 	string content;
 	vec2 position;
@@ -47,6 +41,81 @@ public:
 	vec3 color;
 
 };
+
+VertexArrayObject Text::TextImpl::VAO;
+map<char, Character> Text::TextImpl::characters;
+
+void Text::initText()
+{
+	// Vertex Buffer
+	vector<vec2> texcoords;
+	texcoords.push_back(vec2(0.0f, 1.0f));
+	texcoords.push_back(vec2(0.0f, 0.0f));
+	texcoords.push_back(vec2(1.0f, 1.0f));
+	texcoords.push_back(vec2(1.0f, 0.0f));
+	vector<uint> indices;
+	// indices.push_back(0); indices.push_back(3); indices.push_back(1);
+	// indices.push_back(0); indices.push_back(2); indices.push_back(3);
+	indices.push_back(0); indices.push_back(2); indices.push_back(1);
+	indices.push_back(1); indices.push_back(2); indices.push_back(3);
+	Text::TextImpl::VAO.init();
+	Text::TextImpl::VAO.bind();
+	Text::TextImpl::VAO.addAttribute(texcoords);
+	Text::TextImpl::VAO.addDynamicAttribute(4, vec2());
+	Text::TextImpl::VAO.addIndices(indices);
+	Text::TextImpl::VAO.unbind();
+
+	// Init Font
+	FT_Library ft;
+	if (FT_Init_FreeType(&ft))
+		throw error("Could not init FreeType Library");
+
+	FT_Face face;
+	if (FT_New_Face(ft, (Config::ins.font_path + "desyrel.ttf").c_str(), 0, &face)) // #TODO move config
+		throw error("Failed to load font");
+
+	FT_Set_Pixel_Sizes(face, 0, 48);
+	
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
+	for (GLubyte c = 32; c < 128; c++)
+	{
+		// Load character glyph
+		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+			throw error("Failed to load Glyph");
+		
+		FT_GlyphSlot g = face->glyph;
+
+		// Generate texture
+		GLuint texture;
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexImage2D(
+			GL_TEXTURE_2D, 0,
+			GL_RED, g->bitmap.width, g->bitmap.rows, 0,
+			GL_RED,
+			GL_UNSIGNED_BYTE, g->bitmap.buffer
+		);
+
+		// Set texture options
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		// Now store character for later use
+		Character character = {
+			texture,
+			vec2i(g->bitmap.width,
+			g->bitmap.rows),
+			vec2i(g->bitmap_left, g->bitmap_top),
+			(unsigned int) g->advance.x
+		};
+		Text::TextImpl::characters.insert(pair<GLchar,Character>(c, character));
+	}
+
+	FT_Done_Face(face);
+	FT_Done_FreeType(ft);
+}
 
 Text::Text()
 {
@@ -57,7 +126,7 @@ Text::Text()
 	impl->content = "";
 	impl->position = vec2();
 	impl->scale = 1.0f;
-	impl->color = vec3(1,1,1);
+	impl->color = vec3(1, 1, 1);
 }
 
 Text::~Text()
@@ -66,102 +135,34 @@ Text::~Text()
 	delete impl;
 }
 
-void Text::init(string content, vec2 position, float scale, vec3 color)
+void Text::init(string _content, vec2 _position, float _scale, vec3 _color)
 {
-	if (!isInit)
-	{
-		isInit = true;
-
-		// Vertex Buffer
-		vector<unsigned int> indices;
-		indices.push_back(0); indices.push_back(3); indices.push_back(1);
-		indices.push_back(0); indices.push_back(2); indices.push_back(3);
-
-		vector<vec4> vertices;
-		vertices.resize(4, vec4());
-
-		VAO.init();
-		VAO.bind();
-		VAO.addDynamicAttribute(4, 4);
-		VAO.addIndices(indices);
-		VAO.unbind();
-
-		// Init Font
-		FT_Library ft;
-		if (FT_Init_FreeType(&ft))
-			throw error("Could not init FreeType Library");
-		
-		FT_Face face;
-		if (FT_New_Face(ft, "res/font/Desyrel.ttf", 0, &face))
-			throw error("Failed to load font");
-		
-		FT_Set_Pixel_Sizes(face, 0, 48);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
-		for (GLubyte c = 32; c < 128; c++)
-		{
-			// Load character glyph
-			if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-				throw error("Failed to load Glyph");
-			
-			FT_GlyphSlot g = face->glyph;
-
-			// Generate texture
-			GLuint texture;
-			glGenTextures(1, &texture);
-			glBindTexture(GL_TEXTURE_2D, texture);
-			glTexImage2D(
-					GL_TEXTURE_2D, 0,
-					GL_RED, g->bitmap.width, g->bitmap.rows, 0,
-					GL_RED,
-					GL_UNSIGNED_BYTE, g->bitmap.buffer);
-
-			// Set texture options
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			// Now store character for later use
-			Character character = {
-				texture,
-				vec2i(g->bitmap.width,
-				g->bitmap.rows),
-				vec2i(g->bitmap_left, g->bitmap_top),
-				(unsigned int) g->advance.x
-			};
-			characters.insert(pair<GLchar,Character>(c, character));
-		}
-
-		FT_Done_Face(face);
-		FT_Done_FreeType(ft);
-	}
-	
-	// Value
-	impl->content = content;
-	impl->position = position;
+	impl->content = _content;
+	impl->position = _position;
 	impl->position.x *= (float)Config::ins.windowWidth;
 	impl->position.y *= (float)Config::ins.windowHeight;
-	impl->scale = scale;
-	impl->color = color;
+	impl->scale = _scale;
+	impl->color = _color;
 }
 
 void Text::render()
 {
-	shader.use();
+	this->shader.use();
 
+	Graphic::ins.cullFaceToogle(false);
 	Graphic::ins.setDepthTest(false);
 
-	VAO.bind();
+	Text::TextImpl::VAO.bind();
 
 	glActiveTexture(GL_TEXTURE0);
 
-	shader.setVec3(2, impl->color);
+	this->shader.setVec3(2, impl->color);
 
 	vec2 offset = impl->position;
 
 	for (auto c : impl->content)
 	{
-		Character ch = characters[c];
+		Character ch = Text::TextImpl::characters[c];
 
 		if (c == 10) // new line
 		{
@@ -180,27 +181,34 @@ void Text::render()
 		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 
 		// Update VBO for each character
-		vector<vec4> vertices;
-		vertices.resize(4);
-		vertices[0] = vec4(xpos,     ypos,     0.0, 1.0);
-		vertices[1] = vec4(xpos,     ypos + h, 0.0, 0.0);
-		vertices[2] = vec4(xpos + w, ypos,     1.0, 1.0);
-		vertices[3] = vec4(xpos + w, ypos + h, 1.0, 0.0);
+		vector<vec2> vertices;
+		// vertices.resize(4);
+		// vertices[0] = vec4(xpos,     ypos,     0.0, 1.0);
+		// vertices[1] = vec4(xpos,     ypos + h, 0.0, 0.0);
+		// vertices[2] = vec4(xpos + w, ypos,     1.0, 1.0);
+		// vertices[3] = vec4(xpos + w, ypos + h, 1.0, 0.0);
+	
+		vertices.push_back(vec2( 50.0f, -50.0f));
+		vertices.push_back(vec2(-500.0f, -500.0f));
+		vertices.push_back(vec2( 500.0f, -500.0f));
+		vertices.push_back(vec2(-500.0f,  500.0f));
+		// vertices.push_back(vec2( 500.0f,  500.0f));
 
 		// Update content of VBO memory
-		VAO.updateDynamicAttribute(0, vertices);
-		
+		Text::TextImpl::VAO.updateDynamicAttribute(1, vertices);
+
 		// Render quad
-		VAO.drawElementTriangle();
+		Text::TextImpl::VAO.drawElementTriangle();
 
 		// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
 		offset.x += (ch.Advance >> 6) * impl->scale; // Bitshift by 6 to get value in pixels (2^6 = 64)
 	}
 
 	// POST render
-	VAO.unbind();
+	Text::TextImpl::VAO.unbind();
 
 	Graphic::ins.setDepthMark(true);
+	Graphic::ins.cullFaceToogle(true);
 }
 
 void Text::setContent(string content)

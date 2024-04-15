@@ -2,7 +2,7 @@
 
 #include "common.h"
 #include "Config.h"
-#include "engine/file/FileINI.h"
+#include "engine/file/FileCFG.h"
 #include "engine/utils/StringUtils.h"
 
 using namespace std;
@@ -12,18 +12,24 @@ Config Config::ins;
 
 Config::Config()
 {
-	// Load setting.ini
-	FileINI setting;
-	setting.load("./res/setting.ini");
-
 	// File path
-	this->resource_dir = "./res/";
-	this->shader_path = this->resource_dir + "shaders/";
-	this->skybox_path = this->resource_dir + "skybox/";
+	string root = "./res/";
+	this->resource_dir = root;
+	this->system_path = root + "system/";
+	this->shader_path = root + "shaders/";
+	this->skybox_path = root + "skybox/";
+	this->terrain_path = root + "terrains/";
+	this->model_path = root + "models/";
+	this->font_path = root + "fonts/";
+	this->map_path = root + "maps/";
+
+	// Load setting.ini
+	FileCFG setting(this->system_path + "setting.cfg");
 
 	// Window
-	this->windowWidth = StringUtils::parseInt(setting.get("window","width"));
-	this->windowHeight = StringUtils::parseInt(setting.get("window","height"));
+	setting.select("window");
+	this->windowWidth = setting.getInt("width");
+	this->windowHeight = setting.getInt("height");
 	this->windowName = "Master Engine";
 
 	// Camera

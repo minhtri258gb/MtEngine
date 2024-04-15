@@ -16,6 +16,7 @@
 #include "particles/Sprite.h"
 #include "particles/Emitter.h"
 #include "hud/Text.h"
+#include "other/DebugFrame.h"
 
 using namespace std;
 using namespace mt;
@@ -85,10 +86,10 @@ void ShaderProgramMgr::init()
 									ShaderProgram::SHADER_TYPE::TESS_CONTROL |
 									ShaderProgram::SHADER_TYPE::TESS_EVALUATION);
 	Terrain::shader.use();
-	Terrain::shader.addLocation("proj");				// 0
-	Terrain::shader.addLocation("view");				// 1
-	Terrain::shader.addLocation("ourTexture");		// 2
-	Terrain::shader.addLocation("heightMapTex");	// 3
+	Terrain::shader.addLocation("proj");			// 0
+	Terrain::shader.addLocation("view");			// 1
+	Terrain::shader.addLocation("texColor");		// 2
+	Terrain::shader.addLocation("texHeight");		// 3
 	Terrain::shader.addLocation("heightScale");		// 4
 	Terrain::shader.setInt(2, 0);
 	Terrain::shader.setInt(3, 1);
@@ -145,10 +146,21 @@ void ShaderProgramMgr::init()
 	Emitter::shader.setInt(4, 0);
 
 	// Text
+	Text::shader.init("text",	ShaderProgram::SHADER_TYPE::VERTEX |
+								ShaderProgram::SHADER_TYPE::FRAGMENT);
 	Text::shader.use();
 	Text::shader.addLocation("proj");		// 0
 	Text::shader.addLocation("ourTexture");	// 1
-	Text::shader.addLocation("color");		// 2
+	Text::shader.addLocation("textColor");	// 2
+
+
+	// // DebugFrame
+	// DebugFrame::shader.init("debug",	ShaderProgram::SHADER_TYPE::VERTEX |
+	// 									ShaderProgram::SHADER_TYPE::FRAGMENT);
+	// DebugFrame::shader.use();
+	// DebugFrame::shader.addLocation("proj");		// 0
+	// DebugFrame::shader.addLocation("view");		// 1
+	// DebugFrame::shader.addLocation("model");	// 2
 
 	// #EXTRA
 }
@@ -177,6 +189,9 @@ void ShaderProgramMgr::close()
 	// Text
 	Text::shader.close();
 
+	// Other
+	// DebugFrame::shader.close();
+
 	// #EXTRA
 }
 
@@ -204,6 +219,10 @@ void ShaderProgramMgr::setSceneProj(mat4 value)
 	BspQuakeMap::shader.setMat4(0, value);
 	BspMap::shader.use();
 	BspMap::shader.setMat4(0, value);
+	// Text::shader.use();
+	// Text::shader.setMat4(0, value);
+	// DebugFrame::shader.use();
+	// DebugFrame::shader.setMat4(0, value);
 }
 
 void ShaderProgramMgr::setSceneView(mat4 value)
@@ -233,10 +252,15 @@ void ShaderProgramMgr::setSceneView(mat4 value)
 	BspQuakeMap::shader.setMat4(1, value);
 	BspMap::shader.use();
 	BspMap::shader.setMat4(1, value);
+	// Text::shader.use();
+	// Text::shader.setMat4(1, value);
+	// DebugFrame::shader.use();
+	// DebugFrame::shader.setMat4(1, value);
 }
 
 void ShaderProgramMgr::setScreenProj(mat4 value)
 {
+	Text::shader.use();
 	Text::shader.setMat4(0, value);
 }
 

@@ -1,5 +1,7 @@
 #define __MT_MODEL_BUILDER_CPP__
 
+// #define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
+
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
@@ -7,6 +9,7 @@
 #include <tiny_gltf.h>
 
 #include "common.h"
+#include "engine/Config.h"
 #include "engine/file/FileCFG.h"
 #include "engine/utils/StringUtils.h"
 #include "engine/utils/FilePathUtils.h"
@@ -55,13 +58,27 @@ ModelBuilder::~ModelBuilder()
 
 Model* ModelBuilder::loadModel(string name)
 {
+	
+	#ifdef LOG
+	LOG
+	#endif
+
 	Model* model = this->createDefaultModel(name);
 	if (!model)
 	{
+		
+		#ifdef LOG
+		LOG
+		#endif
+
 		// Load config
-		string modelDir = "./res/models/" + name + "/";
+		string modelDir = Config::ins.model_path + name + "/";
 		string configPath = modelDir + "info.cfg";
 		FileCFG fCFG(configPath);
+	
+		#ifdef LOG
+		LOG
+		#endif
 
 		fCFG.select("graphic");
 		string type = fCFG.get("type");
@@ -69,6 +86,10 @@ Model* ModelBuilder::loadModel(string name)
 		vec3 modelPos = fCFG.getVec3("pos");
 		vec3 modelRot = fCFG.getVec3("rot");
 		vec3 modelScale = fCFG.getVec3("scale");
+	
+		#ifdef LOG
+		LOG
+		#endif
 
 		// Load model
 		string modelPath = modelDir + modelFile;
@@ -78,38 +99,84 @@ Model* ModelBuilder::loadModel(string name)
 		vector<vec2> texcoords;
 		vector<vec3> normals;
 		vector<uint> indices;
+	
+		#ifdef LOG
+		LOG
+		#endif
 
-		string ext = FilePathUtils::getExtension(modelPath);
-		if (ext == "glb" || ext == "glft")
-			impl->loadByTinyGLFT(modelPath, vertices, colors, texcoords, normals, indices);
-		else
+		// string ext = FilePathUtils::getExtension(modelPath);
+		// if (ext == "glb" || ext == "glft")
+		// 	impl->loadByTinyGLFT(modelPath, vertices, colors, texcoords, normals, indices);
+		// else
 			impl->loadByAssimp(modelPath, vertices, colors, texcoords, normals, indices);
+	
+		#ifdef LOG
+		LOG
+		#endif
 
 		// Create model
 		if (type == "color")
 		{
+			
+			#ifdef LOG
+			LOG
+			#endif
+
 			ColorModel *newModel = new ColorModel();
 			newModel->pos = modelPos;
 			newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
 			newModel->scale = modelScale;
+			
+			#ifdef LOG
+			LOG
+			#endif
+
 			newModel->loadVAO(vertices, colors, indices);
+
+			#ifdef LOG
+			LOG
+			#endif
 
 			model = newModel; // Override class
 		}
 		else // simple
 		{
+			
+			#ifdef LOG
+			LOG
+			#endif
+
 			string textureFile = fCFG.get("texture");
 
 			SimpleModel *newModel = new SimpleModel();
 			newModel->pos = modelPos;
 			newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
 			newModel->scale = modelScale;
+			
+			#ifdef LOG
+			LOG
+			#endif
+
 			newModel->loadVAO(vertices, texcoords, indices);
+			
+			#ifdef LOG
+			LOG
+			#endif
+
 			newModel->loadTexture(modelDir + textureFile);
+
+			#ifdef LOG
+			LOG
+			#endif
 
 			model = newModel; // Override class
 		}
 	}
+	
+	#ifdef LOG
+	LOG
+	#endif
+
 	return model;
 }
 

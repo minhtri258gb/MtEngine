@@ -103,8 +103,10 @@ void TestMap::load()
 	// impl->terrainStatic->init("chadvernon");
 
 	// =================== Terrain QuadTree ===================
-	// impl->terrain = new Terrain();
-	// impl->terrain->init("something");
+	string terrainName = fCFG.get("terrain");
+	Terrain* terrain = new Terrain();
+	terrain->init(terrainName);
+	Graphic::ins.scene.terrain = terrain;
 
 	// =================== BSP Source Map ===================
 	// impl->sourceMap = new BspSourceMap();

@@ -14,6 +14,7 @@ using namespace std;
 using namespace mt::engine;
 using namespace mt::graphic;
 
+
 ShaderProgram::ShaderProgram()
 {
 	this->programId = -1;

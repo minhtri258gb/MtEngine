@@ -18,6 +18,7 @@ public:
 	// Forwards
 	Font();
 	~Font();
+	
 	void init();
 	void render();
 

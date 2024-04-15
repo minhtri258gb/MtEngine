@@ -14,18 +14,15 @@
 #include "graphic/Graphic.h"
 #include "physic/Physic.h"
 #include "Game.h"
-
-// test import
-#include "graphic/ShaderProgram.h"
+#include "game/CommandMgr.h"
 #include "game/maps/MapBuilder.h"
-
-// #include "graphic/models/animation/AnimationModel.h"
 
 using namespace std;
 using namespace mt::engine;
 using namespace mt::graphic;
 using namespace mt::physic;
 using namespace mt::game;
+
 
 Game::Game()
 {
@@ -95,7 +92,12 @@ void Game::init()
 	Timer::ins.init();
 	Graphic::ins.init();
 	Physic::ins.init();
+	CommandMgr::ins.init();
 
+	#ifdef LOG
+	LOG
+	#endif
+	
 	// Init component
 	this->screen.init();
 	this->map = MapBuilder::firstLoad();
@@ -122,7 +124,14 @@ void Game::framework()
 		LOG
 		#endif
 
-		// input network
+		// Input network
+
+		#ifdef LOG
+		LOG
+		#endif
+		
+		// Process Command
+		CommandMgr::ins.update();
 
 		// loading
 		this->map->load();

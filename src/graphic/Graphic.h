@@ -4,7 +4,7 @@
 #include "ShaderProgramMgr.h"
 #include "models/ModelMgr.h"
 #include "Scene.h"
-// #include "Screen.h"
+#include "GUI.h"
 #include "Camera.h"
 #include "hud/Text.h"
 
@@ -21,13 +21,14 @@ public:
 	ShaderProgramMgr shaderProgramMgr;
 	ModelMgr modelMgr;
 	Scene scene;
-	// Screen screen;
+	GUI gui;
 	Camera camera;
 	Text text;
 
 	// Forward
 	Graphic();
 	~Graphic();
+
 	void init();
 	void close();
 	void update();

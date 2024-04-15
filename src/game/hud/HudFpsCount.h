@@ -13,11 +13,16 @@ public:
 
 	HudFpsCount();
 	~HudFpsCount();
+	
 	void load();
 	void clear();
 	void update();
 
 private:
+
+	// Variable
+	class HudFpsCountImpl;
+	HudFpsCountImpl* impl;
 
 };
 

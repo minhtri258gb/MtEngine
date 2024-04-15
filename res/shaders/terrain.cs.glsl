@@ -10,9 +10,10 @@ in int c_flag[];
 out vec2 e_position[];
 out vec2 e_texcoord[];
 
-uniform sampler2D heightMapTex; // at TerrainPath
+uniform sampler2D texHeight; // at TerrainPath
 uniform float heightScale; // at TerrainPath
 uniform vec3 camPos;
+
 
 float getTessFactO(int id)
 {
@@ -39,27 +40,27 @@ float getTessFactI(float dis)
 
 void main()
 {
-    if (gl_InvocationID == 0)
-    {
-	    float height = texture(heightMapTex, c_texcoord[0]).r * heightScale;
-	    float dis = distance(camPos, vec3(c_position[gl_InvocationID].x, height, c_position[gl_InvocationID].y));
+	if (gl_InvocationID == 0)
+	{
+		float height = texture(texHeight, c_texcoord[0]).r * heightScale;
+		float dis = distance(camPos, vec3(c_position[gl_InvocationID].x, height, c_position[gl_InvocationID].y));
 
-        // gl_TessLevelInner[0] = 4.0;
-        // gl_TessLevelInner[1] = 4.0;
-        
-        // gl_TessLevelOuter[0] = 4.0; // -z
-        // gl_TessLevelOuter[1] = 4.0; // -x
-        // gl_TessLevelOuter[2] = 4.0; // z
-        // gl_TessLevelOuter[3] = 4.0; // x
+		// gl_TessLevelInner[0] = 4.0;
+		// gl_TessLevelInner[1] = 4.0;
+		
+		// gl_TessLevelOuter[0] = 4.0; // -z
+		// gl_TessLevelOuter[1] = 4.0; // -x
+		// gl_TessLevelOuter[2] = 4.0; // z
+		// gl_TessLevelOuter[3] = 4.0; // x
 
-        gl_TessLevelOuter[0] = getTessFactO(0); // nz
-        gl_TessLevelOuter[1] = getTessFactO(1); // nx
-        gl_TessLevelOuter[2] = getTessFactO(2); // z
-        gl_TessLevelOuter[3] = getTessFactO(3); // x
-        gl_TessLevelInner[0] = gl_TessLevelInner[1] = getTessFactI(dis);
-    }
+		gl_TessLevelOuter[0] = getTessFactO(0); // nz
+		gl_TessLevelOuter[1] = getTessFactO(1); // nx
+		gl_TessLevelOuter[2] = getTessFactO(2); // z
+		gl_TessLevelOuter[3] = getTessFactO(3); // x
+		gl_TessLevelInner[0] = gl_TessLevelInner[1] = getTessFactI(dis);
+	}
 
-    // gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
+	// gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 		e_position[gl_InvocationID] = c_position[gl_InvocationID];
-    e_texcoord[gl_InvocationID] = c_texcoord[gl_InvocationID];
+	e_texcoord[gl_InvocationID] = c_texcoord[gl_InvocationID];
 }

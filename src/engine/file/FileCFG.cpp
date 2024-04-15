@@ -120,6 +120,19 @@ void FileCFG::save(string filepath)
 	file.close();
 }
 
+vector<string> FileCFG::keys()
+{
+	vector<string> res;
+
+	// Validate
+	short sizeArr = m_sessions.size();
+	if (this->sessionID == sizeArr)
+		return res;
+
+	res = m_key[sessionID];
+	return res;
+}
+
 vector<string> FileCFG::values()
 {
 	vector<string> res;

@@ -13,6 +13,7 @@ using namespace mt;
 using namespace mt::engine;
 using namespace mt::graphic;
 
+
 Graphic Graphic::ins;
 
 class Graphic::GraphicImpl
@@ -33,8 +34,6 @@ void cbk_cursor_pos(GLFWwindow *window, double xpos, double ypos)
 
 void cbk_key(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-	// cout << key << endl;
-
 	if (key == -1)
 		return;
 	if (action == GLFW_PRESS)
@@ -134,8 +133,8 @@ void Graphic::init()
 	// Init Scene
 	this->scene.init();
 
-	// Init Screen
-	// this->screen.init();
+	// Init GUI
+	this->gui.init();
 
 	// Init Model
 	this->modelMgr.init();
@@ -160,6 +159,7 @@ void Graphic::close()
 void Graphic::update()
 {
 	this->scene.update();
+	this->gui.update();
 }
 
 void Graphic::render()
@@ -178,7 +178,8 @@ void Graphic::render()
 
 	// Render màn hình cảnh
 
-	// Render HUD
+	// Render GUI
+	this->gui.render();
 }
 
 void Graphic::addModel(Model* model, vec3* pos, quat* rot, vec3* scale)

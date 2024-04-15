@@ -2,6 +2,7 @@
 
 #include "common.h"
 
+#include "engine/Config.h"
 #include "engine/file/FileCFG.h"
 #include "engine/exception/LoadException.h"
 
@@ -13,6 +14,7 @@
 
 using namespace std;
 using namespace mt;
+using namespace mt::engine;
 using namespace mt::game;
 
 
@@ -25,7 +27,7 @@ Map* MapBuilder::firstLoad()
 
 	try
 	{
-		fCFG = new FileCFG("./res/state.cfg");
+		fCFG = new FileCFG(Config::ins.system_path + "state.cfg");
 		fCFG->select("last");
 		mapName = fCFG->get("map");
 	}
@@ -36,7 +38,7 @@ Map* MapBuilder::firstLoad()
 		fCFG = new FileCFG();
 		fCFG->addSession("last");
 		fCFG->set("map", mapName);
-		fCFG->save("./res/state.cfg");
+		fCFG->save(Config::ins.system_path + "state.cfg");
 	}
 	
 	// Return
@@ -47,7 +49,7 @@ Map* MapBuilder::firstLoad()
 Map* MapBuilder::load(string mapName)
 {
 	// Read type of map
-	string configPath = "./res/maps/" + mapName + ".cfg";
+	string configPath = Config::ins.map_path + mapName + ".cfg";
 	FileCFG* fCFG = new FileCFG(configPath);
 	fCFG->select("general");
 	string type = fCFG->get("type");

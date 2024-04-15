@@ -1,15 +1,18 @@
-#version 330 core
+#version 440 core
 
-in vec4 position;
+layout (location = 0) in vec2 v_texcoord;
+layout (location = 1) in vec2 v_position;
 
-out vec2 uvcoord;
+out vec2 f_texcoord;
 
-uniform mat4 projection;
+uniform mat4 proj;
 
 
 void main(void)
 {
-	gl_Position = projection * vec4(position.xy, 0.0, 1.0);
+	// Pass
+	f_texcoord = v_texcoord;
 
-	uvcoord = position.zw;
+	// Main
+	gl_Position = proj * vec4(v_position, 0.0, 1.0);
 }

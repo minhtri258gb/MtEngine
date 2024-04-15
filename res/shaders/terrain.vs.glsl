@@ -12,6 +12,7 @@ out int c_flag;
 uniform float cellSpace = 1; // #TODO
 uniform ivec2 location = ivec2(0.0, 0.0); // #TODO
 
+
 void main()
 {
 	// Data

@@ -1,7 +1,7 @@
 #define __MT_MAIN_CPP__
 
 #include "common.h"
-#include "Game/Game.h"
+#include "game/Game.h"
 #include "test/Test.h"
 
 int main()
@@ -14,6 +14,6 @@ int main()
 	
 	program.run();
 
-	std::cout << "DONE.";
+	std::cout << "DONE." << std::endl;
 	return 0;
 }

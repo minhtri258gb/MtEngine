@@ -5,10 +5,15 @@
 #include "Scene.h"
 #include "graphic/Graphic.h"
 
+#include "graphic/other/DebugFrame.h"
+
 using namespace std;
 using namespace mt;
 using namespace mt::engine;
 using namespace mt::graphic;
+
+
+// DebugFrame debugFrame;
 
 Scene::Scene()
 {
@@ -28,6 +33,17 @@ void Scene::init()
 
 	Graphic::ins.shaderProgramMgr.setSceneProj(proj);
 	Graphic::ins.shaderProgramMgr.setSceneView(view);
+
+	// // Debug
+	// vector<vec3> vertices;
+	// vertices.push_back(vec3(-0.5f, 0.0f, -0.5f));
+	// vertices.push_back(vec3( 0.5f, 0.0f, -0.5f));
+	// vertices.push_back(vec3(-0.5f, 0.0f,  0.5f));
+	// vertices.push_back(vec3( 0.5f, 0.0f,  0.5f));
+	// vector<uint> indices;
+	// indices.push_back(0); indices.push_back(2); indices.push_back(1);
+	// indices.push_back(1); indices.push_back(2); indices.push_back(3);
+	// debugFrame.loadVAO(vertices, indices);
 }
 
 void Scene::update()
@@ -70,5 +86,8 @@ void Scene::render()
 			scale = *m.scale;
 		m.model->render(pos, rot, scale);
 	}
+
+	// Debug
+	// debugFrame.render(vec3(), quat(), vec3(100,100,100));
 	
 }

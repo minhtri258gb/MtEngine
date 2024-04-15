@@ -80,7 +80,7 @@ mtgraphic = library('mtgraphic',
 		'./src/graphic/glad.cpp'
 		,'./src/graphic/Graphic.cpp'
 		,'./src/graphic/Scene.cpp'
-		# ,'./src/graphic/Screen.cpp'
+		,'./src/graphic/GUI.cpp'
 		,'./src/graphic/Camera.cpp'
 		,'./src/graphic/ShaderProgram.cpp'
 		,'./src/graphic/ShaderProgramMgr.cpp'
@@ -123,6 +123,7 @@ mtgraphic = library('mtgraphic',
 		# ,' ./src/graphic/bsp/bsp5/shader_loader.cpp'
 		# ,' ./src/graphic/bsp/bsp5/texture_loader.cpp'
 		,'./src/graphic/hud/Text.cpp'
+		,'./src/graphic/other/DebugFrame.cpp'
 	],
 	include_directories: dir_includes,
 	link_with: mtengine,
@@ -151,6 +152,7 @@ mtaudio = library('mtaudio',
 mtgame = library('mtgame',
 	[
 		'./src/game/Game.cpp'
+		,'./src/game/CommandMgr.cpp'
 		,'./src/game/Command.cpp'
 		,'./src/game/maps/MapBuilder.cpp'
 		,'./src/game/maps/Map.cpp'
@@ -192,7 +194,8 @@ mttest = library('mttest',
 		,'./src/test/technique/TestTechnique.cpp'
 		,'./src/test/thread/Thread.cpp'
 		,'./src/test/TestFileCFG.cpp'
-		,'./src/test/TestQuaternion.cpp'
+		,'./src/test/TestMath.cpp'
+		,'./src/test/TestString.cpp'
 	],
 	include_directories: dir_includes,
 	link_with: mtengine,

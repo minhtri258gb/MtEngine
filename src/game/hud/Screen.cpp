@@ -2,6 +2,7 @@
 
 #include "common.h"
 #include "Screen.h"
+#include "HudFpsCount.h"
 
 using namespace mt::game;
 
@@ -17,7 +18,9 @@ Screen::~Screen()
 
 void Screen::init()
 {
-	
+	// FPS count
+	HudFpsCount* hFps = new HudFpsCount();
+	this->add(hFps);
 }
 
 void Screen::clear()

@@ -1,6 +1,18 @@
 
 # Commit
 
+# BUG
+- [X] kiểm tra FPS
+- [ ] Text - VAO ko update dynamic được
+
+# Graphic
+- [ ] Tạo DebugFrame để test render
+- [ ] Sprite
+	- [ ] Len Flare
+- [ ] HUD
+	- [ ] Text
+		- [ ] FPS
+
 # Physic body plane
 - [Chưa test] Đã sửa lỗi phương trình mặt phẳng planeConst thay vì tham số scale
 

@@ -33,7 +33,7 @@ public:
 
 	// Proj Matrix
 	void perspective(float fovDeg, float screenRatio, float near, float far);
-	void ortho(float left, float right, float bottom, float top, float zNear, float zFar);
+	void ortho(float left, float right, float bottom, float top); // , float zNear, float zFar
 
 	// View matrix
 	void lookAt(const Vector3& eye, const Vector3& center, const Vector3& up);

@@ -1,5 +1,6 @@
 #define __MT_MATRIX_4X4_CPP__
 
+#include <iostream>
 #include <sstream>
 #include <cmath>
 
@@ -135,14 +136,14 @@ void Matrix4x4::perspective(float fovDeg, float aspect, float near, float far)
 	m[15] = 0.0f;
 }
 
-void Matrix4x4::ortho(float left, float right, float bottom, float top, float zNear, float zFar)
+void Matrix4x4::ortho(float left, float right, float bottom, float top) // , float zNear, float zFar
 {
-	m[0] = 2.0f / (right - left);
-	m[5] = 2.0f / (top - bottom);
-	m[10] = - 2.0f / (zFar - zNear);
+	m[ 0] = 2.0f / (right - left);
+	m[ 5] = 2.0f / (top - bottom);
+	m[10] = - 1; // - 2.0f / (zFar - zNear);
 	m[12] = - (right + left) / (right - left);
 	m[13] = - (top + bottom) / (top - bottom);
-	m[14] = - (zFar + zNear) / (zFar - zNear);
+	// m[14] = - (zFar + zNear) / (zFar - zNear);
 }
 
 void Matrix4x4::lookAt(const Vector3& eye, const Vector3& center, const Vector3& up)

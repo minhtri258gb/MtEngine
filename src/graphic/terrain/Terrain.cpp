@@ -1,5 +1,8 @@
 #define __MT_TERRAIN_CPP__
 
+#define FLAG_WIREFRAME 1
+#define CELLSPACE (1<<8)
+
 #include <array>
 
 #include <glad/glad.h>
@@ -7,20 +10,20 @@
 
 #include "common.h"
 
-// #include "../../file/BTFile.h"
-#include "../Graphic.h"
-#include "Terrain.h"
-#include "TerrainPart.h"
-#include "../buffer/VertexArrayObject.h"
-#include "../texture/Texture.h"
+#include "engine/Config.h"
+#include "engine/file/FileCFG.h"
 #include "engine/file/Image.h"
-
-#define FLAG_WIREFRAME 0
-#define CELLSPACE (1<<8)
+#include "graphic/Graphic.h"
+#include "graphic/buffer/VertexArrayObject.h"
+#include "graphic/texture/Texture.h"
+#include "graphic/terrain/Terrain.h"
+#include "graphic/terrain/TerrainPart.h"
 
 using namespace std;
 using namespace mt;
+using namespace mt::engine;
 using namespace mt::graphic;
+
 
 class Terrain::TerrainImpl
 {
@@ -36,7 +39,6 @@ Terrain::Terrain()
 	// Implement
 	impl = new TerrainImpl();
 
-
 	// m_maxwidth = 0;
 	// m_maxlength = 0;
 }
@@ -49,6 +51,9 @@ Terrain::~Terrain()
 
 void Terrain::init(string name)
 {
+	// Data
+	FileCFG fCFG(Config::ins.terrain_path + name + "/info.cfg");
+
 	// Doc du lieu tu file cau hinh
 	enum eTerrainSizeStyle
 	{
