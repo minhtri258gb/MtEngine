@@ -58,6 +58,11 @@ Download and Install Python
 - tinygltf
 	- link: https://github.com/syoyo/tinygltf
 
+- tinyobjloader
+	- link: https://github.com/tinyobjloader/tinyobjloader
+	- download: tiny_obj_loader.h
+	- move: .inc/tiny_obj_loader.h
+
 # Variable Enviroment
 - D:\Programs\MSYS2\mingw64\bin
 

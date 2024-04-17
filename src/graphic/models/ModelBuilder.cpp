@@ -7,6 +7,7 @@
 #include <assimp/Importer.hpp>
 
 #include <tiny_gltf.h>
+#include <tiny_obj_loader.h>
 
 #include "common.h"
 #include "engine/Config.h"
@@ -36,6 +37,15 @@ public:
 	);
 	void loadByTinyGLFT(
 		string modelPath
+		,vector<vec3>& vertices
+		,vector<vec4>& colors
+		,vector<vec2>& texcoords
+		,vector<vec3>& normals
+		,vector<uint>& indices
+	);
+	void loadByTinyOBJLoader(
+		string modelDir
+		,string modelPath
 		,vector<vec3>& vertices
 		,vector<vec4>& colors
 		,vector<vec2>& texcoords
@@ -100,12 +110,10 @@ Model* ModelBuilder::loadModel(string name)
 		vector<vec3> normals;
 		vector<uint> indices;
 	
-		#ifdef LOG
-		LOG
-		#endif
-
 		// string ext = FilePathUtils::getExtension(modelPath);
-		// if (ext == "glb" || ext == "glft")
+		// if (ext == "obj")
+		// 	impl->loadByTinyOBJLoader(modelDir, modelPath, vertices, colors, texcoords, normals, indices);
+		// else if (ext == "glb" || ext == "glft")
 		// 	impl->loadByTinyGLFT(modelPath, vertices, colors, texcoords, normals, indices);
 		// else
 			impl->loadByAssimp(modelPath, vertices, colors, texcoords, normals, indices);
@@ -389,4 +397,42 @@ void ModelBuilder::ModelBuilderImpl::loadByTinyGLFT(
 	int a=1;
 
 	// #TODO
+}
+
+void ModelBuilder::ModelBuilderImpl::loadByTinyOBJLoader(
+		string modelDir
+		,string modelPath
+		,vector<vec3>& vertices
+		,vector<vec4>& colors
+		,vector<vec2>& texcoords
+		,vector<vec3>& normals
+		,vector<uint>& indices
+) {
+	tinyobj::attrib_t inattrib;
+	vector<tinyobj::shape_t> inshapes;
+	std::vector<tinyobj::material_t> materials;
+	std::string warn;
+	std::string err;
+	bool ret = tinyobj::LoadObj(&inattrib, &inshapes, &materials, &err, modelPath.c_str(), modelDir.c_str(), true);
+	int a = 1;
+
+	uint sizeBuffer = inattrib.vertices.size();
+	vector<bool> hasVertices(sizeBuffer, false);
+	vector<bool> hasColors(sizeBuffer, false);
+	vector<bool> hasTexcoords(sizeBuffer, false);
+	vector<bool> hasNormals(sizeBuffer, false);
+	vertices.resize(sizeBuffer, vec3());
+	colors.resize(sizeBuffer, vec4());
+	texcoords.resize(sizeBuffer, vec2());
+	normals.resize(sizeBuffer, vec3());
+	
+	for (uint i=0, sz=inshapes.size(); i<sz; i++)
+	{
+		tinyobj::shape_t inshape = inshapes.at(i);
+		// inshape.mesh.num_face_vertices // #TODO chưa xử lý
+		vector<tinyobj::index_t> indicesObj = inshape.mesh.indices;
+
+		// indicesObj
+
+	}
 }

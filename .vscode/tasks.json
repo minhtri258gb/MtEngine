@@ -5,7 +5,10 @@
 			"label": "Run Main",
 			"type": "shell",
 			"command": "bin\\main.exe",
-			"group": "test"
+			"group": "test",
+			"presentation": {
+				"clear": true
+			}
 		},
 		{
 			"label": "Meson Build",
@@ -21,7 +24,10 @@
 			"options": {
 				"cwd": "${workspaceFolder}/bin"
 			},
-			"problemMatcher": []
+			"problemMatcher": [],
+			"presentation": {
+				"clear": true
+			}
 		},
 		{
 			"label": "Meson Config",
@@ -34,6 +40,9 @@
 			"group": "build",
 			"options": {
 				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+				"clear": true
 			}
 		}
 	]
