@@ -4,6 +4,7 @@
 
 #include "Command.h"
 #include "graphic/Graphic.h"
+#include "game/Game.h"
 
 using namespace std;
 using namespace mt::graphic;
@@ -12,6 +13,10 @@ using namespace mt::game;
 
 void Command::setFuncMap(std::map<std::string, function>* map)
 {
+	map->insert({"+forward", &Command::cmd_forward});
+	map->insert({"+back", &Command::cmd_back});
+	map->insert({"+left", &Command::cmd_left});
+	map->insert({"+right", &Command::cmd_right});
 	map->insert({"+showscores", &Command::cmd_void});
 	map->insert({"+attack", &Command::cmd_void});
 	map->insert({"exit", &Command::cmd_void});
@@ -55,10 +60,6 @@ void Command::setFuncMap(std::map<std::string, function>* map)
 	map->insert({"radio2", &Command::cmd_void});
 	map->insert({"messagemode", &Command::cmd_void});
 	map->insert({"radio1", &Command::cmd_void});
-	map->insert({"+forward", &Command::cmd_void});
-	map->insert({"+back", &Command::cmd_void});
-	map->insert({"+left", &Command::cmd_void});
-	map->insert({"+right", &Command::cmd_void});
 	map->insert({"+strafe", &Command::cmd_void});
 	map->insert({"+duck", &Command::cmd_void});
 	map->insert({"+sprint", &Command::cmd_void});
@@ -83,4 +84,24 @@ void Command::cmd_void()
 void Command::cmd_debug_frustumcull()
 {
 	Graphic::ins.camera.frustumCulling.debug();
+}
+
+void Command::cmd_forward()
+{
+	Game::ins.map->player.movement(1);
+}
+
+void Command::cmd_back()
+{
+	Game::ins.map->player.movement(2);
+}
+
+void Command::cmd_left()
+{
+	Game::ins.map->player.movement(3);
+}
+
+void Command::cmd_right()
+{
+	Game::ins.map->player.movement(4);
 }

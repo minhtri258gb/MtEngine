@@ -1,14 +1,17 @@
 #define __MT_TEST_MAP_CPP__
 
+// #define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
+
 #include <sstream>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "common.h"
+#include "engine/Config.h"
 #include "graphic/Graphic.h"
-#include "TestMap.h"
 
+#include "TestMap.h"
 #include "game/entities/TestEnt.h"
 #include "game/entities/GroundEnt.h"
 #include "game/entities/TestAnimEnt.h"
@@ -18,8 +21,10 @@
 #include "engine/file/FileCFG.h"
 
 using namespace std;
+using namespace mt::engine;
 using namespace mt::graphic;
 using namespace mt::game;
+
 
 class TestMap::TestMapImpl
 {
@@ -71,26 +76,48 @@ TestMap::~TestMap()
 
 void TestMap::load()
 {
+	
+	#ifdef LOG
+	LOG
+	#endif
+
 	if (!this->needLoading)
 		return;
 	
+	#ifdef LOG
+	LOG
+	#endif
+
 	this->needLoading = false; // or not maybe
 
 	// Load config
-	string configPath = "./res/maps/" + impl->name + ".cfg";
+	string configPath = Config::ins.map_path + impl->name + ".cfg";
 	FileCFG fCFG(configPath);
+
+	#ifdef LOG
+	LOG
+	#endif
 
 	// Set general
 	fCFG.select("general");
 	// int size = fCFG.getInt("size");
 
+	#ifdef LOG
+	LOG
+	#endif
+
 	// Set player position
 	vec3 playerPos = fCFG.getVec3("player_posotion");
-	Graphic::ins.camera.position = playerPos;
+	this->player.init();
+	this->player.origin = playerPos;
 
 
 	// Load enviroment
 	fCFG.select("enviroment");
+
+	#ifdef LOG
+	LOG
+	#endif
 
 	// =================== Sky ===================
 	string skyName = fCFG.get("skybox");
@@ -102,11 +129,18 @@ void TestMap::load()
 	// impl->terrainStatic = new StaticTerrain();
 	// impl->terrainStatic->init("chadvernon");
 
+	#ifdef LOG
+	LOG
+	#endif
+
 	// =================== Terrain QuadTree ===================
 	string terrainName = fCFG.get("terrain");
-	Terrain* terrain = new Terrain();
-	terrain->init(terrainName);
-	Graphic::ins.scene.terrain = terrain;
+	if (terrainName.length() > 0)
+	{
+		Terrain* terrain = new Terrain();
+		terrain->init(terrainName);
+		Graphic::ins.scene.terrain = terrain;
+	}
 
 	// =================== BSP Source Map ===================
 	// impl->sourceMap = new BspSourceMap();
@@ -120,10 +154,18 @@ void TestMap::load()
 	// impl->bspMap = new BspMap();
 	// impl->bspMap->init("de_dust2");
 
+	#ifdef LOG
+	LOG
+	#endif
+
 	// =================== Ent Ground ===================
 	GroundEnt* groundEnt = new GroundEnt("matdat");
 	groundEnt->init();
 	impl->lstEntities.push_back(groundEnt);
+
+	#ifdef LOG
+	LOG
+	#endif
 
 	// Load entities
 	fCFG.select("entities");
@@ -378,67 +420,99 @@ void TestMap::load()
 	// #TODO
 
 	// #EXTRA
+	
+	#ifdef LOG
+	LOG
+	#endif
+
 }
 
 void TestMap::clear()
 {
+	
+	#ifdef LOG
+	LOG
+	#endif
+
+	// List Engine
 	for (Entity *ent : impl->lstEntities)
 		delete ent;
+	
+	#ifdef LOG
+	LOG
+	#endif
+
 	impl->lstEntities.clear();
+
+	#ifdef LOG
+	LOG
+	#endif
 
 	// Sky
 	SkyBox* sky = Graphic::ins.scene.sky;
 	if (sky)
-	{
 		delete sky;
-		sky = nullptr;
-	}
+
+	#ifdef LOG
+	LOG
+	#endif
 
 	// Terrain Static
 	StaticTerrain* terrainStatic = Graphic::ins.scene.terrainStatic;
 	if (terrainStatic)
-	{
 		delete terrainStatic;
-		terrainStatic = nullptr;
-	}
+
+	#ifdef LOG
+	LOG
+	#endif
 
 	// Terrain QuadTree
 	Terrain* terrain = Graphic::ins.scene.terrain;
 	if (terrain)
-	{
 		delete terrain;
-		terrain = nullptr;
-	}
+
+	#ifdef LOG
+	LOG
+	#endif
 
 	// BSP Source Map
 	BspSourceMap* sourceMap = Graphic::ins.scene.sourceMap;
 	if (sourceMap)
-	{
 		delete sourceMap;
-		sourceMap = nullptr;
-	}
+
+	#ifdef LOG
+	LOG
+	#endif
 
 	// BSP Quake Map
 	BspQuakeMap* quakeMap = Graphic::ins.scene.quakeMap;
 	if (quakeMap)
-	{
 		delete quakeMap;
-		quakeMap = nullptr;
-	}
+
+	#ifdef LOG
+	LOG
+	#endif
 
 	// BSP Map
 	BspMap* bspMap = Graphic::ins.scene.bspMap;
 	if (bspMap)
-	{
 		delete bspMap;
-		bspMap = nullptr;
-	}
 
 	// #EXTRA
+	
+	#ifdef LOG
+	LOG
+	#endif
+
 }
 
 void TestMap::update()
 {
+	
+	#ifdef LOG
+	LOG
+	#endif
+
 	// float timeStep = Time::ins->getTimeStep();
 
 	// newton::NewtonUpdate(this->world, timeStep);
@@ -446,6 +520,13 @@ void TestMap::update()
 	// // Enviroment update
 	// this->physicDebug->update();
 
+	this->player.update();
+
 	for (Entity* ent : impl->lstEntities)
 		ent->update();
+	
+	#ifdef LOG
+	LOG
+	#endif
+
 }

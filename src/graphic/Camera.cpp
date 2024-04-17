@@ -19,6 +19,7 @@ Camera::Camera()
 	this->up = vec3(0,1,0);
 	this->velocity = vec3();
 	this->angle = quat(0,1,0,0);
+	this->needUpdate = true;
 }
 
 Camera::~Camera()
@@ -27,11 +28,6 @@ Camera::~Camera()
 
 void Camera::update()
 {
-	// Command Debug
-	if (Input::ins.checkPress(292)) // F3
-		frustumCulling.debug();
-
-	bool updateView = false;
 	if (Input::ins.getCursorX() || Input::ins.getCursorY())
 	{
 		// Delta cursor
@@ -57,20 +53,20 @@ void Camera::update()
 		right = forward ^ vec3(0,1,0);
 		right = right.normalize();
 
-		updateView = true;
+		this->needUpdate = true;
 	}
 
 	float speed = 10.0f;
 	float maxSpeed = 20.0f;
 
-	if (Input::ins.checkHold(87)) // W
-		this->velocity = this->movement(this->velocity, this->forward,  speed, maxSpeed, true);
-	if (Input::ins.checkHold(83)) // S
-		this->velocity = this->movement(this->velocity, this->forward, -speed, maxSpeed, true);
-	if (Input::ins.checkHold(65)) // A
-		this->velocity = this->movement(this->velocity, this->right, -speed, maxSpeed, true);
-	if (Input::ins.checkHold(68)) // D
-		this->velocity = this->movement(this->velocity, this->right,  speed, maxSpeed, true);
+	// if (Input::ins.checkHold(87)) // W
+	// 	this->velocity = this->movement(this->velocity, this->forward,  speed, maxSpeed, true);
+	// if (Input::ins.checkHold(83)) // S
+	// 	this->velocity = this->movement(this->velocity, this->forward, -speed, maxSpeed, true);
+	// if (Input::ins.checkHold(65)) // A
+	// 	this->velocity = this->movement(this->velocity, this->right, -speed, maxSpeed, true);
+	// if (Input::ins.checkHold(68)) // D
+	// 	this->velocity = this->movement(this->velocity, this->right,  speed, maxSpeed, true);
 	
 	if (this->velocity.x || this->velocity.y || this->velocity.z)
 	{
@@ -94,10 +90,10 @@ void Camera::update()
 
 		Graphic::ins.shaderProgramMgr.setCameraPosition(position);
 
-		updateView = true;
+		this->needUpdate = true;
 	}
 	
-	if (updateView)
+	if (this->needUpdate)
 	{
 		Graphic::ins.scene.view.lookAt(position, position + forward, vec3(0,1,0));
 

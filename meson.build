@@ -134,6 +134,7 @@ mtphysic = library('mtphysic',
 	[
 		'./src/physic/Physic.cpp'
 		,'./src/physic/body/RigidBody.cpp'
+		,'./src/physic/body/ControlBody.cpp'
 	],
 	include_directories: dir_includes,
 	link_with: mtengine,
@@ -159,6 +160,7 @@ mtgame = library('mtgame',
 		,'./src/game/maps/TestMap.cpp'
 		,'./src/game/maps/LobbyMap.cpp'
 		,'./src/game/maps/AreaBoundMap.cpp'
+		,'./src/game/player/Player.cpp'
 		,'./src/game/entities/Entity.cpp'
 		,'./src/game/entities/TestEnt.cpp'
 		,'./src/game/entities/TestAnimEnt.cpp'

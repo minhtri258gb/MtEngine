@@ -4,6 +4,7 @@
 #include "maps/Map.h"
 #include "hud/Screen.h"
 
+
 namespace mt {
 namespace game {
 
@@ -12,6 +13,7 @@ class Game {
 public:
 
 	// Variable
+	static Game ins;
 	Map* map;
 	Screen screen;
 

@@ -5,6 +5,12 @@
 - [X] kiểm tra FPS
 - [ ] Text - VAO ko update dynamic được
 
+# Player
+- [ ] gắn vào người chơi
+- [ ] đi lòng vòng
+- [ ] tạo heightmap field
+- [ ] đi trên đó
+
 # Graphic
 - [ ] Tạo DebugFrame để test render
 - [ ] Sprite
@@ -12,6 +18,7 @@
 - [ ] HUD
 	- [ ] Text
 		- [ ] FPS
+
 
 # Physic body plane
 - [Chưa test] Đã sửa lỗi phương trình mặt phẳng planeConst thay vì tham số scale

@@ -20,6 +20,7 @@ public:
 	// quat angle;
 	const float sensitivity = 0.002f;
 	FrustumCulling frustumCulling;
+	bool needUpdate;
 
 	// Forward
 	Camera();

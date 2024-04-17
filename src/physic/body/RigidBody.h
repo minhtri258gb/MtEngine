@@ -14,9 +14,9 @@ public:
 	RigidBody();
 	~RigidBody();
 
-	void close();
-
+	void create(std::string name, vec3 pos, quat rot, vec3 scale);
 	void update();
+	void close();
 
 	void action(bool);
 

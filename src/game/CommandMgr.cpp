@@ -73,7 +73,7 @@ void CommandMgr::init()
 
 void CommandMgr::update()
 {
-	for (int i = 0; i < 354; i++)
+	for (int i=0; i<MAX_KEY; i++)
 	{
 		if (impl->keyAction.test(i))
 		{

@@ -4,16 +4,21 @@
 #include "game/Game.h"
 #include "test/Test.h"
 
+
+using namespace std;
+using namespace mt::game;
+using namespace mt::test;
+
 int main()
 {
 	#if 1
-	mt::game::Game program; // ENGINE
+	Game::ins.run();
 	#else
-	mt::test::Test program; // TEST
+	Test program; // TEST
+	program.run();
 	#endif
 	
-	program.run();
 
-	std::cout << "DONE." << std::endl;
+	cout << "DONE." << endl;
 	return 0;
 }

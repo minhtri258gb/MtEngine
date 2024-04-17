@@ -2,6 +2,7 @@
 #define __MT_PHYSIC_H__
 
 #include "body/RigidBody.h"
+#include "body/ControlBody.h"
 
 namespace mt {
 namespace physic {
@@ -22,10 +23,10 @@ public:
 
 	void update();
 
-	RigidBody* create(std::string name, vec3 pos, quat rot, vec3 scale);
-	
 	void add(RigidBody*);
+	void add(ControlBody*);
 	void remove(RigidBody*);
+	void remove(ControlBody*);
 
 private:
 

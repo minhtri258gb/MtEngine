@@ -24,6 +24,8 @@ using namespace mt::physic;
 using namespace mt::game;
 
 
+Game Game::ins;
+
 Game::Game()
 {
 	this->mainloop = true;

@@ -5,8 +5,6 @@
 namespace mt {
 namespace game {
 
-typedef void (*funcPtr)();
-
 class CommandMgr
 {
 public:
