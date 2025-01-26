@@ -21,21 +21,18 @@ using namespace mt::graphic;
 using namespace mt::audio;
 
 
-Audio::Audio()
-{
+Audio::Audio() {
 }
 
-Audio::~Audio()
-{
+Audio::~Audio() {
 	BASS_Stop();
 	BASS_Free();
 }
 
-void Audio::init()
-{
+void Audio::init() {
 	// Check version
 	if (HIWORD(BASS_GetVersion()) != BASSVERSION)
-		throw error("Incorrect version BASS loaded!");
+		throw error("BASS_VERSION_INVAIL", "Incorrect version BASS loaded!");
 
 	// Variable reference
 //	listenerPos = engine.view->getPositionPointer();
@@ -54,7 +51,7 @@ void Audio::init()
 
 	// Init
 	if (!BASS_Init(device, MIXRATE, BASS_DEVICE_3D, 0, NULL))
-		throw error("Can't initialize device!");
+		throw error("BASS_INIT_FAIL", "Can't initialize device!");
 
 	// Set parameters
 	// BASS_Set3DFactors(ACTUAL_UNIT, ACTUAL_UNIT, ACTUAL_UNIT);
@@ -65,8 +62,7 @@ void Audio::init()
 	BASS_Start();
 }
 
-void Audio::update()
-{
+void Audio::update() {
 	vec3 position = Graphic::ins.camera.position;
 	vec3 veclook = Graphic::ins.camera.forward;
 
@@ -89,42 +85,34 @@ void Audio::update()
 	BASS_Apply3D();
 }
 
-float getMasterVolume()
-{
+float getMasterVolume() {
 	return BASS_GetVolume();
 }
 
-void setMasterVolume(float volume)
-{ // 0.0 - 1.0
+void setMasterVolume(float volume) { // 0.0 - 1.0
 	BASS_SetVolume(volume);
 }
 
-unsigned int getSampleVolume()
-{
+unsigned int getSampleVolume() {
 	return BASS_GetConfig(BASS_CONFIG_GVOL_SAMPLE);
 }
 
-void setSampleVolume(unsigned int volume)
-{ // 0 - 10000
+void setSampleVolume(unsigned int volume) { // 0 - 10000
 	BASS_SetConfig(BASS_CONFIG_GVOL_SAMPLE, volume);
 }
 
-unsigned int getStreamVolume()
-{
+unsigned int getStreamVolume() {
 	return BASS_GetConfig(BASS_CONFIG_GVOL_STREAM);
 }
 
-void setStreamVolume(unsigned int volume)
-{ // 0 - 10000
+void setStreamVolume(unsigned int volume) { // 0 - 10000
 	BASS_SetConfig(BASS_CONFIG_GVOL_STREAM, volume);
 }
 
-unsigned int getMusicVolume()
-{
+unsigned int getMusicVolume() {
 	return BASS_GetConfig(BASS_CONFIG_GVOL_MUSIC);
 }
 
-void setMusicVolume(unsigned int volume)
-{ // 0 - 10000
+void setMusicVolume(unsigned int volume) { // 0 - 10000
 	BASS_SetConfig(BASS_CONFIG_GVOL_MUSIC, volume);
 }

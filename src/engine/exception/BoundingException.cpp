@@ -15,8 +15,8 @@ BoundingException::BoundingException()
 BoundingException::BoundingException(string _msg, string _file, int _line)
 {
 	this->message = _msg;
-	this->file = _file;
-	this->line = _line;
+	// this->files = _file;
+	// this->lines = _line;
 }
 
 BoundingException::~BoundingException()

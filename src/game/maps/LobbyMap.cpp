@@ -27,8 +27,7 @@ using namespace mt::graphic;
 using namespace mt::game;
 
 
-class LobbyMap::LobbyMapImpl
-{
+class LobbyMap::LobbyMapImpl {
 public:
 	SkyBox* sky;
 	StaticTerrain* terrainStatic;
@@ -38,8 +37,7 @@ public:
 	BspMap* bspMap;
 };
 
-LobbyMap::LobbyMap(string name)
-{
+LobbyMap::LobbyMap(string name) {
 	// Implement
 	impl = new LobbyMapImpl();
 
@@ -47,8 +45,7 @@ LobbyMap::LobbyMap(string name)
 	this->name = name;
 }
 
-LobbyMap::~LobbyMap()
-{
+LobbyMap::~LobbyMap() {
 	// // Xoa debug physic
 	// if (this->physicDebug)
 	// 	delete this->physicDebug;
@@ -77,8 +74,7 @@ LobbyMap::~LobbyMap()
 	delete impl;
 }
 
-void LobbyMap::load()
-{
+void LobbyMap::load() {
 	if (!this->needLoading)
 		return;
 	
@@ -350,8 +346,7 @@ void LobbyMap::load()
 	// #EXTRA
 }
 
-void LobbyMap::clear()
-{
+void LobbyMap::clear() {
 	for (Entity *ent : this->lstEntitiesStatic)
 		delete ent;
 	this->lstEntitiesStatic.clear();
@@ -361,52 +356,51 @@ void LobbyMap::clear()
 	this->lstEntitiesDynamic.clear();
 
 	// Sky
-	if (impl->sky)
-	{
+	if (impl->sky) {
 		delete impl->sky;
 		impl->sky = nullptr;
+		Graphic::ins.scene.sky = nullptr;
 	}
 
 	// Terrain Static
-	if (impl->terrainStatic)
-	{
+	if (impl->terrainStatic) {
 		delete impl->terrainStatic;
 		impl->terrainStatic = nullptr;
+		Graphic::ins.scene.terrainStatic = nullptr;
 	}
 
 	// Terrain QuadTree
-	if (impl->terrain)
-	{
+	if (impl->terrain) {
 		delete impl->terrain;
 		impl->terrain = nullptr;
+		Graphic::ins.scene.terrain = nullptr;
 	}
 
 	// BSP Source Map
-	if (impl->sourceMap)
-	{
+	if (impl->sourceMap) {
 		delete impl->sourceMap;
 		impl->sourceMap = nullptr;
+		Graphic::ins.scene.sourceMap = nullptr;
 	}
 
 	// BSP Quake Map
-	if (impl->quakeMap)
-	{
+	if (impl->quakeMap) {
 		delete impl->quakeMap;
 		impl->quakeMap = nullptr;
+		Graphic::ins.scene.quakeMap = nullptr;
 	}
 
 	// BSP Map
-	if (impl->bspMap)
-	{
+	if (impl->bspMap) {
 		delete impl->bspMap;
 		impl->bspMap = nullptr;
+		Graphic::ins.scene.bspMap = nullptr;
 	}
 
 	// #EXTRA
 }
 
-void LobbyMap::update()
-{
+void LobbyMap::update() {
 	// float timeStep = Time::ins->getTimeStep();
 
 	// newton::NewtonUpdate(this->world, timeStep);
@@ -430,8 +424,7 @@ void LobbyMap::update()
 		ent->update();
 }
 
-void LobbyMap::render()
-{
+void LobbyMap::render() {
 	if (impl->sky)
 		impl->sky->render();
 	if (impl->terrainStatic)

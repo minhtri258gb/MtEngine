@@ -134,7 +134,7 @@ public:
 		float x, y, z;
 
 		// cleaner usage of verts
-		Vertex pos() 
+		Vertex pos()
 		{
 			return Vertex (x, y, z);
 		};
@@ -232,7 +232,7 @@ private:
 	// a lot of the code right here is from ^, make own code once I get everything solid
 	int WalkBSPTree (glm::vec3 pos, int node)
 	{
-		for (int x = 0; x < 2; x++) 
+		for (int x = 0; x < 2; x++)
 		{
 			if (nodes[node].children[x] >= 0) // node
 			{
@@ -305,7 +305,7 @@ private:
 	void RenderFace (int face) // loadface()
 	{
 		int hub, firstPoint, newPoint; // key indices for each face
-		// 8 and 9, 20 and 21, 12, and 13, 24 and 25, 38 and 39, 
+		// 8 and 9, 20 and 21, 12, and 13, 24 and 25, 38 and 39,
 		for (int x = 0; x < faces[face].numEdges; x++) // loop through every single edge in a face, this will end up making a triangle fan
 		{
 			int EdgeIndex = SurfEdges[faces[face].firstEdge + x]; // Edge index
@@ -322,7 +322,7 @@ private:
 			mapNormals[firstPoint] = planes[faces[face].planeIndex].normal;
 			mapNormals[newPoint] = planes[faces[face].planeIndex].normal;
 
-			// push back every single index 
+			// push back every single index
 			indices.push_back (hub);
 			indices.push_back (firstPoint);
 			indices.push_back (newPoint);

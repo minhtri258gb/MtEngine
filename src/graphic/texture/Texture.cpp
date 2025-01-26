@@ -11,18 +11,16 @@
 using namespace std;
 using namespace mt::graphic;
 
-Texture::Texture()
-{
+
+Texture::Texture() {
 	gl_textureId = -1;
 }
 
-Texture::~Texture()
-{
+Texture::~Texture() {
 	glDeleteTextures(1, &gl_textureId);
 }
 
-void Texture::init(string filepath, bool _flip)
-{
+void Texture::init(string filepath, bool _flip) {
 	glGenTextures(1, &gl_textureId);
 	glBindTexture(GL_TEXTURE_2D, gl_textureId);
 
@@ -40,7 +38,7 @@ void Texture::init(string filepath, bool _flip)
 	int width, height, nrChannels;
 	unsigned char *data = stbi_load(filepath.c_str(), &width, &height, &nrChannels, 0);
 	if (!data)
-		throw error("Failed to load texture: " + filepath);
+		throw error("LOAD_FAIL", "Failed to load texture: " + filepath);
 	
 	if (nrChannels == 4)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -54,8 +52,7 @@ void Texture::init(string filepath, bool _flip)
 	stbi_image_free(data);
 }
 
-void Texture::bind(unsigned int location)
-{
+void Texture::bind(unsigned int location) {
 	glActiveTexture(GL_TEXTURE0 + location);
 	glBindTexture(GL_TEXTURE_2D, gl_textureId);
 }

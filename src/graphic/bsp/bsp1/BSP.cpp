@@ -326,7 +326,7 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 													[patches[currentPatch].numQuadraticPatches];
 		if (!patches[currentPatch].quadraticPatches)
 		{
-			// errorLog.OutputError(	"Unable to allocate memory for %d quadratic patches", 
+			// errorLog.OutputError(	"Unable to allocate memory for %d quadratic patches",
 			// 						patches[currentPatch].numQuadraticPatches);
 			return false;
 		}

@@ -11,21 +11,19 @@
 using namespace std;
 using namespace mt::graphic;
 
-TextureCube::TextureCube()
-{
+
+TextureCube::TextureCube() {
 	gl_textureId = -1;
 }
 
-TextureCube::~TextureCube()
-{
+TextureCube::~TextureCube() {
 	glDeleteTextures(6, &gl_textureId);
 }
 
 /*
  * EX: filepath = "./res/name-X.png"
  */
-void TextureCube::init(string filepath, bool _flip)
-{
+void TextureCube::init(string filepath, bool _flip) {
 	// tao 6 link file
 	vector<string> textures;
 	textures.resize(6);
@@ -33,26 +31,24 @@ void TextureCube::init(string filepath, bool _flip)
 	int pos = filepath.find_last_of('.') - 1;
 
 	string lstChar = "RLUDBF"; // RLUDBF // RLUDFB
-	for (int i=0; i<6; i++)
-	{
+	for (int i=0; i<6; i++) {
 		filepath[pos] = lstChar[i];
 		textures[i] = filepath;
 	}
 
 	// opengl
 	glGenTextures(1, &gl_textureId);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, gl_textureId);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, gl_textureId);
 
 	// flip
 	stbi_set_flip_vertically_on_load(_flip);
 
 	// load and generate the texture
-    int width, height, nrChannels;
-	for (int i = 0; i < 6; i++)
-	{
+	int width, height, nrChannels;
+	for (int i = 0; i < 6; i++) {
 		unsigned char *data = stbi_load(textures[i].c_str(), &width, &height, &nrChannels, 0);
 		if (!data)
-			throw error("Failed to load texture: " + textures.at(i));
+			throw error("LOAD_FAIL", "Failed to load texture: " + textures.at(i));
 		
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		
@@ -66,8 +62,7 @@ void TextureCube::init(string filepath, bool _flip)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 
-void TextureCube::bind(unsigned int location)
-{
+void TextureCube::bind(unsigned int location) {
 	glActiveTexture(GL_TEXTURE0 + location);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, gl_textureId);
 }

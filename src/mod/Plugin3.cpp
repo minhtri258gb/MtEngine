@@ -42,12 +42,12 @@ public:
     {
         return PLUGIN_AUTHOR;
     }
-    
+
     string getPluginVersion()
     {
         return PLUGIN_VERSION;
     }
-    
+
     PLUGIN_TYPE getPluginType()
     {
         return PLUGIN_TYPE::PROCESS;

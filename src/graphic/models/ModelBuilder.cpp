@@ -24,8 +24,7 @@ using namespace mt;
 using namespace mt::engine;
 using namespace mt::graphic;
 
-class ModelBuilder::ModelBuilderImpl
-{
+class ModelBuilder::ModelBuilderImpl {
 public:
 	void loadByAssimp(
 		string modelPath
@@ -54,28 +53,24 @@ public:
 	);
 };
 
-ModelBuilder::ModelBuilder()
-{
+ModelBuilder::ModelBuilder() {
 	// Implement
 	this->impl = new ModelBuilderImpl();
 }
 
-ModelBuilder::~ModelBuilder()
-{
+ModelBuilder::~ModelBuilder() {
 	// Implement
 	delete this->impl;
 }
 
-Model* ModelBuilder::loadModel(string name)
-{
-	
+Model* ModelBuilder::loadModel(string name) {
+
 	#ifdef LOG
 	LOG
 	#endif
 
 	Model* model = this->createDefaultModel(name);
-	if (!model)
-	{
+	if (!model) {
 		
 		#ifdef LOG
 		LOG
@@ -123,8 +118,7 @@ Model* ModelBuilder::loadModel(string name)
 		#endif
 
 		// Create model
-		if (type == "color")
-		{
+		if (type == "color") {
 			
 			#ifdef LOG
 			LOG
@@ -147,9 +141,8 @@ Model* ModelBuilder::loadModel(string name)
 
 			model = newModel; // Override class
 		}
-		else // simple
-		{
-			
+		else { // simple
+
 			#ifdef LOG
 			LOG
 			#endif
@@ -160,7 +153,7 @@ Model* ModelBuilder::loadModel(string name)
 			newModel->pos = modelPos;
 			newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
 			newModel->scale = modelScale;
-			
+
 			#ifdef LOG
 			LOG
 			#endif
@@ -188,8 +181,7 @@ Model* ModelBuilder::loadModel(string name)
 	return model;
 }
 
-Model* ModelBuilder::createDefaultModel(string _name)
-{
+Model* ModelBuilder::createDefaultModel(string _name) {
 	if (_name == "box")
 		return this->createBox();
 	else if (_name == "plane")
@@ -198,8 +190,7 @@ Model* ModelBuilder::createDefaultModel(string _name)
 	return nullptr;
 }
 
-Model* ModelBuilder::createBox()
-{
+Model* ModelBuilder::createBox() {
 	SimpleModel *model = new SimpleModel();
 
 	vector<vec3> vertices;
@@ -211,7 +202,7 @@ Model* ModelBuilder::createBox()
 	vertices.push_back(vec3(-1.0f,  1.0f, -1.0f));
 	vertices.push_back(vec3(-1.0f, -1.0f,  1.0f));
 	vertices.push_back(vec3(-1.0f, -1.0f, -1.0f));
-	
+
 	// vector<vec2> texcoords; // crash
 	// texcoords.push_back(vec2(1.0f, 1.0f));
 	// texcoords.push_back(vec2(1.0f, 0.0f));
@@ -235,7 +226,7 @@ Model* ModelBuilder::createBox()
 	indices.push_back(6); indices.push_back(0); indices.push_back(2);
 	indices.push_back(5); indices.push_back(7); indices.push_back(3);
 	indices.push_back(5); indices.push_back(3); indices.push_back(1);
-	
+
 	model->loadVAO(vertices, indices);
 
 	// model->texture.init("./res/textures/default.png");
@@ -243,8 +234,7 @@ Model* ModelBuilder::createBox()
 	return model;
 }
 
-Model* ModelBuilder::createPlane()
-{
+Model* ModelBuilder::createPlane() {
 	SimpleModel *model = new SimpleModel();
 
 	vector<vec3> vertices;
@@ -292,20 +282,18 @@ void ModelBuilder::ModelBuilderImpl::loadByAssimp(
 		| aiProcess_GenSmoothNormals
 	);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-		throw error(importer.GetErrorString());
+		throw error("ASSIMP_SCENE_ERROR", importer.GetErrorString());
 	
 	// Build mesh
 	aiMesh* mesh = scene->mMeshes[0]; // #HARD chỉ load 1 mesh
 
-	for (uint i=0; i<mesh->mNumVertices; i++)
-	{
+	for (uint i=0; i<mesh->mNumVertices; i++) {
 		// Vertices
 		aiVector3D vertice = mesh->mVertices[i];
 		vertices.push_back(vec3(vertice.x, vertice.y, vertice.z));
 
 		// TexCoord
-		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
-		{
+		if (mesh->mTextureCoords[0]) { // does the mesh contain texture coordinates?
 			aiVector3D texcoord = mesh->mTextureCoords[0][i];
 			texcoords.push_back(vec2(texcoord.x, texcoord.y));
 		}
@@ -317,8 +305,7 @@ void ModelBuilder::ModelBuilderImpl::loadByAssimp(
 		normals.push_back(vec3(normal.x, normal.y, normal.z));
 
 		// Color
-		if (mesh->mColors[0] != nullptr)
-		{
+		if (mesh->mColors[0] != nullptr) {
 			aiColor4D color = mesh->mColors[0][i];
 			colors.push_back(vec4(color.r, color.g, color.b, color.a));
 		}
@@ -326,8 +313,7 @@ void ModelBuilder::ModelBuilderImpl::loadByAssimp(
 			colors.push_back(vec4(1, 1, 1, 1));
 	}
 
-	for (uint i=0; i<mesh->mNumFaces; i++)
-	{
+	for (uint i=0; i<mesh->mNumFaces; i++) {
 		aiFace face = mesh->mFaces[i];
 		for (uint j=0; j<face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
@@ -365,7 +351,6 @@ void ModelBuilder::ModelBuilderImpl::loadByAssimp(
 	// 	aiVector3D aiVec3 = mesh->mVertices[i];
 	// 	vertices.push_back(vec3(aiVec3.x, aiVec3.y, aiVec3.z));
 	// }
-
 }
 
 void ModelBuilder::ModelBuilderImpl::loadByTinyGLFT(
@@ -386,27 +371,27 @@ void ModelBuilder::ModelBuilderImpl::loadByTinyGLFT(
 		isLoaded = loader.LoadASCIIFromFile(&model, &err, &warn, modelPath.c_str());
 	else
 		isLoaded = loader.LoadBinaryFromFile(&model, &err, &warn, modelPath.c_str());
-	
+
 	if (!warn.empty())
 		cout << "[WARNING] " << warn << endl;
 	if (!err.empty())
 		cout << "[ERROR] " << err << endl;
 	if (!isLoaded)
-		throw error("Faild to load Model with tinyglft");
-	
+		throw error("TINYGIFT_LOAD_FAIL", "Faild to load Model with tinyglft");
+
 	int a=1;
 
 	// #TODO
 }
 
 void ModelBuilder::ModelBuilderImpl::loadByTinyOBJLoader(
-		string modelDir
-		,string modelPath
-		,vector<vec3>& vertices
-		,vector<vec4>& colors
-		,vector<vec2>& texcoords
-		,vector<vec3>& normals
-		,vector<uint>& indices
+	string modelDir
+	,string modelPath
+	,vector<vec3>& vertices
+	,vector<vec4>& colors
+	,vector<vec2>& texcoords
+	,vector<vec3>& normals
+	,vector<uint>& indices
 ) {
 	tinyobj::attrib_t inattrib;
 	vector<tinyobj::shape_t> inshapes;
@@ -425,14 +410,12 @@ void ModelBuilder::ModelBuilderImpl::loadByTinyOBJLoader(
 	colors.resize(sizeBuffer, vec4());
 	texcoords.resize(sizeBuffer, vec2());
 	normals.resize(sizeBuffer, vec3());
-	
-	for (uint i=0, sz=inshapes.size(); i<sz; i++)
-	{
+
+	for (uint i=0, sz=inshapes.size(); i<sz; i++) {
 		tinyobj::shape_t inshape = inshapes.at(i);
 		// inshape.mesh.num_face_vertices // #TODO chưa xử lý
 		vector<tinyobj::index_t> indicesObj = inshape.mesh.indices;
 
 		// indicesObj
-
 	}
 }

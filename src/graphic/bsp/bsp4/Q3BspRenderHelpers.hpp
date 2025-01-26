@@ -60,10 +60,10 @@ struct RenderBuffers
 // map statistics
 struct BspStats
 {
-  BspStats() : totalVertices(0), 
-         totalFaces(0), 
-         visibleFaces(0), 
-         totalPatches(0), 
+  BspStats() : totalVertices(0),
+         totalFaces(0),
+         visibleFaces(0),
+         totalPatches(0),
          visiblePatches(0)
   {
   }

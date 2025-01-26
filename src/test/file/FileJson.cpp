@@ -66,7 +66,7 @@ void FileJson::run()
     string lName = jdEmployees.value("lastName", "oops");
     int sID = jdEmployees.value("StudentID", 0);
     string dept = jdEmployees.value("Department", "oops");
-   
+
     // Print the values
     cout << "First Name: " << fName << endl;
     cout << "Last Name: " << lName << endl;

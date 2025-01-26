@@ -24,32 +24,32 @@ TextureAtlas::~TextureAtlas()
 
 void TextureAtlas::init(string filepath, int column, int row)
 {
-    // Data
-    this->column = column;
-    this->row = row;
-    
-    // OpenGL
+	// Data
+	this->column = column;
+	this->row = row;
+
+	// OpenGL
 	glGenTextures(1, &gl_textureId);
-    glBindTexture(GL_TEXTURE_2D, gl_textureId);
+	glBindTexture(GL_TEXTURE_2D, gl_textureId);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    int width, height, nrChannels;
-    unsigned char *data = stbi_load(filepath.c_str(), &width, &height, &nrChannels, 0);
+	int width, height, nrChannels;
+	unsigned char *data = stbi_load(filepath.c_str(), &width, &height, &nrChannels, 0);
 
-    if (data)
-    {
+	if (data)
+	{
 		glTexImage2D(GL_TEXTURE_2D, 0, nrChannels == 4 ? GL_RGBA : GL_RGB, width, height, 0, nrChannels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    	throw warning("[TextureAtlas::load] Failed to load texture: " + filepath);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+		throw warning("LOAD_FAIL", "[TextureAtlas::load] Failed to load texture: " + filepath);
 
-    stbi_image_free(data);
+	stbi_image_free(data);
 }
 
 void TextureAtlas::bind()

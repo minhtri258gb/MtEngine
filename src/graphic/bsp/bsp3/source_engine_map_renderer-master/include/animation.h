@@ -22,7 +22,7 @@
  * This file provides a set of tools for transitioning a vector from one value
  * to another over a period of time.  This is useful for everything from camera
  * movement to moving objects in a scene.  The goal of tools in this file is to
- * expose a number of formulas that allow 
+ * expose a number of formulas that allow
  */
 
 #ifndef ANIMATION_H

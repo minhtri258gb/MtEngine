@@ -182,7 +182,7 @@ public:
 	~BSP_BIQUADRATIC_PATCH()
 	{
 		if (vertices)
-			delete [] vertices; 
+			delete [] vertices;
 		vertices=NULL;
 
 		if (indices)

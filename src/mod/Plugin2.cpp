@@ -58,7 +58,7 @@ public:
     {
         return PLUGIN_AUTHOR;
     }
-    
+
     string getPluginVersion()
     {
         return PLUGIN_VERSION;

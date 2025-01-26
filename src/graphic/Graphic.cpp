@@ -94,7 +94,7 @@ void Graphic::init()
 	if (impl->gl_window == NULL)
 	{
 		glfwTerminate();
-		throw error("Failed to create GLFW window");
+		throw error("GLFW_INIT_FAIL", "Failed to create GLFW window");
 	}
 	glfwMakeContextCurrent(impl->gl_window);
 
@@ -107,7 +107,7 @@ void Graphic::init()
 	// }
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		throw error("Failed to initialize GLAD");
+		throw error("GLAD_INIT_FAIL", "Failed to initialize GLAD");
 
 	glViewport(0, 0, width, height);
 

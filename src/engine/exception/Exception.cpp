@@ -7,38 +7,51 @@
 
 using namespace mt;
 
-Exception::Exception()
-{
+Exception::Exception() {
 	this->message = "";
-	this->file = "";
-	this->line = 0;
+	// this->files = "";
+	// this->lines = 0;
 }
 
-Exception::Exception(std::string _msg, std::string _file, int _line)
-{
+Exception::Exception(std::string _code, std::string _msg, std::string _file, int _line) {
+	this->code = _code;
 	this->message = _msg;
-	this->file = _file;
-	this->line = _line;
+	this->files.push_back(_file);
+	this->lines.push_back(_line);
 }
 
-Exception::~Exception()
-{
+Exception::~Exception() {
 
 }
 
-/*
- * Format: [file: line] message
- */
-std::string Exception::getMessage()
-{
+std::string Exception::getCode() {
+	return this->code;
+}
+std::string Exception::getMessage() {
 	std::stringstream strBuild;
-	strBuild << "[" << this->file << ": " << this->line << "] " << this->message;
+
+	// Print Tracker
+	for (int i=this->files.size()-1; i>=0; i--)
+		strBuild << "[" << this->files.at(i) << ": " << this->lines.at(i) << "] " << std::endl;
+
+	// Print Message
+	strBuild << "[" << this->code << "] " << this->message;
+
 	return strBuild.str();
 }
 
-void Exception::setMessage(std::string _msg, std::string _file, int _line)
-{
+void Exception::setMessage(std::string _code, std::string _msg, std::string _file, int _line) {
+	this->code = _code;
 	this->message = _msg;
-	this->file = _file;
-	this->line = _line;
+
+	this->files.clear();
+	this->lines.clear();
+
+	this->files.push_back(_file);
+	this->lines.push_back(_line);
+}
+
+void Exception::addTrack(std::string _file, int _line) {
+	this->files.push_back(_file);
+	this->lines.push_back(_line);
 }

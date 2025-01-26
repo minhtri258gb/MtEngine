@@ -15,8 +15,8 @@ MathException::MathException()
 MathException::MathException(string _msg, string _file, int _line)
 {
 	this->message = _msg;
-	this->file = _file;
-	this->line = _line;
+	// this->file = _file;
+	// this->line = _line;
 }
 
 MathException::~MathException()

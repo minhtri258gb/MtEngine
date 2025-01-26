@@ -26,24 +26,20 @@ using namespace mt::game;
 
 Game Game::ins;
 
-Game::Game()
-{
+Game::Game() {
 	this->mainloop = true;
 }
 
-Game::~Game()
-{
+Game::~Game() {
 }
 
-void Game::run()
-{
+void Game::run() {
 
 	#ifdef LOG
 	LOG
 	#endif
 
-	try
-	{
+	try {
 		this->init();
 
 		#ifdef LOG
@@ -61,19 +57,17 @@ void Game::run()
 		#ifdef LOG
 		LOG
 		#endif
-	
+
 	}
-	catch (Exception e)
-	{
-		
+	catch (Exception e) {
+
 		#ifdef LOG
 		LOG
 		#endif
-	
-		cerr << "[ERROR]: " << e.getMessage() << '\n';
+
+		cerr << "[ERROR]: " << std::endl << e.getMessage() << '\n';
 	}
-	catch (exception &e)
-	{
+	catch (exception &e) {
 		
 		#ifdef LOG
 		LOG
@@ -85,120 +79,131 @@ void Game::run()
 	#ifdef LOG
 	LOG
 	#endif
-	
 }
 
 void Game::init()
 {
-	// Init module
-	Timer::ins.init();
-	Graphic::ins.init();
-	Physic::ins.init();
-	CommandMgr::ins.init();
+	try {
+		// Init module
+		Timer::ins.init();
+		Graphic::ins.init();
+		Physic::ins.init();
+		CommandMgr::ins.init();
 
-	#ifdef LOG
-	LOG
-	#endif
-	
-	// Init component
-	this->screen.init();
-	this->map = MapBuilder::firstLoad();
+		#ifdef LOG
+		LOG
+		#endif
+		
+		// Init component
+		this->screen.init();
+		this->map = MapBuilder::firstLoad();
 
-	// #EXTRA
+		// #EXTRA
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 void Game::framework()
 {
-	#ifdef LOG
-	LOG
-	#endif
-
-	// Before loop
-	// Timer::ins.init();
-
-	// Main loop
-	while (this->mainloop)
-	{
-		// input
-		Graphic::ins.processInput();
-
+	try {
 		#ifdef LOG
 		LOG
 		#endif
 
-		// Input network
+		// Before loop
+		// Timer::ins.init();
 
-		#ifdef LOG
-		LOG
-		#endif
-		
-		// Process Command
-		CommandMgr::ins.update();
+		// Main loop
+		while (this->mainloop)
+		{
+			// input
+			Graphic::ins.processInput();
 
-		// loading
-		this->map->load();
+			#ifdef LOG
+			LOG
+			#endif
 
-		#ifdef LOG
-		LOG
-		#endif
-		
-		// Physic
-		Physic::ins.update();
+			// Input network
 
-		#ifdef LOG
-		LOG
-		#endif
-		
-		// Pre Process
-		Graphic::ins.camera.update();
+			#ifdef LOG
+			LOG
+			#endif
+			
+			// Process Command
+			CommandMgr::ins.update();
 
-		#ifdef LOG
-		LOG
-		#endif
-		
-		// Map update
-		this->map->update();
+			// loading
+			this->map->load();
 
-		#ifdef LOG
-		LOG
-		#endif
-		
-		// rendering commands here
-		Graphic::ins.renderPre();
+			#ifdef LOG
+			LOG
+			#endif
+			
+			// Physic
+			Physic::ins.update();
 
-		#ifdef LOG
-		LOG
-		#endif
+			#ifdef LOG
+			LOG
+			#endif
+			
+			// Pre Process
+			Graphic::ins.camera.update();
 
-		// Bind Buffer
+			#ifdef LOG
+			LOG
+			#endif
+			
+			// Map update
+			this->map->update();
 
-		// Map render
-		// this->map->render();
+			#ifdef LOG
+			LOG
+			#endif
+			
+			// rendering commands here
+			Graphic::ins.renderPre();
 
-		// End Bind
+			#ifdef LOG
+			LOG
+			#endif
 
-		// Render Screen PostProcess
+			// Bind Buffer
 
-		// Render HUD
+			// Map render
+			// this->map->render();
 
-		// Graphic
-		Graphic::ins.render();
+			// End Bind
 
-		#ifdef LOG
-		LOG
-		#endif
+			// Render Screen PostProcess
 
-		// #ADD
+			// Render HUD
 
-		// reset state input
+			// Graphic
+			Graphic::ins.render();
 
-		// check and call events and swap the buffers
-		if (!Graphic::ins.checkWindow())
-			this->mainloop = false;
-		Graphic::ins.renderPost();
+			#ifdef LOG
+			LOG
+			#endif
 
-		// Sync FPS
-		Timer::ins.sleep();
+			// #ADD
+
+			// reset state input
+
+			// check and call events and swap the buffers
+			if (!Graphic::ins.checkWindow())
+				this->mainloop = false;
+			Graphic::ins.renderPost();
+
+			// Sync FPS
+			Timer::ins.sleep();
+		}
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
 	}
 }
 

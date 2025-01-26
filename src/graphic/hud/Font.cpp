@@ -60,7 +60,7 @@ void Font::init()
 
 	for (unsigned char c=0; c<128; c++)
 	{
-		// load character glyph 
+		// load character glyph
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 			throw error("Failed to load Glyph");
 
@@ -76,7 +76,7 @@ void Font::init()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		// now store character for later use
 		FontImpl::Character character = {
-			texture, 
+			texture,
 			vec2i(face->glyph->bitmap.width, face->glyph->bitmap.rows),
 			vec2i(face->glyph->bitmap_left, face->glyph->bitmap_top),
 			(unsigned int)face->glyph->advance.x

@@ -48,11 +48,11 @@ void bezier::tessellate(int subdivisions)
   if (m_vertexes != NULL) delete [] m_vertexes;
   m_vertexes = new bsp_vertex[subdivisions1*subdivisions1];
 
-  for (int i = 0; i <= subdivisions; ++i) 
+  for (int i = 0; i <= subdivisions; ++i)
   {
     float l = (float)i/subdivisions;
 
-    for (int j = 0; j < 3; ++j) 
+    for (int j = 0; j < 3; ++j)
     {
       int k = 3 * j;
       temp[j] = calculate_quadratic_bezier(l, &(m_control_vertexes[k]));
@@ -85,7 +85,7 @@ void bezier::tessellate(int subdivisions)
     }
   }
 
-  for (int row = 0; row < subdivisions; ++row) 
+  for (int row = 0; row < subdivisions; ++row)
   {
     m_tri_per_row[row] = 2 * subdivisions1;
     m_row_indexes[row] = &(m_indexes[row * 2 * subdivisions1]);

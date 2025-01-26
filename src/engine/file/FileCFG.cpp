@@ -6,8 +6,6 @@
 
 #include "common.h"
 
-#include "engine/exception/LoadException.h"
-
 #include "FileCFG.h"
 
 using namespace std;
@@ -41,7 +39,7 @@ void FileCFG::select(string sessionName)
 		}
 	}
 	
-	throw Exception("Session \"" + sessionName + "\" not found!", __FILE__, __LINE__);
+	throw error("SESSION_NOT_FOUND", "Session \"" + sessionName + "\" not found!");
 }
 
 void FileCFG::addSession(string sessionName)
@@ -257,7 +255,7 @@ void FileCFG::load(string filename)
 	ifstream fCFG;
 	fCFG.open(filename.c_str(), ios::in);
 	if (!fCFG.is_open())
-		throw LoadException("Can't read file: " + filename, __FILE__, __LINE__);
+		throw error("LOAD_FAIL", "Can't read file: " + filename);
 	
 	string line;
 	vector<string> sessionKey, sessionValue;

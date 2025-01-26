@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <cmath>
+#include <vector>
 
 #include "Math3D.h"
 #include "../../exception/Exception.h"
@@ -11,51 +12,44 @@
 using namespace std;
 using namespace mt;
 
-Matrix4x4::Matrix4x4()
-{
+
+Matrix4x4::Matrix4x4() {
 	this->indentity();
 }
 
 Matrix4x4::Matrix4x4(	float m00, float m01, float m02, float m03,
 						float m04, float m05, float m06, float m07,
 						float m08, float m09, float m10, float m11,
-						float m12, float m13, float m14, float m15)
-{
+						float m12, float m13, float m14, float m15
+) {
 	this->set(m00, m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15);
 }
 
-Matrix4x4::Matrix4x4(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4)
-{
+Matrix4x4::Matrix4x4(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4) {
 	this->set(v1, v2, v3, v4);
 }
 
-Matrix4x4::Matrix4x4(const Quaternion& q)
-{
+Matrix4x4::Matrix4x4(const Quaternion& q) {
 	this->set(q);
 }
 
-Matrix4x4::Matrix4x4(const Matrix4x4 &m)
-{
+Matrix4x4::Matrix4x4(const Matrix4x4 &m) {
 	this->set(m);
 }
 
-Matrix4x4::Matrix4x4(const Matrix3x3 &m)
-{
+Matrix4x4::Matrix4x4(const Matrix3x3 &m) {
 	this->set(m);
 }
 
-Matrix4x4::~Matrix4x4()
-{
+Matrix4x4::~Matrix4x4() {
 }
 
-void Matrix4x4::indentity()
-{
+void Matrix4x4::indentity() {
 	m[0] = m[5] = m[10] = m[15] = 1.0f;
 	m[1] = m[2] = m[3] = m[4] = m[6] = m[7] = m[8] = m[9] = m[11] = m[12] = m[13] = m[14] = 0.0f;
 }
 
-void Matrix4x4::transpose()
-{
+void Matrix4x4::transpose() {
 	swap(m[4], m[1]);
 	swap(m[8], m[2]);
 	swap(m[9], m[6]);
@@ -64,8 +58,7 @@ void Matrix4x4::transpose()
 	swap(m[14], m[11]);
 }
 
-float Matrix4x4::determinant() const
-{
+float Matrix4x4::determinant() const {
 	return m[ 0]*m[ 5]*m[10]*m[15] - m[ 0]*m[ 5]*m[11]*m[14] + m[ 0]*m[ 6]*m[11]*m[13] - m[ 0]*m[ 6]*m[ 9]*m[15]
 		 + m[ 0]*m[ 7]*m[ 9]*m[14] - m[ 0]*m[ 7]*m[10]*m[13] - m[ 1]*m[ 6]*m[11]*m[12] + m[ 1]*m[ 6]*m[ 8]*m[15]
 		 - m[ 1]*m[ 7]*m[ 8]*m[14] + m[ 1]*m[ 7]*m[10]*m[12] - m[ 1]*m[ 4]*m[10]*m[15] + m[ 1]*m[ 4]*m[11]*m[14]
@@ -74,8 +67,7 @@ float Matrix4x4::determinant() const
 		 - m[ 3]*m[ 5]*m[10]*m[12] + m[ 3]*m[ 5]*m[ 8]*m[14] - m[ 3]*m[ 6]*m[ 8]*m[13] + m[ 3]*m[ 6]*m[ 9]*m[12];
 }
 
-void Matrix4x4::inverse()
-{
+void Matrix4x4::inverse() {
 	const float det = determinant();
 	if (det == 0.0f)
 		throw MathException("Khong the invert ma tran nay", __FILE__, __LINE__);
@@ -102,8 +94,7 @@ void Matrix4x4::inverse()
 	*this = res;
 }
 
-bool Matrix4x4::isIdentity() const
-{
+bool Matrix4x4::isIdentity() const {
 	// Use a small epsilon to solve floating-point inaccuracies
 	const static float epsilon = 10e-3f;
 
@@ -125,8 +116,7 @@ bool Matrix4x4::isIdentity() const
 			m[15] <= 1.f+epsilon && m[15] >= 1.f-epsilon);
 }
 
-void Matrix4x4::perspective(float fovDeg, float aspect, float near, float far)
-{
+void Matrix4x4::perspective(float fovDeg, float aspect, float near, float far) {
 	const float tanHalfFovy = tanf(fovDeg / 2.0f);
 	m[0] = 1.0f / (aspect * tanHalfFovy);
 	m[5] = 1.0f / (tanHalfFovy);
@@ -136,8 +126,7 @@ void Matrix4x4::perspective(float fovDeg, float aspect, float near, float far)
 	m[15] = 0.0f;
 }
 
-void Matrix4x4::ortho(float left, float right, float bottom, float top) // , float zNear, float zFar
-{
+void Matrix4x4::ortho(float left, float right, float bottom, float top) { // , float zNear, float zFar
 	m[ 0] = 2.0f / (right - left);
 	m[ 5] = 2.0f / (top - bottom);
 	m[10] = - 1; // - 2.0f / (zFar - zNear);
@@ -146,8 +135,7 @@ void Matrix4x4::ortho(float left, float right, float bottom, float top) // , flo
 	// m[14] = - (zFar + zNear) / (zFar - zNear);
 }
 
-void Matrix4x4::lookAt(const Vector3& eye, const Vector3& center, const Vector3& up)
-{
+void Matrix4x4::lookAt(const Vector3& eye, const Vector3& center, const Vector3& up) {
 	vec3 f = (center - eye).normalize();
 	vec3 s = (f ^ up).normalize();
 	vec3 u = s ^ f;
@@ -166,8 +154,7 @@ void Matrix4x4::lookAt(const Vector3& eye, const Vector3& center, const Vector3&
 	m[14] =  (f * eye);
 }
 
-void Matrix4x4::transform(Vector3 position, Quaternion rotation, Vector3 scaling)
-{
+void Matrix4x4::transform(Vector3 position, Quaternion rotation, Vector3 scaling) {
 	Matrix3x3 r(rotation);
 
 	m[ 0] = r[0] * scaling.x;
@@ -189,34 +176,29 @@ void Matrix4x4::transform(Vector3 position, Quaternion rotation, Vector3 scaling
 	m[15] = 1.0f;
 }
 
-void Matrix4x4::translate(const Vector3& v)
-{
+void Matrix4x4::translate(const Vector3& v) {
 	m[12] = m[ 0] * v[0] + m[ 4] * v[1] + m[ 8] * v[2] + m[12];
 	m[13] = m[ 1] * v[0] + m[ 5] * v[1] + m[ 9] * v[2] + m[13];
 	m[14] = m[ 2] * v[0] + m[ 6] * v[1] + m[10] * v[2] + m[14];
 	m[15] = m[ 3] * v[0] + m[ 7] * v[1] + m[11] * v[2] + m[15];
 }
 
-void Matrix4x4::rotationX(float angle)
-{
+void Matrix4x4::rotationX(float angle) {
 	m[5] =  m[10] = cosf(angle);
 	m[6] = -(m[9] = sinf(angle));
 }
 
-void Matrix4x4::rotationY(float angle)
-{
+void Matrix4x4::rotationY(float angle) {
 	m[0] =  m[10] = cosf(angle);
 	m[8] = -(m[2] = sinf(angle));
 }
 
-void Matrix4x4::rotationZ(float angle)
-{
+void Matrix4x4::rotationZ(float angle) {
 	m[0] =   m[5] = cos(angle);
 	m[1] = -(m[4] = sin(angle));
 }
 
-void Matrix4x4::rotation(float angle, const Vector3& axis)
-{
+void Matrix4x4::rotation(float angle, const Vector3& axis) {
 	float c = cosf(angle), s = sinf(angle), t = 1 - c;
 	float x = axis.x, y = axis.y, z = axis.z;
 
@@ -236,18 +218,15 @@ void Matrix4x4::rotation(float angle, const Vector3& axis)
 	m[15] = 1.0f;
 }
 
-void Matrix4x4::rotate(const Quaternion& angle)
-{
+void Matrix4x4::rotate(const Quaternion& angle) {
 	*this *= mat4(angle); // #TODO optimize
 }
 
-void Matrix4x4::scale(float f)
-{
+void Matrix4x4::scale(float f) {
 	this->scale(vec3(f,f,f));
 }
 
-void Matrix4x4::scale(const Vector3& v)
-{
+void Matrix4x4::scale(const Vector3& v) {
 	m[0] *= v[0];
 	m[1] *= v[0];
 	m[2] *= v[0];
@@ -264,8 +243,7 @@ void Matrix4x4::scale(const Vector3& v)
 	m[11] *= v[2];
 }
 
-void Matrix4x4::fromEulerAnglesXYZ(float x, float y, float z)
-{
+void Matrix4x4::fromEulerAnglesXYZ(float x, float y, float z) {
 	float cx = cosf(x);
 	float sx = sinf(x);
 	float cy = cosf(y);
@@ -287,15 +265,13 @@ void Matrix4x4::fromEulerAnglesXYZ(float x, float y, float z)
 	m[10] = cy * cx;
 }
 
-void Matrix4x4::fromToMatrix(const Vector3& from, const Vector3& to)
-{
+void Matrix4x4::fromToMatrix(const Vector3& from, const Vector3& to) {
 	Matrix3x3 m3;
 	m3.fromToMatrix(from, to);
 	set(m3);
 }
 
-void Matrix4x4::decompose(Vector3& position, Quaternion& rotation, Vector3& scaling) const
-{
+void Matrix4x4::decompose(Vector3& position, Quaternion& rotation, Vector3& scaling) const {
 	position.x = m[3];
 	position.y = m[7];
 	position.z = m[11];
@@ -326,8 +302,7 @@ void Matrix4x4::decompose(Vector3& position, Quaternion& rotation, Vector3& scal
 	rotation = Quaternion(m);
 }
 
-void Matrix4x4::decompose(Vector3& position, Quaternion& rotation) const
-{
+void Matrix4x4::decompose(Vector3& position, Quaternion& rotation) const {
 	// const Matrix4x4& _this = *this;
 	
 	position.x = m[3];
@@ -341,35 +316,31 @@ void Matrix4x4::decompose(Vector3& position, Quaternion& rotation) const
 void Matrix4x4::set(	float m00, float m01, float m02, float m03,
 						float m04, float m05, float m06, float m07,
 						float m08, float m09, float m10, float m11,
-						float m12, float m13, float m14, float m15)
-{
+						float m12, float m13, float m14, float m15
+) {
 	m[ 0] = m00; m[ 1] = m01; m[ 2] = m02; m[ 3] = m03;
 	m[ 4] = m04; m[ 5] = m05; m[ 6] = m06; m[ 7] = m07;
 	m[ 8] = m08; m[ 9] = m09; m[10] = m10; m[11] = m11;
 	m[12] = m12; m[13] = m13; m[14] = m14; m[15] = m15;
 }
 
-void Matrix4x4::set(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4)
-{
+void Matrix4x4::set(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4) {
 	m[ 0] = v1.x; m[ 1] = v1.y; m[ 2] = v1.z; m[ 3] = v1.w;
 	m[ 4] = v2.x; m[ 5] = v2.y; m[ 6] = v2.z; m[ 7] = v2.w;
 	m[ 8] = v3.x; m[ 9] = v3.y; m[10] = v3.z; m[11] = v3.w;
 	m[12] = v4.x; m[13] = v4.y; m[14] = v4.z; m[15] = v4.w;
 }
 
-void Matrix4x4::set(const Quaternion& q)
-{
+void Matrix4x4::set(const Quaternion& q) {
 	set(mat3(q));
 }
 
-void Matrix4x4::set(const Matrix4x4 &_m)
-{
+void Matrix4x4::set(const Matrix4x4 &_m) {
 	for (int i=0; i<16; i++)
 		this->m[i] = _m.m[i];
 }
 
-void Matrix4x4::set(const Matrix3x3 &_m)
-{
+void Matrix4x4::set(const Matrix3x3 &_m) {
 	m[0] = _m[0]; m[1] = _m[1]; m[ 2] = _m[2];
 	m[4] = _m[3]; m[5] = _m[4]; m[ 6] = _m[5];
 	m[8] = _m[6]; m[9] = _m[7]; m[10] = _m[8];
@@ -377,8 +348,7 @@ void Matrix4x4::set(const Matrix3x3 &_m)
 	m[15] = 1.0f;
 }
 
-bool Matrix4x4::equal(const Matrix4x4& r, double epsilon) const
-{
+bool Matrix4x4::equal(const Matrix4x4& r, double epsilon) const {
 	return
 		abs(m[ 0] - r.m[ 0]) <= epsilon &&
 		abs(m[ 1] - r.m[ 1]) <= epsilon &&
@@ -398,22 +368,19 @@ bool Matrix4x4::equal(const Matrix4x4& r, double epsilon) const
 		abs(m[15] - r.m[15]) <= epsilon;
 }
 
-Matrix3x3 Matrix4x4::toMat3() const
-{
+Matrix3x3 Matrix4x4::toMat3() const {
 	return Matrix3x3(m[0], m[1], m[2], m[4], m[5], m[6], m[8], m[9], m[10]);
 }
 
-Vector3 Matrix4x4::operator * (const Vector3& v) const
-{
-    Vector3 res;
-    res.x = m[0] * v.x + m[1] * v.y + m[ 2] * v.z + m[ 3];
-    res.y = m[4] * v.x + m[5] * v.y + m[ 6] * v.z + m[ 7];
-    res.z = m[8] * v.x + m[9] * v.y + m[10] * v.z + m[11];
+Vector3 Matrix4x4::operator * (const Vector3& v) const {
+	Vector3 res;
+	res.x = m[0] * v.x + m[1] * v.y + m[ 2] * v.z + m[ 3];
+	res.y = m[4] * v.x + m[5] * v.y + m[ 6] * v.z + m[ 7];
+	res.z = m[8] * v.x + m[9] * v.y + m[10] * v.z + m[11];
 	return res;
 }
 
-Matrix4x4 Matrix4x4::operator * (const float& f) const
-{
+Matrix4x4 Matrix4x4::operator * (const float& f) const {
 	Matrix4x4 temp(
 		m[ 0] * f, m[ 1] * f, m[ 2] * f, m[ 3] * f,
 		m[ 4] * f, m[ 5] * f, m[ 6] * f, m[ 7] * f,
@@ -422,15 +389,13 @@ Matrix4x4 Matrix4x4::operator * (const float& f) const
 	return temp;
 }
 
-Matrix4x4 Matrix4x4::operator * (const Matrix4x4& r) const
-{
+Matrix4x4 Matrix4x4::operator * (const Matrix4x4& r) const {
 	Matrix4x4 temp(*this);
 	temp *= r;
 	return temp;
 }
 
-Matrix4x4 Matrix4x4::operator + (const Matrix4x4& r) const
-{
+Matrix4x4 Matrix4x4::operator + (const Matrix4x4& r) const {
 	Matrix4x4 temp(
 		r.m[ 0] + m[ 0], r.m[ 1] + m[ 1], r.m[ 2] + m[ 2], r.m[ 3] + m[ 3],
 		r.m[ 4] + m[ 4], r.m[ 5] + m[ 5], r.m[ 6] + m[ 6], r.m[ 7] + m[ 7],
@@ -439,8 +404,7 @@ Matrix4x4 Matrix4x4::operator + (const Matrix4x4& r) const
 	return temp;
 }
 
-Matrix4x4& Matrix4x4::operator *= (const Matrix4x4& r)
-{
+Matrix4x4& Matrix4x4::operator *= (const Matrix4x4& r) {
 	this->set(
 		m[ 0] * r.m[ 0] + m[ 4] * r.m[ 1] + m[ 8] * r.m[ 2] + m[12] * r.m[ 3],
 		m[ 1] * r.m[ 0] + m[ 5] * r.m[ 1] + m[ 9] * r.m[ 2] + m[13] * r.m[ 3],
@@ -461,37 +425,32 @@ Matrix4x4& Matrix4x4::operator *= (const Matrix4x4& r)
 	return *this;
 }
 
-bool Matrix4x4::operator == (const Matrix4x4& m) const
-{
+bool Matrix4x4::operator == (const Matrix4x4& m) const {
 	return (m[ 0] == m.m[ 0] && m[ 1] == m.m[ 1] && m[ 2] == m.m[ 2] && m[ 3] == m.m[ 3] &&
 			m[ 4] == m.m[ 4] && m[ 5] == m.m[ 5] && m[ 6] == m.m[ 6] && m[ 7] == m.m[ 7] &&
 			m[ 8] == m.m[ 8] && m[ 9] == m.m[ 9] && m[10] == m.m[10] && m[11] == m.m[11] &&
 			m[12] == m.m[12] && m[13] == m.m[13] && m[14] == m.m[14] && m[15] == m.m[15]);
 }
 
-bool Matrix4x4::operator != (const Matrix4x4& m) const
-{
+bool Matrix4x4::operator != (const Matrix4x4& m) const {
 	return !(*this == m);
 }
 
-float Matrix4x4::operator [] (unsigned int index) const
-{
+float Matrix4x4::operator [] (unsigned int index) const {
 	if (index < 0 || index > 15)
 	{
 		stringstream err_msg;
 		err_msg << "index = " << index;
-		throw error(err_msg.str());
+		throw error("INDEX_INVAIL", err_msg.str());
 	}
 	return this->m[index];
 }
 
-float& Matrix4x4::operator [] (unsigned int index)
-{
-	if (index < 0 || index > 15)
-	{
+float& Matrix4x4::operator [] (unsigned int index) {
+	if (index < 0 || index > 15) {
 		stringstream err_msg;
 		err_msg << "index = " << index;
-		throw error(err_msg.str());
+		throw error("INDEX_INVAIL", err_msg.str());
 	}
 	return *(&m[0] + index);
 }

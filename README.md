@@ -22,10 +22,10 @@ Bullet list:
 - engine
 	- load
 
-Two spaces at the end of a line  
+Two spaces at the end of a line
 produce a line break.
 
-Text attributes *italic*, 
+Text attributes *italic*,
 **bold**, `monospace`.
 
 Horizontal rule:

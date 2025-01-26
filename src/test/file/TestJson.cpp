@@ -24,7 +24,5 @@ void TestJson::run()
 {
     FileJson file("./res/test/file.json");
 
-
-    
 	cout << "Test Done" << endl;
 }

@@ -62,29 +62,29 @@ Q3Shader* ExtractOneShader()
   std::string name = "";
   Q3Shader* current_shader;
 
-  for (; offset_ < shaderbuffer_.length(); ++offset_) 
+  for (; offset_ < shaderbuffer_.length(); ++offset_)
   {
-    switch (shaderbuffer_[offset_]) 
+    switch (shaderbuffer_[offset_])
     {
       case '/':
-        if (shaderbuffer_[offset_+1] == '/') 
+        if (shaderbuffer_[offset_+1] == '/')
         {
           // TODO take this out of Q3Shader
           offset_ = Q3Shader::GetNewLinePosition(&shaderbuffer_, offset_);
           break;
-        } 
-        else 
+        }
+        else
         {
           name.append(1, '/');
           break;
         }
       case '{': // TODO this is like the worst way ever to handle those shaders..,  change that later
-        if (is_shader == true) 
+        if (is_shader == true)
         {
           // sub-shader found
           offset_ = current_shader->ParseShaderStage(&shaderbuffer_, offset_);
-        } 
-        else 
+        }
+        else
         {
           // wahrscheinlich doch nur als ptr m�glich
           current_shader = new Q3Shader(name);
@@ -204,7 +204,7 @@ int LoadAllShaders()
   return 0;
 }
 
-void Deinitialize() 
+void Deinitialize()
 {
   for (auto& shader : shaders_by_name_)
   {

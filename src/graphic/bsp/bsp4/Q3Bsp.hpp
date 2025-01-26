@@ -31,22 +31,22 @@ struct vec3f
 //data types (lumps)
 enum LumpTypes
 {
-    Entities = 0, 
-    Textures, 
-    Planes, 
-    Nodes, 
-    Leafs, 
-    LeafFaces, 
-    LeafBrushes, 
-    Models, 
-    Brushes, 
-    BrushSides, 
-    Vertices, 
+    Entities = 0,
+    Textures,
+    Planes,
+    Nodes,
+    Leafs,
+    LeafFaces,
+    LeafBrushes,
+    Models,
+    Brushes,
+    BrushSides,
+    Vertices,
     MeshVerts,
-    Effects, 
-    Faces, 
+    Effects,
+    Faces,
     Lightmaps,
-    LightVols, 
+    LightVols,
     VisData
 };
 
@@ -86,7 +86,7 @@ struct Q3BspTextureLump
 {
     char name[64];
     int  flags;
-    int  contents; 
+    int  contents;
 };
 
 
@@ -101,7 +101,7 @@ struct Q3BspNodeLump
 {
     int   plane;
     vec2i children;
-    vec3i mins; 
+    vec3i mins;
     vec3i maxs;
 };
 
@@ -112,7 +112,7 @@ struct Q3BspLeafLump
     int   area;
     vec3i mins;
     vec3i maxs;
-    int   leafFace;  
+    int   leafFace;
     int   n_leafFaces;
     int   leafBrush;
     int   n_leafBrushes;
@@ -152,7 +152,7 @@ struct Q3BspBrushLump
 
 struct Q3BspBrushSideLump
 {
-    int plane; 
+    int plane;
     int texture;
 };
 

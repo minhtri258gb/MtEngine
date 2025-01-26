@@ -15,6 +15,6 @@ void main()
 {
     vec3 lightDir = normalize(lightPos - f_position);
     float diff = max(dot(f_normal, lightDir), 0.2);
-    vec3 dCol = diff * texture(diff_texture, f_texcoord).rgb; 
+    vec3 dCol = diff * texture(diff_texture, f_texcoord).rgb;
     color = vec4(dCol, 1);
 }

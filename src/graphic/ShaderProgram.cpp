@@ -15,17 +15,14 @@ using namespace mt::engine;
 using namespace mt::graphic;
 
 
-ShaderProgram::ShaderProgram()
-{
+ShaderProgram::ShaderProgram() {
 	this->programId = -1;
 }
 
-ShaderProgram::~ShaderProgram()
-{
+ShaderProgram::~ShaderProgram() {
 }
 
-void ShaderProgram::init(string _filename, int _flag)
-{
+void ShaderProgram::init(string _filename, int _flag) {
 	// Get config
 	_filename = Config::ins.shader_path + _filename;
 
@@ -81,70 +78,58 @@ void ShaderProgram::init(string _filename, int _flag)
 	glGetProgramiv(this->programId, GL_LINK_STATUS, &success);
 	if (!success) {
 		glGetProgramInfoLog(this->programId, 512, NULL, infoLog);
-		throw error(string("Failed to compile vertex shader: ")+infoLog);
+		throw error("COMPILE_FAIL", string("Failed to compile vertex shader: ")+infoLog);
 	}
 }
 
-void ShaderProgram::close()
-{
+void ShaderProgram::close() {
 	locations.clear();
 
 	glDeleteProgram(this->programId);
 }
 
-void ShaderProgram::use()
-{
+void ShaderProgram::use() {
 	glUseProgram(this->programId);
 }
 
-void ShaderProgram::addLocation(string _unifromName)
-{
+void ShaderProgram::addLocation(string _unifromName) {
 	int location = glGetUniformLocation(this->programId, _unifromName.c_str());
 	this->locations.push_back(location);
 }
 
-void ShaderProgram::setBool(int _locationId, bool _value)
-{         
-    glUniform1i(this->locations.at(_locationId), (int)_value); 
+void ShaderProgram::setBool(int _locationId, bool _value) {
+	glUniform1i(this->locations.at(_locationId), (int)_value);
 }
 
-void ShaderProgram::setInt(int _locationId, int _value)
-{ 
-    glUniform1i(this->locations.at(_locationId), _value); 
+void ShaderProgram::setInt(int _locationId, int _value) {
+	glUniform1i(this->locations.at(_locationId), _value);
 }
 
-void ShaderProgram::setFloat(int _locationId, float _value)
-{ 
-    glUniform1f(this->locations.at(_locationId), _value); 
-} 
+void ShaderProgram::setFloat(int _locationId, float _value) {
+	glUniform1f(this->locations.at(_locationId), _value);
+}
 
-void ShaderProgram::setVec2(int _locationId, vec2 _value)
-{
+void ShaderProgram::setVec2(int _locationId, vec2 _value) {
 	glUniform2f(this->locations.at(_locationId), _value.x, _value.y);
 }
 
-void ShaderProgram::setVec2I(int _locationId, vec2i _value)
-{
+void ShaderProgram::setVec2I(int _locationId, vec2i _value) {
 	glUniform2i(this->locations.at(_locationId), _value.x, _value.y);
 }
 
-void ShaderProgram::setVec3(int _locationId, vec3 _value)
-{
+void ShaderProgram::setVec3(int _locationId, vec3 _value) {
 	glUniform3f(this->locations.at(_locationId), _value.x, _value.y, _value.z);
 }
 
-void ShaderProgram::setVec3I(int _locationId, vec3i _value)
-{
+void ShaderProgram::setVec3I(int _locationId, vec3i _value) {
 	glUniform3i(this->locations.at(_locationId), _value.x, _value.y, _value.z);
 }
 
-void ShaderProgram::setVec4(int _locationId, vec4 _value)
-{
+void ShaderProgram::setVec4(int _locationId, vec4 _value) {
 	glUniform4f(this->locations.at(_locationId), _value.x, _value.y, _value.z, _value.w);
 }
 
-void ShaderProgram::setMat4(int _locationId, mat4 _value)
-{
+void ShaderProgram::setMat4(int _locationId, mat4 _value) {
 	glUniformMatrix4fv(this->locations.at(_locationId), 1, GL_FALSE, &_value[0]);
 	
 	// debug - begin
@@ -156,18 +141,16 @@ void ShaderProgram::setMat4(int _locationId, mat4 _value)
 	// debug - end
 }
 
-void ShaderProgram::setListMat4(int _locationId, std::vector<mat4> _value)
-{
+void ShaderProgram::setListMat4(int _locationId, std::vector<mat4> _value) {
 	glUniformMatrix4fv(this->locations.at(_locationId), _value.size(), GL_FALSE, &_value[0][0]);
 }
 
-unsigned int ShaderProgram::initShaderPath(string _filepath, SHADER_TYPE _type)
-{
+unsigned int ShaderProgram::initShaderPath(string _filepath, SHADER_TYPE _type) {
 	// Read source
 	ifstream shaderFile;
 	shaderFile.open(_filepath);
 	if (!shaderFile)
-		throw error("Unable to open file " + _filepath);
+		throw error("SRC_NOT_FOUND", "Unable to open file " + _filepath);
 
 	stringstream shaderStream;
 	shaderStream << shaderFile.rdbuf();
@@ -178,8 +161,7 @@ unsigned int ShaderProgram::initShaderPath(string _filepath, SHADER_TYPE _type)
 
 	// Create shader
 	unsigned int shaderId;
-	switch (_type)
-	{
+	switch (_type) {
 	case VERTEX:
 		shaderId = glCreateShader(GL_VERTEX_SHADER);
 		break;
@@ -204,10 +186,9 @@ unsigned int ShaderProgram::initShaderPath(string _filepath, SHADER_TYPE _type)
 	char infoLog[512];
 	glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success);
 
-	if (!success)
-	{
+	if (!success) {
 		glGetShaderInfoLog(shaderId, 512, NULL, infoLog);
-		throw error("Failed to compile shader: "+_filepath+'\n'+infoLog);
+		throw error("COMPILE_FAIL", "Failed to compile shader: "+_filepath+'\n'+infoLog);
 	}
 
 	return shaderId;

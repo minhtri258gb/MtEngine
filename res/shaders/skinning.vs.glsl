@@ -21,7 +21,7 @@ void main()
     f_bw = vec4(0);
     if(v_boneIds.x == 1)
         f_bw.z = v_boneIds.x;
-    
+
     mat4 boneTransform  =  mat4(0.0);
     boneTransform += bones[v_boneIds.x] * v_boneWeights.x;
     boneTransform += bones[v_boneIds.y] * v_boneWeights.y;

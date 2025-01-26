@@ -10,7 +10,7 @@ OUTFILE=semr
 	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@
 
 $(OUTFILE): $(OBJ)
-	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS) 
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 .PHONY: clean
 clean:

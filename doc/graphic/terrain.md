@@ -3,7 +3,7 @@
 * Children:   0 2
               1 3
 
-* neibor:   
+* neibor:
   0
 1   3
   2

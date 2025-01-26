@@ -51,76 +51,88 @@ Terrain::~Terrain()
 
 void Terrain::init(string name)
 {
-	// Data
-	FileCFG fCFG(Config::ins.terrain_path + name + "/info.cfg");
+	try {
 
-	// Doc du lieu tu file cau hinh
-	enum eTerrainSizeStyle
-	{
-		VerySmall = 1,
-		Small = 9,
-		Medium = 21,
-		Large = 37,
-		VeryLarge = 61
-	};
-	eTerrainSizeStyle size = VerySmall;
+		// Data
+		FileCFG fCFG(Config::ins.terrain_path + name + "/info.cfg");
 
-	for (int i=0; i<size; i++)
-		impl->parts[i] = new TerrainPart();
+		// Doc du lieu tu file cau hinh
+		enum eTerrainSizeStyle
+		{
+			VerySmall = 1,
+			Small = 9,
+			Medium = 21,
+			Large = 37,
+			VeryLarge = 61
+		};
+		eTerrainSizeStyle size = VerySmall;
 
-	// TODO ...
+		for (int i=0; i<size; i++)
+			impl->parts[i] = new TerrainPart();
 
-	// Data
-	// Image data;
-	// data.load("./res/textures/heightmap/57fd738417ea37bf5af6c2493fd8d54644f5a45a.jpeg");
-	// BTFile fBT("res/terrain/" + name + "/heightmap.bt");
+		// TODO ...
 
-	// int depth = data.getWidth();
-	// int width = data.getHeight();
-	// float depth = fBT.getRows();
-	// float width = fBT.getColumns();
+		// Data
+		// Image data;
+		// data.load("./res/textures/heightmap/57fd738417ea37bf5af6c2493fd8d54644f5a45a.jpeg");
+		// BTFile fBT("res/terrain/" + name + "/heightmap.bt");
 
-	// Find
-	// int maxsize = depth > width ? depth : width;
-	// short hsize = 1;
-	// while(maxsize > (1 << hsize))
-	// 	hsize++;
+		// int depth = data.getWidth();
+		// int width = data.getHeight();
+		// float depth = fBT.getRows();
+		// float width = fBT.getColumns();
 
-	// m_maxwidth = depth;
-	// m_maxlength = width;
+		// Find
+		// int maxsize = depth > width ? depth : width;
+		// short hsize = 1;
+		// while(maxsize > (1 << hsize))
+		// 	hsize++;
 
-    // for (int z=0; z<depth; z++)
-	// 	for (int x=0; x<width; x++)
-	// 	{
-	// 		float h = fBT.getData(depth - z - 1, x);
-	// 		heightmap.push_back(h);
-	// 		heightmapPhysic.push_back(h - 128.0f);
-	// 	}
+		// m_maxwidth = depth;
+		// m_maxlength = width;
 
-	// Import to world
-	// g_pSystem->world.addTerrain(width, depth, &heightmapPhysic[0], CELLSPACE);
+			// for (int z=0; z<depth; z++)
+		// 	for (int x=0; x<width; x++)
+		// 	{
+		// 		float h = fBT.getData(depth - z - 1, x);
+		// 		heightmap.push_back(h);
+		// 		heightmapPhysic.push_back(h - 128.0f);
+		// 	}
 
-	// Vertex buffer
-	// m_vb.init(2);
-	// m_vb.bind();
-	// m_vb.storaIndex(24);
-	// m_vb.storaAttribute(0, 3, 9);
-	// m_vb.storaAttribute(1, 2, 9);
-	// m_vb.unbind();
+		// Import to world
+		// g_pSystem->world.addTerrain(width, depth, &heightmapPhysic[0], CELLSPACE);
 
-// 	// Texture
-	// m_texture.loadAdd("res/terrain/" + name + "/bgTexture.tga");
-// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailR.tga");
-// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailG.tga");
-// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailB.tga");
-// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailA.tga");
-// 	m_texture.loadAdd("res/terrain/" + name + "/texPartR.tga");
-// 	m_texture.loadAdd("res/terrain/" + name + "/texPartG.tga");
-// 	m_texture.loadAdd("res/terrain/" + name + "/texPartB.tga");
-// 	m_texture.loadAdd("res/terrain/" + name + "/texPartA.tga");
+		// Vertex buffer
+		// m_vb.init(2);
+		// m_vb.bind();
+		// m_vb.storaIndex(24);
+		// m_vb.storaAttribute(0, 3, 9);
+		// m_vb.storaAttribute(1, 2, 9);
+		// m_vb.unbind();
 
-	// Init Texture
-	impl->texture.init("./res/terrains/static/chadvernon/texture.png");
+	// 	// Texture
+		// m_texture.loadAdd("res/terrain/" + name + "/bgTexture.tga");
+	// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailR.tga");
+	// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailG.tga");
+	// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailB.tga");
+	// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailA.tga");
+	// 	m_texture.loadAdd("res/terrain/" + name + "/texPartR.tga");
+	// 	m_texture.loadAdd("res/terrain/" + name + "/texPartG.tga");
+	// 	m_texture.loadAdd("res/terrain/" + name + "/texPartB.tga");
+	// 	m_texture.loadAdd("res/terrain/" + name + "/texPartA.tga");
+
+		// Init Texture
+		impl->texture.init("./res/terrains/static/chadvernon/texture.png");
+	}
+	catch (Exception e) {
+		if (e.getCode() == "LOAD_FAIL") {
+			throw error("CONFIG_NOT_FOUND", "Khong tim thay file Config Terrain ("+name+")");
+		}
+		else {
+			track(e);
+			throw e;
+		}
+	}
 }
 
 void Terrain::render()

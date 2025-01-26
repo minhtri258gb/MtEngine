@@ -105,13 +105,13 @@ void Player::update()
 void Player::movement(int direct)
 {
 	vec3 vecdir;
-	if (1 == direct) // 
+	if (1 == direct)
 		vecdir = Graphic::ins.camera.forward;
-	else if (2 == direct) // 
+	else if (2 == direct)
 		vecdir = -Graphic::ins.camera.forward;
-	else if (3 == direct) // 
+	else if (3 == direct)
 		vecdir = -Graphic::ins.camera.right;
-	else if (4 == direct) // 
+	else if (4 == direct)
 		vecdir = Graphic::ins.camera.right;
 	
 

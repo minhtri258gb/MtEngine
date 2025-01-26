@@ -14,8 +14,8 @@ LoadException::LoadException()
 LoadException::LoadException(std::string _msg, std::string _file, int _line)
 {
 	this->message = _msg;
-	this->file = _file;
-	this->line = _line;
+	// this->file = _file;
+	// this->line = _line;
 }
 
 LoadException::~LoadException()

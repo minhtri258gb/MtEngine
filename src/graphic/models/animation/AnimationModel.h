@@ -27,7 +27,7 @@ private:
     // Variable
     class AnimationModelImpl;
     AnimationModelImpl* impl;
-    
+
 };
 
 }}

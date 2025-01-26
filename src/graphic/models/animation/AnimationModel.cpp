@@ -132,7 +132,7 @@ public:
 		indicesOutput = {};
 		//load position, normal, uv
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-			//process position 
+			//process position
 			Vertex vertex;
 			vec3 vector;
 			vector.x = mesh->mVertices[i].x;
@@ -348,7 +348,7 @@ AnimationModel::AnimationModel()
 		position_tmp.push_back(v.position);
 		texcoords_tmp.push_back(v.uv);
 		normals_tmp.push_back(v.normal);
-		bondIds_tmp.push_back(v.boneIds); 
+		bondIds_tmp.push_back(v.boneIds);
 		weights_tmp.push_back(v.boneWeights);
 	}
 	for (uint id : indices)

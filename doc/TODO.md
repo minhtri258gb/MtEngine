@@ -6,7 +6,7 @@
 - [ ] Text - VAO ko update dynamic được
 
 # Player
-- [ ] gắn vào người chơi
+- [X] gắn vào người chơi
 - [ ] đi lòng vòng
 - [ ] tạo heightmap field
 - [ ] đi trên đó

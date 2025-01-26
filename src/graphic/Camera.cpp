@@ -11,6 +11,7 @@ using namespace mt;
 using namespace mt::engine;
 using namespace mt::graphic;
 
+
 Camera::Camera()
 {
 	this->position = vec3(0,0,3);
@@ -56,8 +57,8 @@ void Camera::update()
 		this->needUpdate = true;
 	}
 
-	float speed = 10.0f;
-	float maxSpeed = 20.0f;
+	// float speed = 10.0f;
+	// float maxSpeed = 20.0f;
 
 	// if (Input::ins.checkHold(87)) // W
 	// 	this->velocity = this->movement(this->velocity, this->forward,  speed, maxSpeed, true);

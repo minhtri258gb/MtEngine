@@ -21,9 +21,9 @@
 
 Q3BspMap *Q3BspLoader::Load(const std::string &filename)
 {
-    std::ifstream bspFile;    
+    std::ifstream bspFile;
     bspFile.open("./res/EngineQuakeIII/maps/" + filename + ".bsp", std::ios::in | std::ios::binary );
-    
+
     if (!bspFile.is_open())
     {
         return NULL;
@@ -43,7 +43,7 @@ Q3BspMap *Q3BspLoader::Load(const std::string &filename)
 
     // header is valid - load the rest of the map
     Q3BspMap *q3map = new Q3BspMap();
-    
+
     q3map->header = bspHeader;
 
     // entities lump

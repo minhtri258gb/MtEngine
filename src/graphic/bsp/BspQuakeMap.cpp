@@ -32,86 +32,76 @@ using namespace mt::graphic;
 ShaderProgram BspQuakeMap::shader;
 
 
-bool FindEntityAttribute(const std::string &entity, const char *entityName, const char *attribName, std::string &output)
-{
-    output.clear();
-    std::string trimmedEntity = StringHelpers::trim(entity, '\n');
-    std::string attribValueFinal("");
-    std::string attribValueRead("");
-    bool attribFound = false;
+bool FindEntityAttribute(const std::string &entity, const char *entityName, const char *attribName, std::string &output) {
+	output.clear();
+	std::string trimmedEntity = StringHelpers::trim(entity, '\n');
+	std::string attribValueFinal("");
+	std::string attribValueRead("");
+	bool attribFound = false;
 
-    auto tokens = StringHelpers::tokenizeString(trimmedEntity.c_str(), '\n');
+	auto tokens = StringHelpers::tokenizeString(trimmedEntity.c_str(), '\n');
 
-    for (auto &t : tokens)
-    {
-        auto attribs = StringHelpers::tokenizeString(t.c_str(), ' ', 2);
+	for (auto &t : tokens) {
+		auto attribs = StringHelpers::tokenizeString(t.c_str(), ' ', 2);
 
-        for (auto &a : attribs)
-        {
-            a = StringHelpers::trim(a, '"');
-        }
+		for (auto &a : attribs) {
+			a = StringHelpers::trim(a, '"');
+		}
 
-        if (!strncmp(attribs[0].c_str(), attribName, strlen(attribs[0].c_str())))
-        {
-            attribValueRead = attribs[1];
-        }
+		if (!strncmp(attribs[0].c_str(), attribName, strlen(attribs[0].c_str()))) {
+			attribValueRead = attribs[1];
+		}
 
-        if (!strncmp(attribs[1].c_str(), entityName, strlen(attribs[1].c_str())))
-        {   
-            attribFound = true;
-        }
-    }
+		if (!strncmp(attribs[1].c_str(), entityName, strlen(attribs[1].c_str()))) {
+			attribFound = true;
+		}
+	}
 
-    if (attribFound)
-        output = attribValueRead;
+	if (attribFound)
+		output = attribValueRead;
 
-    return attribFound;
+	return attribFound;
 }
 vec3 FindPlayerStart(const char *entities)
 {
-    std::string str(entities);
-    vec3 result(0.0f, 0.0f, 4.0f); // some arbitrary position in case there's no info_player_deathmatch on map
-    size_t pos = 0;
+	std::string str(entities);
+	vec3 result(0.0f, 0.0f, 4.0f); // some arbitrary position in case there's no info_player_deathmatch on map
+	size_t pos = 0;
 
-    std::string playerStartCoords("");
+	std::string playerStartCoords("");
 
-    while (pos != std::string::npos)
-    {
-        size_t posOpen = str.find("{", pos);
-        size_t posClose = str.find("}", posOpen);
+	while (pos != std::string::npos) {
+		size_t posOpen = str.find("{", pos);
+		size_t posClose = str.find("}", posOpen);
 
-        if (posOpen != std::string::npos)
-        {
-            std::string entity = str.substr(posOpen + 1, posClose - posOpen - 1);
-            if (FindEntityAttribute(entity, "info_player_deathmatch", "origin", playerStartCoords))
-                break;
-        }
+		if (posOpen != std::string::npos) {
+			std::string entity = str.substr(posOpen + 1, posClose - posOpen - 1);
+			if (FindEntityAttribute(entity, "info_player_deathmatch", "origin", playerStartCoords))
+				break;
+		}
 
-        pos = posClose;
-    }
+		pos = posClose;
+	}
 
-    if (!playerStartCoords.empty())
-    {
-        auto coords = StringHelpers::tokenizeString(playerStartCoords.c_str(), ' ');
+	if (!playerStartCoords.empty()) {
+		auto coords = StringHelpers::tokenizeString(playerStartCoords.c_str(), ' ');
 
-        result.x = std::stof(coords[0]);
-        result.y = std::stof(coords[1]);
-        result.z = std::stof(coords[2]);
-    }
+		result.x = std::stof(coords[0]);
+		result.y = std::stof(coords[1]);
+		result.z = std::stof(coords[2]);
+	}
 
-    return result;
+	return result;
 }
 
-class BspQuakeMap::BspQuakeMapImpl
-{
+class BspQuakeMap::BspQuakeMapImpl {
 public:
 	VertexArrayObject VAO;
 	
 	Q3BspMap* m_q3map;
 };
 
-BspQuakeMap::BspQuakeMap()
-{
+BspQuakeMap::BspQuakeMap() {
 	// Component
 	// impl->map = new bsp("./res/bsp/de_dust2.bsp");
 	// impl->map = new bsp("./res/bsp/css_cs_deadhouse_1.0/cs_deadhouse.bsp");
@@ -121,8 +111,7 @@ BspQuakeMap::BspQuakeMap()
 	impl = new BspQuakeMapImpl();
 }
 
-BspQuakeMap::~BspQuakeMap()
-{
+BspQuakeMap::~BspQuakeMap() {
 	// Component
 	// delete impl->map;
 
@@ -130,8 +119,7 @@ BspQuakeMap::~BspQuakeMap()
 	delete impl;
 }
 
-void BspQuakeMap::init(string name)
-{
+void BspQuakeMap::init(string name) {
 	Q3BspLoader loader;
 	// impl->m_q3map = loader.Load("./res/quake/1++/1++.bsp");
 	// impl->m_q3map = loader.Load("./res/quake/1smallmap/1smallmap.bsp");
@@ -144,27 +132,25 @@ void BspQuakeMap::init(string name)
 	impl->m_q3map = loader.Load("test1"); // oke
 
 	vec3 startPos;
-	if (impl->m_q3map)
-	{
-			impl->m_q3map->Init();
-			impl->m_q3map->ToggleRenderFlag(Q3RenderUseLightmaps);
+	if (impl->m_q3map) {
+		impl->m_q3map->Init();
+		impl->m_q3map->ToggleRenderFlag(Q3RenderUseLightmaps);
 
-			// try to locate the first info_player_deathmatch entity and place the camera there
-			startPos = FindPlayerStart(static_cast<Q3BspMap *>(impl->m_q3map)->entities.ents);
+		// try to locate the first info_player_deathmatch entity and place the camera there
+		startPos = FindPlayerStart(static_cast<Q3BspMap *>(impl->m_q3map)->entities.ents);
 
-			// Graphic::ins.camera.position = startPos;
-	} else {
+		// Graphic::ins.camera.position = startPos;
+	}
+	else {
 		cout << "[ERR] Khong load duoc map" << endl;
 	}
 }
 
-void BspQuakeMap::update()
-{
+void BspQuakeMap::update() {
 	impl->m_q3map->CalculateVisibleFaces(Graphic::ins.camera.position);
 }
 
-void BspQuakeMap::render()
-{
+void BspQuakeMap::render() {
 
 	this->shader.use();
 

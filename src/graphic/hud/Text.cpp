@@ -18,8 +18,7 @@ using namespace mt::engine;
 using namespace mt::graphic;
 
 
-struct Character
-{
+struct Character {
 	unsigned int TextureID;		// ID handle of the glyph texture
 	vec2i Size;					// Size of glyph
 	vec2i Bearing;				// Offset from baseline to left/top of glyph
@@ -28,8 +27,7 @@ struct Character
 
 ShaderProgram Text::shader;
 
-class Text::TextImpl
-{
+class Text::TextImpl {
 public:
 
 	static VertexArrayObject VAO;
@@ -45,8 +43,7 @@ public:
 VertexArrayObject Text::TextImpl::VAO;
 map<char, Character> Text::TextImpl::characters;
 
-void Text::initText()
-{
+void Text::initText() {
 	// Vertex Buffer
 	vector<vec2> texcoords;
 	texcoords.push_back(vec2(0.0f, 1.0f));
@@ -68,20 +65,19 @@ void Text::initText()
 	// Init Font
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
-		throw error("Could not init FreeType Library");
+		throw error("FREETYPE_INIT_FAIL", "Could not init FreeType Library");
 
 	FT_Face face;
 	if (FT_New_Face(ft, (Config::ins.font_path + "desyrel.ttf").c_str(), 0, &face)) // #TODO move config
-		throw error("Failed to load font");
+		throw error("FONT_LOAD_FAIL", "Failed to load font");
 
 	FT_Set_Pixel_Sizes(face, 0, 48);
 	
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
-	for (GLubyte c = 32; c < 128; c++)
-	{
+	for (GLubyte c = 32; c < 128; c++) {
 		// Load character glyph
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-			throw error("Failed to load Glyph");
+			throw error("GLYPH_LOAD_FAIL", "Failed to load Glyph");
 		
 		FT_GlyphSlot g = face->glyph;
 
@@ -117,8 +113,7 @@ void Text::initText()
 	FT_Done_FreeType(ft);
 }
 
-Text::Text()
-{
+Text::Text() {
 	// Implement
 	impl = new TextImpl();
 
@@ -129,14 +124,12 @@ Text::Text()
 	impl->color = vec3(1, 1, 1);
 }
 
-Text::~Text()
-{
+Text::~Text() {
 	// Implement
 	delete impl;
 }
 
-void Text::init(string _content, vec2 _position, float _scale, vec3 _color)
-{
+void Text::init(string _content, vec2 _position, float _scale, vec3 _color) {
 	impl->content = _content;
 	impl->position = _position;
 	impl->position.x *= (float)Config::ins.windowWidth;
@@ -145,8 +138,7 @@ void Text::init(string _content, vec2 _position, float _scale, vec3 _color)
 	impl->color = _color;
 }
 
-void Text::render()
-{
+void Text::render() {
 	this->shader.use();
 
 	Graphic::ins.cullFaceToogle(false);
@@ -160,12 +152,10 @@ void Text::render()
 
 	vec2 offset = impl->position;
 
-	for (auto c : impl->content)
-	{
+	for (auto c : impl->content) {
 		Character ch = Text::TextImpl::characters[c];
 
-		if (c == 10) // new line
-		{
+		if (c == 10) { // new line
 			offset.x = impl->position.x;
 			offset.y -= 50.0f * impl->scale;
 			continue;
@@ -211,7 +201,6 @@ void Text::render()
 	Graphic::ins.cullFaceToogle(true);
 }
 
-void Text::setContent(string content)
-{
+void Text::setContent(string content) {
 	impl->content = content;
 }

@@ -8,8 +8,8 @@
 class Q3BspBiquadPatch
 {
 public:
-    Q3BspBiquadPatch() : m_tesselationLevel(0), 
-                         m_trianglesPerRow(NULL), 
+    Q3BspBiquadPatch() : m_tesselationLevel(0),
+                         m_trianglesPerRow(NULL),
                          m_rowIndexPointers(NULL)
     {
     }
@@ -20,13 +20,13 @@ public:
         delete [] m_rowIndexPointers;
     }
 
-    void Tesselate(int tessLevel);      // perform tesselation 
+    void Tesselate(int tessLevel);      // perform tesselation
     void Render();
 
     Q3BspVertexLump controlPoints[9];
     std::vector<Q3BspVertexLump> m_vertices;
 private:
-    int                          m_tesselationLevel;    
+    int                          m_tesselationLevel;
     std::vector<unsigned int>    m_indices;
     int*                         m_trianglesPerRow;   // store as pointer arrays for easier access by GL functions
     unsigned int**               m_rowIndexPointers;  //  - " -

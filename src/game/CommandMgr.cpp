@@ -24,8 +24,7 @@ using namespace mt::game;
 
 CommandMgr CommandMgr::ins;
 
-class CommandMgr::CommandMgrImpl
-{
+class CommandMgr::CommandMgrImpl {
 public:
 	
 	// Variable
@@ -39,20 +38,17 @@ public:
 	void initConvertMap();
 };
 
-CommandMgr::CommandMgr()
-{
+CommandMgr::CommandMgr() {
 	// Implement
 	this->impl = new CommandMgrImpl();
 }
 
-CommandMgr::~CommandMgr()
-{
+CommandMgr::~CommandMgr() {
 	// Implement
 	delete this->impl;
 }
 
-void CommandMgr::init()
-{
+void CommandMgr::init() {
 	// Init Convert map
 	impl->initConvertMap();
 
@@ -71,12 +67,9 @@ void CommandMgr::init()
 	Input::ins.setCallBackKeypress(&CommandMgr::cbk_keypress);
 }
 
-void CommandMgr::update()
-{
-	for (int i=0; i<MAX_KEY; i++)
-	{
-		if (impl->keyAction.test(i))
-		{
+void CommandMgr::update() {
+	for (int i=0; i<MAX_KEY; i++) {
+		if (impl->keyAction.test(i)) {
 			// Off key no loop
 			if (!impl->keyLoop.test(i))
 				impl->keyAction.set(i, false);
@@ -87,26 +80,23 @@ void CommandMgr::update()
 	}
 }
 
-void CommandMgr::keyBind(string key, string func)
-{
+void CommandMgr::keyBind(string key, string func) {
 	if (impl->convertKey.find(key) == impl->convertKey.end())
-		throw error("Invail Key \"" + key + "\"");
+		throw error("KEY_INVAIL", "Invail Key \"" + key + "\"");
 
 	int keyid = impl->convertKey.at(key);
 	if (keyid == -1)
-		throw error("Key \"" + key + "\" false to bind");
+		throw error("KEY_BIND_FAIL", "Key \"" + key + "\" false to bind");
 
 	impl->keyLoop.set(keyid, func[0] == '+' ? true : false);
 	impl->lstFunc[keyid] = impl->convertFunc.at(func);
 }
 
-void CommandMgr::cbk_keypress(int key, bool state)
-{
+void CommandMgr::cbk_keypress(int key, bool state) {
 	CommandMgr::ins.impl->keyAction[key] = state;
 }
 
-void CommandMgr::CommandMgrImpl::initConvertMap()
-{
+void CommandMgr::CommandMgrImpl::initConvertMap() {
 	// KeyMap
 	for (uint i=48; i<=57; i++)
 		convertKey.insert({string(1, char(i)), i}); // 0 - 9
@@ -116,7 +106,7 @@ void CommandMgr::CommandMgrImpl::initConvertMap()
 		convertKey.insert({string("F") + to_string(i), 289 + i}); // F1 - F25
 	for (uint i=0; i<=9; i++)
 		convertKey.insert({string("KP_") + to_string(i), 320 + i}); // KP_0 - KP_9
-	
+
 	convertKey.insert({"BACKSPACE", 259});
 	convertKey.insert({"CAPS_LOCK", 280});
 	convertKey.insert({"DELETE", 261});
@@ -175,7 +165,6 @@ void CommandMgr::CommandMgrImpl::initConvertMap()
 	convertKey.insert({string(1, '\\'), 92});
 	convertKey.insert({string(1, ']' ), 93});
 	convertKey.insert({string(1, '`' ), 96});
-
 
 	// FuncMap
 	Command::setFuncMap(&convertFunc);

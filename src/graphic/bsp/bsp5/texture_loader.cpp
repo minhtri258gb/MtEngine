@@ -11,19 +11,19 @@
 
 namespace textureLoader
 {
-  namespace 
+  namespace
   {
     std::map<std::string, unsigned int> textures_;
     std::vector<unsigned int> lightmaps_;
   }
 
-  int LoadTexture(std::string name, bool clamp) 
-  {                                             
-    if (name.length() == 0) 
+  int LoadTexture(std::string name, bool clamp)
+  {
+    if (name.length() == 0)
     {
       return -1;
     }
-    
+
     std::string oldname = name;
 
     if (name.find('.') != std::string::npos)
@@ -42,12 +42,12 @@ namespace textureLoader
 
     logger::Log(logger::DEBUG, "loading texture: %s\n", filename_jpg.c_str());
 
-    if (!image) 
+    if (!image)
     {
       logger::Log(logger::DEBUG, "%s", IMG_GetError());
 
       image = IMG_Load(filename_tga.c_str());
-      if (!image) 
+      if (!image)
       {
         logger::Log(logger::ERROR, "%s", IMG_GetError());
         return -1;
@@ -61,16 +61,16 @@ namespace textureLoader
     if (num_colors == 4) // contains an alpha channel
     {
       internal_format = GL_RGBA;
-      
+
       if (image->format->Rmask == 0x000000ff)
         texture_format = GL_RGBA;
       else
         texture_format = GL_BGRA;
-    } 
+    }
     else if (num_colors == 3) // no alpha channel
     {
       internal_format = GL_RGB;
-      
+
       if (image->format->Rmask == 0x000000ff)
         texture_format = GL_RGB;
       else
@@ -161,7 +161,7 @@ namespace textureLoader
     {
       ++skipped_textures_;
     }
-        
+
     int texture_id = textures_[texture];
 
     return texture_id;

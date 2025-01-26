@@ -8,7 +8,7 @@
 
 #define MAX_TEXMODS 4
 
-enum class WAVEFUNC 
+enum class WAVEFUNC
 {
   NONE,
   SIN,
@@ -46,12 +46,12 @@ enum class TCMOD
 };
 
 struct WaveForm
-{ 
+{
   WAVEFUNC type;
   float base;
   float amplitude;
   float phase;
-  float frequency; 
+  float frequency;
 };
 
 struct TexMod
@@ -89,7 +89,7 @@ struct Q3ShaderStage {
   int num_texmods;
   TexMod texmods[MAX_TEXMODS];
 
-  Q3ShaderStage() 
+  Q3ShaderStage()
   {
     texture = 0;
     isLightmap = false;
@@ -123,7 +123,7 @@ public:
   static unsigned int GetNewLinePosition(const std::string* buffer, unsigned int offset);
   unsigned int GetTokenEndPosition(const std::string* buffer, unsigned int offset);
 
-  // making this objects instead of pointers we have some additional copying during load time 
+  // making this objects instead of pointers we have some additional copying during load time
   // but don't need to worry about freeing the memory
   std::vector<Q3ShaderStage> stages_;
 

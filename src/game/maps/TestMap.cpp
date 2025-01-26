@@ -26,26 +26,26 @@ using namespace mt::graphic;
 using namespace mt::game;
 
 
-class TestMap::TestMapImpl
-{
+class TestMap::TestMapImpl {
 public:
 
 	// General
 	string name;
 
+	// Enviroment
+	SkyBox* sky;
+
 	// Entities
 	vector<Entity*> lstEntities;
 };
 
-TestMap::TestMap(string name)
-{
+TestMap::TestMap(string name) {
 	// Implement
 	impl = new TestMapImpl();
 	impl->name = name;
 }
 
-TestMap::~TestMap()
-{
+TestMap::~TestMap() {
 	// // Xoa debug physic
 	// if (this->physicDebug)
 	// 	delete this->physicDebug;
@@ -74,8 +74,7 @@ TestMap::~TestMap()
 	delete impl;
 }
 
-void TestMap::load()
-{
+void TestMap::load() {
 	
 	#ifdef LOG
 	LOG
@@ -121,9 +120,9 @@ void TestMap::load()
 
 	// =================== Sky ===================
 	string skyName = fCFG.get("skybox");
-	SkyBox* sky = new SkyBox();
-	sky->init(skyName);
-	Graphic::ins.scene.sky = sky;
+	impl->sky = new SkyBox();
+	impl->sky->init(skyName);
+	Graphic::ins.scene.sky = impl->sky;
 	
 	// =================== Terrain Static ===================
 	// impl->terrainStatic = new StaticTerrain();
@@ -170,15 +169,13 @@ void TestMap::load()
 	// Load entities
 	fCFG.select("entities");
 	vector<string> lstEntCfg = fCFG.values();
-	for (short i=0, sz=lstEntCfg.size(); i<sz; i++)
-	{
+	for (short i=0, sz=lstEntCfg.size(); i<sz; i++) {
 		string entCfg = lstEntCfg.at(i);
 		stringstream geek(entCfg);
 		string entType, entName;
 		geek >> entType >> entName;
 
-		if (entType == "Test")
-		{
+		if (entType == "Test") {
 			float x, y, z, rx, ry, rz, scale;
 			geek >> x >> y >> z >> rx >> ry >> rz >> scale;
 
@@ -189,20 +186,16 @@ void TestMap::load()
 			ent->init();
 			impl->lstEntities.push_back(ent);
 		}
-		else if (entType == "ModelV0")
-		{
+		else if (entType == "ModelV0") {
 
 		}
-		else if (entType == "ModelV1")
-		{
+		else if (entType == "ModelV1") {
 
 		}
-		else if (entType == "Particles")
-		{
+		else if (entType == "Particles") {
 
 		}
-		else
-		{
+		else {
 
 		}
 	}
@@ -427,12 +420,14 @@ void TestMap::load()
 
 }
 
-void TestMap::clear()
-{
+void TestMap::clear() {
 	
 	#ifdef LOG
 	LOG
 	#endif
+
+	// Enviroment
+
 
 	// List Engine
 	for (Entity *ent : impl->lstEntities)
@@ -449,9 +444,11 @@ void TestMap::clear()
 	#endif
 
 	// Sky
-	SkyBox* sky = Graphic::ins.scene.sky;
-	if (sky)
-		delete sky;
+	if (impl->sky) {
+		delete impl->sky;
+		impl->sky = nullptr;
+		Graphic::ins.scene.sky = nullptr;
+	}
 
 	#ifdef LOG
 	LOG
@@ -506,8 +503,7 @@ void TestMap::clear()
 
 }
 
-void TestMap::update()
-{
+void TestMap::update() {
 	
 	#ifdef LOG
 	LOG

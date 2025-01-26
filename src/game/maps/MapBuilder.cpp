@@ -20,52 +20,65 @@ using namespace mt::game;
 
 Map* MapBuilder::firstLoad()
 {
-	string mapName = "lobby"; // lobby is default
+	try {
+		string mapName = "lobby"; // lobby is default
 
-	// Tải file state.ini
-	FileCFG* fCFG = nullptr;
+		// Tải file state.ini
+		FileCFG* fCFG = nullptr;
 
-	try
-	{
-		fCFG = new FileCFG(Config::ins.system_path + "state.cfg");
-		fCFG->select("last");
-		mapName = fCFG->get("map");
-	}
-	catch (LoadException e)
-	{
-		// Nếu chưa có file thì tạo file với state mặc định
+		try
+		{
+			fCFG = new FileCFG(Config::ins.system_path + "state.cfg");
+			fCFG->select("last");
+			mapName = fCFG->get("map");
+		}
+		catch (LoadException e)
+		{
+			// Nếu chưa có file thì tạo file với state mặc định
+			delete fCFG;
+			fCFG = new FileCFG();
+			fCFG->addSession("last");
+			fCFG->set("map", mapName);
+			fCFG->save(Config::ins.system_path + "state.cfg");
+		}
+		
+		// Return
 		delete fCFG;
-		fCFG = new FileCFG();
-		fCFG->addSession("last");
-		fCFG->set("map", mapName);
-		fCFG->save(Config::ins.system_path + "state.cfg");
+		return MapBuilder::load(mapName);
 	}
-	
-	// Return
-	delete fCFG;
-	return MapBuilder::load(mapName);
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 Map* MapBuilder::load(string mapName)
 {
-	// Read type of map
-	string configPath = Config::ins.map_path + mapName + ".cfg";
-	FileCFG* fCFG = new FileCFG(configPath);
-	fCFG->select("general");
-	string type = fCFG->get("type");
-	delete fCFG;
+	try {
 
-	// Load map
-	Map* map = nullptr;
-	if (type == "test")
-		map = new TestMap(mapName);
-	else if (type == "lobby")
-		map = new LobbyMap(mapName);
-	else if (type == "area_bound")
-		map = new AreaBoundMap(mapName);
+		// Read type of map
+		string configPath = Config::ins.map_path + mapName + ".cfg";
+		FileCFG* fCFG = new FileCFG(configPath);
+		fCFG->select("general");
+		string type = fCFG->get("type");
+		delete fCFG;
 
-	// Return
-	return map;
+		// Load map
+		Map* map = nullptr;
+		if (type == "test")
+			map = new TestMap(mapName);
+		else if (type == "lobby")
+			map = new LobbyMap(mapName);
+		else if (type == "area_bound")
+			map = new AreaBoundMap(mapName);
+
+		// Return
+		return map;
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 void MapBuilder::clear(Map* pMap) {

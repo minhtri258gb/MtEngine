@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cmath>
 #include <limits>
+#include <vector>
 
 #include "Math3D.h"
 #include "../../exception/BoundingException.h"
@@ -10,75 +11,62 @@
 using namespace std;
 using namespace mt;
 
-Quaternion::Quaternion()
-{
+
+Quaternion::Quaternion() {
 	set(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
-Quaternion::Quaternion(float x, float y, float z, float w)
-{
+Quaternion::Quaternion(float x, float y, float z, float w) {
 	set(x, y, z, w);
 }
 
-Quaternion::Quaternion(float pitch, float yaw, float roll)
-{
+Quaternion::Quaternion(float pitch, float yaw, float roll) {
 	set(pitch, yaw, roll);
 }
 
-Quaternion::Quaternion(float angle, Vector3 axis)
-{
+Quaternion::Quaternion(float angle, Vector3 axis) {
 	set(angle, axis);
 }
 
-Quaternion::Quaternion(Vector3 normalized)
-{
+Quaternion::Quaternion(Vector3 normalized) {
 	set(normalized);
 }
 
-Quaternion::Quaternion(const Vector4& v)
-{
+Quaternion::Quaternion(const Vector4& v) {
 	set(v);
 }
 
-Quaternion::Quaternion(const Matrix3x3& m)
-{
+Quaternion::Quaternion(const Matrix3x3& m) {
 	set(m);
 }
 
-Quaternion::Quaternion(const Quaternion &q)
-{
+Quaternion::Quaternion(const Quaternion &q) {
 	set(q);
 }
 
-Quaternion::~Quaternion()
-{
+Quaternion::~Quaternion() {
 }
 
-float Quaternion::length2() const
-{
+float Quaternion::length2() const {
 	return x*x + y*y + z*z + w*w;
 }
 
-Quaternion Quaternion::normalize() const
-{
+Quaternion Quaternion::normalize() const {
 	float l = length();
 	return Quaternion(x/l, y/l, z/l, w/l);
 }
 
-Quaternion Quaternion::conjugate() const
-{
+Quaternion Quaternion::conjugate() const {
 	return Quaternion(-x, -y, -z, w);
 }
 
-Quaternion Quaternion::interpolate(const Quaternion& start, const Quaternion& end, float factor)
-{
+Quaternion Quaternion::interpolate(const Quaternion& start, const Quaternion& end, float factor) {
 	// calc cosine theta
 	float cosom = start.x * end.x + start.y * end.y + start.z * end.z + start.w * end.w;
 
 	// adjust signs (if necessary)
 	Quaternion endTmp = end;
-	if (cosom < 0.0f)
-	{
+	if (cosom < 0.0f) {
 		cosom = -cosom;
 		endTmp.x = -endTmp.x; // Reverse all signs
 		endTmp.y = -endTmp.y;
@@ -88,8 +76,7 @@ Quaternion Quaternion::interpolate(const Quaternion& start, const Quaternion& en
 
 	// Calculate coefficients
 	float sclp, sclq;
-	if ((1.0f - cosom) > 0.0001f) // 0.0001 -> some epsillon
-	{
+	if ((1.0f - cosom) > 0.0001f) { // 0.0001 -> some epsillon
 		// Standard case (slerp)
 		float omega, sinom;
 		omega = acosf(cosom); // extract theta from dot product's cos theta
@@ -97,8 +84,7 @@ Quaternion Quaternion::interpolate(const Quaternion& start, const Quaternion& en
 		sclp  = sinf((1.0f - factor) * omega) / sinom;
 		sclq  = sinf(factor * omega) / sinom;
 	}
-	else
-	{
+	else {
 		// Very close, do linear interp (because it's faster)
 		sclp = 1.0f - factor;
 		sclq = factor;
@@ -112,16 +98,14 @@ Quaternion Quaternion::interpolate(const Quaternion& start, const Quaternion& en
 	);
 }
 
-void Quaternion::set(float _x, float _y, float _z, float _w)
-{
+void Quaternion::set(float _x, float _y, float _z, float _w) {
 	x = _x;
 	y = _y;
 	z = _z;
 	w = _w;
 }
 
-void Quaternion::set(float pitch, float yaw, float roll)
-{
+void Quaternion::set(float pitch, float yaw, float roll) {
 	const float halfYaw = yaw * 0.5f;
 	const float halfPitch = pitch * 0.5f;
 	const float halfRoll = roll * 0.5f;
@@ -145,8 +129,7 @@ void Quaternion::set(float pitch, float yaw, float roll)
 	w = cosRoll * cosPitch * cosYaw + sinRoll * sinPitch * sinYaw;
 }
 
-void Quaternion::set(float angle, Vector3 axis)
-{
+void Quaternion::set(float angle, Vector3 axis) {
 	axis = axis.normalize();
 	angle /= 2.0f;
 	const float sin_a = sinf(angle);
@@ -156,8 +139,7 @@ void Quaternion::set(float angle, Vector3 axis)
 	w = cosf(angle);
 }
 
-void Quaternion::set(Vector3 normalized)
-{
+void Quaternion::set(Vector3 normalized) {
 	x = normalized.x;
 	y = normalized.y;
 	z = normalized.z;
@@ -170,29 +152,25 @@ void Quaternion::set(Vector3 normalized)
 		w = sqrtf(t);
 }
 
-void Quaternion::set(const Vector4& v)
-{
+void Quaternion::set(const Vector4& v) {
 	x = v.x;
 	y = v.y;
 	z = v.z;
 	w = v.w;
 }
 
-void Quaternion::set(const Matrix3x3& m)
-{
+void Quaternion::set(const Matrix3x3& m) {
 	float t = m[0] + m[4] + m[8];
 
 	// large enough
-	if (t > 0.0f)
-	{
+	if (t > 0.0f) {
 		float s = sqrtf(1 + t) * 2.0f;
 		x = (m[7] - m[5]) / s;
 		y = (m[2] - m[6]) / s;
 		z = (m[3] - m[1]) / s;
 		w = 0.25f * s;
 	} // else we have to check several cases
-	else if (m[0] > m[4] && m[0] > m[8])
-	{
+	else if (m[0] > m[4] && m[0] > m[8]) {
 		// Column 0:
 		float s = sqrtf(1.0f + m[0] - m[4] - m[8]) * 2.0f;
 		x = 0.25f * s;
@@ -200,16 +178,15 @@ void Quaternion::set(const Matrix3x3& m)
 		z = (m[2] + m[6]) / s;
 		w = (m[7] - m[5]) / s;
 	}
-	else if ( m[4] > m[8])
-	{
+	else if ( m[4] > m[8]) {
 		// Column 1:
 		float s = sqrtf(1.0f + m[4] - m[0] - m[8]) * 2.0f;
 		x = (m[3] + m[1]) / s;
 		y = 0.25f * s;
 		z = (m[7] + m[5]) / s;
 		w = (m[2] - m[6]) / s;
-	} else
-	{
+	}
+	else {
 		// Column 2:
 		float s = sqrtf(1.0f + m[8] - m[0] - m[4]) * 2.0f;
 		x = (m[2] + m[6]) / s;
@@ -219,16 +196,14 @@ void Quaternion::set(const Matrix3x3& m)
 	}
 }
 
-void Quaternion::set(const Quaternion &q)
-{
+void Quaternion::set(const Quaternion &q) {
 	x = q.x;
 	y = q.y;
 	z = q.z;
 	w = q.w;
 }
 
-bool Quaternion::equal(const Quaternion& v, double epsilon) const
-{
+bool Quaternion::equal(const Quaternion& v, double epsilon) const {
 	return
 		abs(x - v.x) <= epsilon &&
 		abs(y - v.y) <= epsilon &&
@@ -236,55 +211,47 @@ bool Quaternion::equal(const Quaternion& v, double epsilon) const
 		abs(w - v.w) <= epsilon;
 }
 
-Quaternion Quaternion::lerp(const Quaternion& q, float factor)
-{
+Quaternion Quaternion::lerp(const Quaternion& q, float factor) {
 	if (factor < 0.f || factor > 1.f)
-		throw error("Factor not in range [0 - 1]");
+		throw error("OUT_OF_RANGE", "Factor not in range [0 - 1]");
 
 	return *this * (1.0f - factor) + (q * factor);
 }
 
-Quaternion Quaternion::slerp(const Quaternion& q, float factor)
-{
+Quaternion Quaternion::slerp(const Quaternion& q, float factor) {
 	quat x = *this;
 	quat z = q;
 
 	float cosTheta = x * q;
 
-	if (cosTheta < 0.0f)
-	{
+	if (cosTheta < 0.0f) {
 		z = -q;
 		cosTheta = -cosTheta;
 	}
 
-	if (cosTheta > 1.0f - numeric_limits<float>::epsilon())
-	{
+	if (cosTheta > 1.0f - numeric_limits<float>::epsilon()) {
 		// Linear interpolation
 		return quat(x.x + (z.x - x.x) * factor,
 					x.y + (z.y - x.y) * factor,
 					x.z + (z.z - x.z) * factor,
 					x.w + (z.w - x.w) * factor);
 	}
-	else
-	{
+	else {
 		// Essential Mathematics, page 467
 		float angle = acos(cosTheta);
 		return (x * sin((1.0f - factor) * angle) + z * sin(factor * angle)) / sin(angle);
 	}
 }
 
-float Quaternion::operator * (const Quaternion& q) const
-{
+float Quaternion::operator * (const Quaternion& q) const {
 	return x * q.x + y * q.y + z * q.z + w * q.w;
 }
 
-Quaternion Quaternion::operator * (float f) const
-{
+Quaternion Quaternion::operator * (float f) const {
 	return Quaternion(x*f, y*f, z*f, w*f);
 }
 
-Quaternion Quaternion::operator ^ (const Quaternion& q) const
-{
+Quaternion Quaternion::operator ^ (const Quaternion& q) const {
 	return Quaternion(
 		w*q.x + x*q.w + y*q.z - z*q.y,
 		w*q.y + y*q.w + z*q.x - x*q.z,
@@ -293,12 +260,10 @@ Quaternion Quaternion::operator ^ (const Quaternion& q) const
 	);
 }
 
-bool Quaternion::operator == (const Quaternion& q) const
-{
+bool Quaternion::operator == (const Quaternion& q) const {
 	return x == q.x && y == q.y && z == q.z && w == q.w;
 }
 
-bool Quaternion::operator != (const Quaternion& q) const
-{
+bool Quaternion::operator != (const Quaternion& q) const {
 	return x != q.x || y != q.y || z != q.z || w != q.w;
 }
