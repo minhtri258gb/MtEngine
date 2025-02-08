@@ -1,22 +1,21 @@
-#define __MT_AREA_BOUND_MAP_CPP__
+#define __MT_AREA_MAP_CPP__
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "common.h"
-#include "graphic/Graphic.h"
-#include "AreaBoundMap.h"
-
 #include "engine/Config.h"
-#include "engine/file/FileCFG.h"
+#include "engine/Log.h"
+#include "graphic/Graphic.h"
+#include "AreaMap.h"
 
+#include "engine/file/FileCFG.h"
 #include "graphic/sky/SkyBox.h"
 #include "graphic/terrain/StaticTerrain.h"
 #include "graphic/terrain/Terrain.h"
 #include "graphic/bsp/BspSourceMap.h"
 #include "graphic/bsp/BspQuakeMap.h"
 #include "graphic/bsp/BspMap.h"
-
 #include "game/entities/TestEnt.h"
 #include "game/entities/GroundEnt.h"
 #include "game/entities/TestAnimEnt.h"
@@ -29,7 +28,7 @@ using namespace mt::graphic;
 using namespace mt::game;
 
 
-class AreaBoundMap::AreaBoundMapImpl {
+class AreaMap::AreaMapImpl {
 public:
 
 	// General
@@ -51,11 +50,11 @@ public:
 	vector<Entity*> lstEntities;
 };
 
-AreaBoundMap::AreaBoundMap(string name) {
+AreaMap::AreaMap(string name) {
 	try {
 
 		// Implement
-		impl = new AreaBoundMapImpl();
+		impl = new AreaMapImpl();
 		impl->name = name;
 
 		// Load config
@@ -76,7 +75,7 @@ AreaBoundMap::AreaBoundMap(string name) {
 	}
 	catch (Exception e) {
 		if (e.getCode() == "SESSION_NOT_FOUND") {
-			throw error("MAP_CONFIG_INVAIL", "AreaBoundMap ("+name+") phai co session \"enviroment\"!");
+			throw error("MAP_CONFIG_INVAIL", "AreaMap ("+name+") phai co session \"enviroment\"!");
 		}
 		else {
 			track(e);
@@ -85,7 +84,7 @@ AreaBoundMap::AreaBoundMap(string name) {
 	}
 }
 
-AreaBoundMap::~AreaBoundMap() {
+AreaMap::~AreaMap() {
 	// // Xoa debug physic
 	// if (this->physicDebug)
 	// 	delete this->physicDebug;
@@ -114,7 +113,7 @@ AreaBoundMap::~AreaBoundMap() {
 	delete impl;
 }
 
-void AreaBoundMap::load() {
+void AreaMap::load() {
 	try {
 
 		if (!this->needLoading)
@@ -397,7 +396,7 @@ void AreaBoundMap::load() {
 	}
 }
 
-void AreaBoundMap::clear()
+void AreaMap::clear()
 {
 	for (Entity *ent : impl->lstEntities)
 		delete ent;
@@ -454,7 +453,7 @@ void AreaBoundMap::clear()
 	// #EXTRA
 }
 
-void AreaBoundMap::update()
+void AreaMap::update()
 {
 	// float timeStep = Time::ins->getTimeStep();
 
@@ -476,7 +475,7 @@ void AreaBoundMap::update()
 		ent->update();
 }
 
-void AreaBoundMap::render()
+void AreaMap::render()
 {
 	if (impl->sky)
 		impl->sky->render();

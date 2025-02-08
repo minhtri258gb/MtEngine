@@ -1,51 +1,69 @@
 #define __MT_LOBBY_MAP_CPP__
 
+#include <sstream>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "common.h"
+#include "engine/Config.h"
+#include "engine/Log.h"
 #include "graphic/Graphic.h"
 #include "LobbyMap.h"
 
-#include "graphic/sky/SkyBox.h"
+#include "engine/file/FileCFG.h"
 #include "graphic/terrain/StaticTerrain.h"
 #include "graphic/terrain/Terrain.h"
 #include "graphic/bsp/BspSourceMap.h"
 #include "graphic/bsp/BspQuakeMap.h"
 #include "graphic/bsp/BspMap.h"
-
+#include "game/enviroments/SkyEnv.h"
 #include "game/entities/TestEnt.h"
 #include "game/entities/GroundEnt.h"
 #include "game/entities/TestAnimEnt.h"
 #include "game/entities/TestParticleEnt.h"
 #include "game/entities/TestEmitterEnt.h"
 
-#include "engine/file/FileCFG.h"
-
 using namespace std;
+using namespace mt::engine;
 using namespace mt::graphic;
 using namespace mt::game;
 
 
 class LobbyMap::LobbyMapImpl {
 public:
-	SkyBox* sky;
-	StaticTerrain* terrainStatic;
-	Terrain* terrain;
-	BspSourceMap* sourceMap;
-	BspQuakeMap* quakeMap;
-	BspMap* bspMap;
+	// General
+	string name;
+
+	// Enviroment
+	SkyEnv* sky;
+	// StaticTerrain* terrainStatic;
+	// Terrain* terrain;
+	// BspSourceMap* sourceMap;
+	// BspQuakeMap* quakeMap;
+	// BspMap* bspMap;
+
+	// Entities
+	vector<Entity*> lstEntities;
 };
 
 LobbyMap::LobbyMap(string name) {
-	// Implement
-	impl = new LobbyMapImpl();
+	LOG("LobbyMap");
+	try {
 
-	// Data
-	this->name = name;
+		// Implement
+		impl = new LobbyMapImpl();
+		impl->name = name;
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 LobbyMap::~LobbyMap() {
+	LOG("~LobbyMap");
+
 	// // Xoa debug physic
 	// if (this->physicDebug)
 	// 	delete this->physicDebug;
@@ -75,6 +93,7 @@ LobbyMap::~LobbyMap() {
 }
 
 void LobbyMap::load() {
+	LOG("load");
 	try {
 
 		if (!this->needLoading)
@@ -82,17 +101,68 @@ void LobbyMap::load() {
 
 		this->needLoading = false; // or not maybe
 
-		// Data config
-		// string pathDir = "./res/terrains/static/lobby/";
-		// FileCFG* fCFG = new FileCFG(pathDir + "info.cfg");
+		// Load config
+		string configPath = Config::ins.map_path + impl->name + "/info.cfg";
+		FileCFG fCFG(configPath);
 
-		// fCFG->select("general");
-		// string terrainName = fCFG->get("type");
-		// unsigned int size = fCFG->getUInt("size");
+		// Set general
+		fCFG.select("general");
 
-		// =================== Sky ===================
-		impl->sky = new SkyBox();
-		impl->sky->init("blabla");
+		// Set player position
+		vec3 playerPos = fCFG.getVec3("player");
+		this->player.origin = playerPos;
+		this->player.init();
+
+		// Load enviroment
+		fCFG.select("enviroment");
+
+		string skyName = fCFG.get("skybox");
+		impl->sky = new SkyEnv(skyName);
+
+		// Load entities
+		fCFG.select("entities");
+		vector<string> lstEntCfg = fCFG.values();
+		for (short i=0, sz=lstEntCfg.size(); i<sz; i++) {
+			string entCfg = lstEntCfg.at(i);
+			stringstream geek(entCfg);
+			string entType, entName;
+			geek >> entType >> entName;
+
+			if (entType == "Test") {
+				float x, y, z, rx, ry, rz, scale;
+				geek >> x >> y >> z >> rx >> ry >> rz >> scale;
+
+				TestEnt* ent = new TestEnt(entName);
+				ent->pos = vec3(x, y, z);
+				ent->rot = quat(Math::toRadian(rx), Math::toRadian(ry), Math::toRadian(rz));
+				ent->scale = vec3(scale, scale, scale);
+				ent->init();
+				impl->lstEntities.push_back(ent);
+			}
+			else if (entType == "Ground") {
+				float x, y, z, rx, ry, rz, scale;
+				geek >> x >> y >> z >> rx >> ry >> rz >> scale;
+
+				GroundEnt* ent = new GroundEnt(entName);
+				ent->pos = vec3(x, y, z);
+				ent->rot = quat(Math::toRadian(rx), Math::toRadian(ry), Math::toRadian(rz));
+				ent->scale = vec3(scale, scale, scale);
+				ent->init();
+				impl->lstEntities.push_back(ent);
+			}
+			else if (entType == "ModelV0") {
+
+			}
+			else if (entType == "ModelV1") {
+
+			}
+			else if (entType == "Particles") {
+
+			}
+			else {
+
+			}
+		}
 
 		// =================== Terrain Static ===================
 		// impl->terrainStatic = new StaticTerrain();
@@ -351,111 +421,37 @@ void LobbyMap::load() {
 		throw e;
 	}
 }
-
-void LobbyMap::clear() {
-	for (Entity *ent : this->lstEntitiesStatic)
-		delete ent;
-	this->lstEntitiesStatic.clear();
-
-	for (Entity *ent : this->lstEntitiesDynamic)
-		delete ent;
-	this->lstEntitiesDynamic.clear();
-
-	// Sky
-	if (impl->sky) {
-		delete impl->sky;
-		impl->sky = nullptr;
-		Graphic::ins.scene.sky = nullptr;
-	}
-
-	// Terrain Static
-	if (impl->terrainStatic) {
-		delete impl->terrainStatic;
-		impl->terrainStatic = nullptr;
-		Graphic::ins.scene.terrainStatic = nullptr;
-	}
-
-	// Terrain QuadTree
-	if (impl->terrain) {
-		delete impl->terrain;
-		impl->terrain = nullptr;
-		Graphic::ins.scene.terrain = nullptr;
-	}
-
-	// BSP Source Map
-	if (impl->sourceMap) {
-		delete impl->sourceMap;
-		impl->sourceMap = nullptr;
-		Graphic::ins.scene.sourceMap = nullptr;
-	}
-
-	// BSP Quake Map
-	if (impl->quakeMap) {
-		delete impl->quakeMap;
-		impl->quakeMap = nullptr;
-		Graphic::ins.scene.quakeMap = nullptr;
-	}
-
-	// BSP Map
-	if (impl->bspMap) {
-		delete impl->bspMap;
-		impl->bspMap = nullptr;
-		Graphic::ins.scene.bspMap = nullptr;
-	}
-
-	// #EXTRA
-}
-
 void LobbyMap::update() {
-	// float timeStep = Time::ins->getTimeStep();
+	LOG("update");
+	try {
 
-	// newton::NewtonUpdate(this->world, timeStep);
+		this->player.update();
 
-	// // Enviroment update
-	// this->physicDebug->update();
-
-	if (impl->sourceMap)
-		impl->sourceMap->update();
-
-	if (impl->quakeMap)
-		impl->quakeMap->update();
-
-	if (impl->bspMap)
-		impl->bspMap->update();
-
-	for (Entity* ent : this->lstEntitiesStatic)
-		ent->update();
-
-	for (Entity* ent : this->lstEntitiesDynamic)
-		ent->update();
+		for (Entity* ent : impl->lstEntities)
+			ent->update();
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
+void LobbyMap::clear() {
+	LOG("clear");
+	try {
 
-void LobbyMap::render() {
-	if (impl->sky)
-		impl->sky->render();
-	if (impl->terrainStatic)
-		impl->terrainStatic->render();
-	if (impl->terrain)
-		impl->terrain->render();
-	if (impl->sourceMap)
-		impl->sourceMap->render();
-	if (impl->quakeMap)
-		impl->quakeMap->render();
-	if (impl->bspMap)
-		impl->bspMap->render();
+		// List Engine
+		for (Entity *ent : impl->lstEntities)
+			delete ent;
+		impl->lstEntities.clear();
 
-	// Render nhieu lop doi voi graphic
-	// while (Graphic::ins->needRenderMore())
-	// {
-		// // rende renviroment
-		// this->physicDebug->render();
-		// this->terrain->render();
-
-		// Draw some cubes around
-		for (Entity* ent : this->lstEntitiesStatic)
-			ent->render();
-
-		for (Entity* ent : this->lstEntitiesDynamic)
-			ent->render();
-	// }
+		// Sky
+		if (impl->sky) {
+			delete impl->sky;
+			impl->sky = nullptr;
+		}
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }

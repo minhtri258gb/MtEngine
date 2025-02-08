@@ -1,7 +1,7 @@
 #ifndef __MT_STATIC_TERRAIN_H__
 #define __MT_STATIC_TERRAIN_H__
 
-#include "../ShaderProgram.h"
+#include "graphic/ShaderProgram.h"
 
 namespace mt {
 namespace graphic {

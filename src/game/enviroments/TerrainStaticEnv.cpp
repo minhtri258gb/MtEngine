@@ -8,6 +8,7 @@
 
 #include "engine/file/FileCFG.h"
 #include "engine/file/Image.h"
+#include "engine/random/PerlinNoise.cpp"
 #include "physic/body/RigidBody.h"
 
 using namespace std;
@@ -33,49 +34,90 @@ TerrainStaticEnv::TerrainStaticEnv(string name) {
 		impl->m_name = name;
 		
 		// Load config
-		string pathDir = "./res/terrains/static/" + name + "/";
+		string pathDir = "./res/terrains/" + name + "/";
 		FileCFG fCFG(pathDir + "info.cfg");
 		fCFG.select("terrain");
 		string terrainName = fCFG.get("heightmap");
 		string textureFile = fCFG.get("texture");
-		float heightScale = fCFG.getFloat("heightScale");
 		float cellScale = fCFG.getFloat("cellScale");
 
 		// Validate
-		if (heightScale == 0.0f)
-			throw error("HEIGHT_SCALE_ZERO", "Cau hình heightScale ko hop le!");
 		if (cellScale == 0.0f)
-			throw error("CELL_SCALE_ZERO", "Cau hình cellScale ko hop le!");
+			throw error("CELL_SCALE_ZERO", "Cau hinh cellScale ko hop le!");
 
-		// Load Data
-		Image data;
-		data.load(pathDir + terrainName);
-		int depth = data.getWidth();
-		int width = data.getHeight();
+		int depth = 0;
+		int width = 0;
+		vector<float> heightData;
+		vec3 offsetOrigin; // Căn giữa body địa hình
 
-		// Convert data
-		vector<float> heightData = vector(depth * width, 0.0f);
-		for (int z = 0; z < width; z++) {
-			for (int x = 0; x < depth; x++) {
-				int index = (z*width + x);
-				// Màu từ 0 - 255, Chuyển thành 0 - 1, Nhân với độ cao địa hình
-				heightData[z*depth+x] = (float)data[index] / 255.0f * heightScale;
+		if (terrainName == "noise") {
+			fCFG.select("noise");
+			depth = fCFG.getInt("depth");
+			width = fCFG.getInt("width");
+
+			PerlinNoise noise;
+			noise.setPersistence(fCFG.getFloat("persistence"));
+			noise.setFrequency(fCFG.getFloat("frequency"));
+			noise.setAmplitude(fCFG.getFloat("amplitude"));
+			noise.setOctaves(fCFG.getFloat("octaves"));
+			noise.setSeed(fCFG.getInt("seed"));
+
+			// Convert data
+			heightData = vector(depth * width, 0.0f);
+			float minH, maxH;
+			for (int z = 0; z < width; z++) {
+				for (int x = 0; x < depth; x++) {
+					float height = (float)(noise.calHeight(x, z) + noise.getAmplitude());
+					minH = min(minH, height);
+					maxH = max(maxH, height);
+					heightData[z*depth+x] = height;
+				}
 			}
+
+			// Offset Origin
+			offsetOrigin = vec3(depth/2, maxH - (maxH-minH)/2, width/2); // Căn giữa body địa hình
 		}
+		else {
 
-		// BTFile *filebt = new BTFile("res/terrain/" + terrainName + "/heightmap.bt");
-		// float depth = filebt->getRows();
-		// float width = filebt->getColumns();
+			// Validate
+			float heightScale = fCFG.getFloat("heightScale");
+			if (heightScale == 0.0f)
+				throw error("HEIGHT_SCALE_ZERO", "Cau hinh heightScale ko hop le!");
 
-		// vector<float> heightmapData;
-		// heightmapData.resize((float)(depth * width), 0.0f);
-		// unsigned char* pixelPtr = data.getDataPtr();
-		// for (auto i = 0; i < width; i++)
-		// 	for (auto j = 0; j < depth; j++)
-		// 	{
-		// 		heightmapData[i*depth+j] = float(*pixelPtr) / 255.0f;
-		// 		pixelPtr += data.getChannel();
-		// 	}
+			// Load Data
+			Image data;
+			data.load(pathDir + terrainName);
+			depth = data.getWidth();
+			width = data.getHeight();
+
+			// Convert data
+			heightData = vector(depth * width, 0.0f);
+			for (int z = 0; z < width; z++) {
+				for (int x = 0; x < depth; x++) {
+					int index = (z*width + x);
+					// Màu từ 0 - 255, Chuyển thành 0 - 1, Nhân với độ cao địa hình
+					heightData[z*depth+x] = (float)data[index] / 255.0f * heightScale;
+				}
+			}
+
+			// Offset Origin
+			offsetOrigin = vec3(depth/2, heightScale/2, width/2); // Căn giữa body địa hình
+		}
+		// {
+		// 	BTFile *filebt = new BTFile("res/terrain/" + terrainName + "/heightmap.bt");
+		// 	float depth = filebt->getRows();
+		// 	float width = filebt->getColumns();
+
+		// 	vector<float> heightmapData;
+		// 	heightmapData.resize((float)(depth * width), 0.0f);
+		// 	unsigned char* pixelPtr = data.getDataPtr();
+		// 	for (auto i = 0; i < width; i++)
+		// 		for (auto j = 0; j < depth; j++)
+		// 		{
+		// 			heightmapData[i*depth+j] = float(*pixelPtr) / 255.0f;
+		// 			pixelPtr += data.getChannel();
+		// 		}
+		// }
 
 		// Init Model
 		impl->model = new StaticTerrain();
@@ -84,7 +126,6 @@ TerrainStaticEnv::TerrainStaticEnv(string name) {
 		Graphic::ins.scene.terrainStatic = impl->model;
 
 		// Init Body
-		vec3 offsetOrigin(depth/2, heightScale/2, width/2); // Căn giữa body địa hình
 		impl->body = Physic::ins.builder.createHeightField(depth, width, heightData, cellScale, offsetOrigin);
 	}
 	catch (Exception e) {

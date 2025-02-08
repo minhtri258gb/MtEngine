@@ -6,8 +6,8 @@
 #include <GLFW/glfw3.h>
 
 #include "common.h"
-#include "engine/Random.h"
 #include "engine/file/FileCFG.h"
+#include "engine/random/Random.h"
 #include "graphic/Graphic.h"
 #include "graphic/buffer/VertexArrayObject.h"
 #include "graphic/texture/TextureAtlas.h"

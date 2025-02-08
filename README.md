@@ -16,7 +16,7 @@ Bullet list:
 	- GLAD
 	- GLFW
 - physic
-	- Bullet Physic
+	- ReactPhysic3D
 - ENet
 - OpenAL
 - engine

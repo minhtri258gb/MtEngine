@@ -25,8 +25,16 @@ public:
 };
 
 Input::Input() {
-	// Implement
-	impl = new InputImpl();
+	LOG("Input");
+	try {
+
+		// Implement
+		impl = new InputImpl();
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 Input::~Input() {

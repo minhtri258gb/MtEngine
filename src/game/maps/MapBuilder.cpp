@@ -9,8 +9,8 @@
 
 #include "TestMap.h"
 #include "LobbyMap.h"
+#include "AreaMap.h"
 #include "SimpleMap.h"
-#include "AreaBoundMap.h"
 
 using namespace std;
 using namespace mt;
@@ -67,10 +67,10 @@ Map* MapBuilder::load(string mapName) {
 			map = new TestMap(mapName);
 		else if (type == "lobby")
 			map = new LobbyMap(mapName);
+		else if (type == "area_bound")
+			map = new AreaMap(mapName);
 		else if (type == "simple")
 			map = new SimpleMap(mapName);
-		else if (type == "area_bound")
-			map = new AreaBoundMap(mapName);
 
 		// Return
 		return map;

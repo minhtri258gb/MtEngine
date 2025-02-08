@@ -11,12 +11,14 @@
 #include "common.h"
 #include "engine/Config.h"
 #include "engine/Log.h"
+#include "graphic/Graphic.h"
+#include "Terrain.h"
+
 #include "engine/file/FileCFG.h"
 #include "engine/file/Image.h"
-#include "graphic/Graphic.h"
+#include "engine/random/PerlinNoise.h"
 #include "graphic/buffer/VertexArrayObject.h"
 #include "graphic/texture/Texture.h"
-#include "graphic/terrain/Terrain.h"
 #include "graphic/terrain/TerrainPart.h"
 
 using namespace std;
@@ -29,6 +31,7 @@ class Terrain::TerrainImpl {
 public:
 	array<TerrainPart*, 61> parts;
 	Texture texture;
+	PerlinNoise noise;
 };
 
 ShaderProgram Terrain::shader;
@@ -174,9 +177,7 @@ void Terrain::render() {
 // {
 // 	shader->use();
 // 	shader->loadViewMat();
-
 // 	m_texture.bind();
-
 // }
 
 /*
@@ -221,7 +222,6 @@ void Terrain::render() {
 // 	vertices.push_back(vec3(maxXS, g_pSpace->terrain.getHeightGrid(maxX,minZ), minZS));
 // 	vertices.push_back(vec3(midXS, g_pSpace->terrain.getHeightGrid(midX,minZ), minZS));
 
-
 // 	// Build texture coord
 // 	vector<vec2> uvs;
 
@@ -234,7 +234,6 @@ void Terrain::render() {
 // 	uvs.push_back(vec2(maxV, midU));
 // 	uvs.push_back(vec2(maxV, minU));
 // 	uvs.push_back(vec2(midV, minU));
-
 
 // 	// Build indices
 // 	vector<unsigned int> indices;

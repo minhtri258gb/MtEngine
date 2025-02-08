@@ -9,32 +9,27 @@
 namespace mt {
 namespace game {
 
-class LobbyMap : public Map
-{
+class LobbyMap : public Map {
 
 public:
 
 	// Variable
-	std::string name;
 	// PhysicDebug* physicDebug;
 	// Terrain* terrain;
-	std::vector<Entity*> lstEntitiesStatic;
-	std::vector<Entity*> lstEntitiesDynamic;
 
 	// Forward
 	LobbyMap(std::string);
 	~LobbyMap();
+
 	void load();
-	void clear();
 	void update();
-	void render();
+	void clear();
 
 private:
 
 	// Variable
 	class LobbyMapImpl;
 	LobbyMapImpl* impl;
-
 };
 
 }}

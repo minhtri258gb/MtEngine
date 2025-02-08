@@ -15,6 +15,7 @@
 #include "engine/file/FileCFG.h"
 #include "game/enviroments/SkyEnv.h"
 #include "game/enviroments/TerrainStaticEnv.h"
+#include "game/enviroments/TerrainEnv.h"
 #include "game/entities/TestEnt.h"
 #include "game/entities/GroundEnt.h"
 #include "game/entities/TestAnimEnt.h"
@@ -36,6 +37,7 @@ public:
 	// Enviroment
 	SkyEnv* sky;
 	TerrainStaticEnv* terStatic;
+	TerrainEnv* terrain;
 
 	// Entities
 	vector<Entity*> lstEntities;
@@ -122,15 +124,13 @@ void TestMap::load() {
 
 		// =================== Terrain Static ===================
 		string terrainStaticName = fCFG.get("terrainStatic");
-		impl->terStatic = new TerrainStaticEnv(terrainStaticName);
+		if (terrainStaticName.size() > 0)
+			impl->terStatic = new TerrainStaticEnv(terrainStaticName);
 
 		// =================== Terrain QuadTree ===================
-		// string terrainName = fCFG.get("terrain");
-		// if (terrainName.length() > 0) {
-		// 	Terrain* terrain = new Terrain();
-		// 	terrain->init(terrainName);
-		// 	Graphic::ins.scene.terrain = terrain;
-		// }
+		string terrainName = fCFG.get("terrain");
+		if (terrainName.size() > 0)
+			impl->terrain = new TerrainEnv(terrainName);
 
 		// =================== BSP Source Map ===================
 		// impl->sourceMap = new BspSourceMap();
@@ -440,7 +440,6 @@ void TestMap::clear() {
 		// List Engine
 		for (Entity *ent : impl->lstEntities)
 			delete ent;
-
 		impl->lstEntities.clear();
 
 		// Sky

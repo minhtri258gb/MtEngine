@@ -1,5 +1,5 @@
-#ifndef __MT_AREA_BOUND_MAP_H__
-#define __MT_AREA_BOUND_MAP_H__
+#ifndef __MT_AREA_MAP_H__
+#define __MT_AREA_MAP_H__
 
 #include "Map.h"
 #include "../entities/Entity.h"
@@ -7,13 +7,13 @@
 namespace mt {
 namespace game {
 
-class AreaBoundMap : public Map {
+class AreaMap : public Map {
 
 public:
 
 	// Method
-	AreaBoundMap(std::string);
-	~AreaBoundMap();
+	AreaMap(std::string);
+	~AreaMap();
 
 	void load();
 	void update();
@@ -23,8 +23,8 @@ public:
 private:
 
 	// Variable
-	class AreaBoundMapImpl;
-	AreaBoundMapImpl* impl;
+	class AreaMapImpl;
+	AreaMapImpl* impl;
 
 };
 

@@ -6,10 +6,9 @@
 #include "graphic/buffer/VertexArrayObject.h"
 #include "graphic/texture/Texture.h"
 #include "graphic//terrain/TerrainQuad.h"
-#include "graphic//terrain/TerrainPart.h"
+#include "TerrainPart.h"
 
-// Inv Import
-#include "Terrain.h"
+#include "Terrain.h" // Inv Import
 
 using namespace std;
 using namespace mt;
