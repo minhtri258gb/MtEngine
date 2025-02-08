@@ -5,32 +5,26 @@
 
 using namespace mt::game;
 
-Map::Map()
-{
+
+Map::Map() {
 	this->needLoading = true;
 }
 
-Map::~Map()
-{
-	
+Map::~Map() {
 }
 
-void Map::load()
-{
+void Map::load() {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
 }
 
-void Map::clear()
-{
+void Map::clear() {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
 }
 
-void Map::update()
-{
+void Map::update() {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
 }
 
-void Map::setNeedLoad(bool _b)
-{
+void Map::setNeedLoad(bool _b) {
 	this->needLoading = _b;
 }

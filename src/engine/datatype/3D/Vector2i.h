@@ -3,8 +3,7 @@
 
 namespace mt {
 
-class Vector2i
-{
+class Vector2i {
 public:
 
 	// Variables
@@ -21,7 +20,7 @@ public:
 	float length() const;
 	void set(int x, int y);
 	void set(const Vector2i &v);
-	
+
 	// Operator
     int operator [] (unsigned int index) const;
     int& operator [] (unsigned int index);

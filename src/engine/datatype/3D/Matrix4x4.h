@@ -8,16 +8,15 @@ namespace mt {
 
 class Quaternion;
 
-class Matrix4x4
-{
+class Matrix4x4 {
 public:
 
 	// Forwards
 	Matrix4x4();
-	Matrix4x4(	float m00, float m01, float m02, float m03,
-				float m04, float m05, float m06, float m07,
-				float m08, float m09, float m10, float m11,
-				float m12, float m13, float m14, float m15);
+	Matrix4x4(float m00, float m01, float m02, float m03,
+						float m04, float m05, float m06, float m07,
+						float m08, float m09, float m10, float m11,
+						float m12, float m13, float m14, float m15);
 	Matrix4x4(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4);
 	Matrix4x4(const Quaternion&);
 	Matrix4x4(const Matrix3x3&);
@@ -51,14 +50,14 @@ public:
 
 	void fromEulerAnglesXYZ(float x, float y, float z);
 	void fromToMatrix(const Vector3& from, const Vector3& to);
-	
+
 	void decompose(Vector3& position, Quaternion& rotation, Vector3& scaling) const;
 	void decompose(Vector3& position, Quaternion& rotation) const;
-	
+
 	void set(	float m00, float m01, float m02, float m03,
-				float m04, float m05, float m06, float m07,
-				float m08, float m09, float m10, float m11,
-				float m12, float m13, float m14, float m15);
+						float m04, float m05, float m06, float m07,
+						float m08, float m09, float m10, float m11,
+						float m12, float m13, float m14, float m15);
 	void set(const Vector4& v1, const Vector4& v2, const Vector4& v3, const Vector4& v4);
 	void set(const Quaternion&);
 	void set(const Matrix4x4 &m);

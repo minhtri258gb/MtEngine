@@ -7,6 +7,9 @@
 #include "graphic/Graphic.h"
 #include "AreaBoundMap.h"
 
+#include "engine/Config.h"
+#include "engine/file/FileCFG.h"
+
 #include "graphic/sky/SkyBox.h"
 #include "graphic/terrain/StaticTerrain.h"
 #include "graphic/terrain/Terrain.h"
@@ -20,15 +23,13 @@
 #include "game/entities/TestParticleEnt.h"
 #include "game/entities/TestEmitterEnt.h"
 
-#include "engine/file/FileCFG.h"
-
 using namespace std;
+using namespace mt::engine;
 using namespace mt::graphic;
 using namespace mt::game;
 
 
-class AreaBoundMap::AreaBoundMapImpl
-{
+class AreaBoundMap::AreaBoundMapImpl {
 public:
 
 	// General
@@ -37,20 +38,20 @@ public:
 	vec3 playerPos = vec3();
 
 	// Enviroment
-	SkyBox* sky;
 	string skyName;
+	SkyBox* sky;
+	string terrainName;
 	StaticTerrain* terrainStatic;
 	Terrain* terrain;
 	BspSourceMap* sourceMap;
 	BspQuakeMap* quakeMap;
 	BspMap* bspMap;
-	
+
 	// Entities
 	vector<Entity*> lstEntities;
 };
 
-AreaBoundMap::AreaBoundMap(string name)
-{
+AreaBoundMap::AreaBoundMap(string name) {
 	try {
 
 		// Implement
@@ -58,7 +59,7 @@ AreaBoundMap::AreaBoundMap(string name)
 		impl->name = name;
 
 		// Load config
-		string configPath = "./res/maps/" + name + ".cfg";
+		string configPath = Config::ins.map_path + name + "/info.cfg";
 		FileCFG* fCFG = new FileCFG(configPath);
 
 		// Set general
@@ -69,6 +70,7 @@ AreaBoundMap::AreaBoundMap(string name)
 		// Set enviroment
 		fCFG->select("enviroment");
 		impl->skyName = fCFG->get("skybox");
+		impl->terrainName = fCFG->get("terrain");
 
 		delete fCFG;
 	}
@@ -83,16 +85,15 @@ AreaBoundMap::AreaBoundMap(string name)
 	}
 }
 
-AreaBoundMap::~AreaBoundMap()
-{
+AreaBoundMap::~AreaBoundMap() {
 	// // Xoa debug physic
 	// if (this->physicDebug)
 	// 	delete this->physicDebug;
-	
+
 	// // Xoa terrain
 	// if (this->terrain)
 	// 	delete this->terrain;
-	
+
 	// // Xoa entity tinh
 	// for (Entity* ent : this->lstEntitiesStatic)
 	// 	delete ent;
@@ -108,28 +109,26 @@ AreaBoundMap::~AreaBoundMap()
 	// 	newton::NewtonDestroyAllBodies(this->world);
 	// 	newton::NewtonDestroy(this->world);
 	// }
-	
+
 	// Implement
 	delete impl;
 }
 
-void AreaBoundMap::load()
-{
+void AreaBoundMap::load() {
 	try {
-	
+
 		if (!this->needLoading)
 			return;
-		
+
 		this->needLoading = false; // or not maybe
 
 		// Data config
 		// string pathDir = "./res/terrains/static/lobby/";
 		// FileCFG* fCFG = new FileCFG(pathDir + "info.cfg");
-		
+
 		// fCFG->select("general");
 		// string terrainName = fCFG->get("type");
 		// unsigned int size = fCFG->getUInt("size");
-		
 
 		// =================== Sky ===================
 		impl->sky = new SkyBox();
@@ -137,9 +136,9 @@ void AreaBoundMap::load()
 		Graphic::ins.scene.sky = impl->sky;
 
 		// =================== Terrain Static ===================
-		impl->terrainStatic = new StaticTerrain();
-		impl->terrainStatic->init("chadvernon");
-		Graphic::ins.scene.terrainStatic = impl->terrainStatic;
+		// impl->terrainStatic = new StaticTerrain();
+		// impl->terrainStatic->init(impl->terrainName);
+		// Graphic::ins.scene.terrainStatic = impl->terrainStatic;
 
 		// =================== Terrain QuadTree ===================
 		// impl->terrain = new Terrain();
@@ -320,7 +319,7 @@ void AreaBoundMap::load()
 		// 	vertices.push_back(vec3( 0.5f,  0.0f,  0.5f));
 		// 	vertices.push_back(vec3(-0.5f,  0.0f,  0.5f));
 		// 	vertices.push_back(vec3( 0.0f,  0.8f,  0.0f));
-			
+
 		// 	vector<vec2> texcoords;
 		// 	texcoords.push_back(vec2(0.0f, 0.0f));
 		// 	texcoords.push_back(vec2(0.0f, 5.0f));
@@ -338,7 +337,7 @@ void AreaBoundMap::load()
 		// 	texcoords.push_back(vec2(5.0f, 0.0f));
 		// 	texcoords.push_back(vec2(0.0f, 0.0f));
 		// 	texcoords.push_back(vec2(2.5f, 5.0f));
-			
+
 		// 	vector<vec3> normals;
 		// 	normals.push_back(vec3(0.0f, -1.0f, 0.0f));
 		// 	normals.push_back(vec3(0.0f, -1.0f, 0.0f));
@@ -356,7 +355,7 @@ void AreaBoundMap::load()
 		// 	normals.push_back(vec3(0.0f, 0.5f, 0.8f));
 		// 	normals.push_back(vec3(0.0f, 0.5f, 0.8f));
 		// 	normals.push_back(vec3(0.0f, 0.5f, 0.8f));
-			
+
 		// 	vector<unsigned int> indices;
 		// 	indices.push_back( 0); indices.push_back( 1); indices.push_back( 2); // bottom
 		// 	indices.push_back( 0); indices.push_back( 2); indices.push_back( 3); // Bottom
@@ -364,7 +363,7 @@ void AreaBoundMap::load()
 		// 	indices.push_back( 7); indices.push_back( 9); indices.push_back( 8); // Behide
 		// 	indices.push_back(10); indices.push_back(12); indices.push_back(11); // Right
 		// 	indices.push_back(13); indices.push_back(15); indices.push_back(14); // Front
-			
+
 		// 	kttMdl->loadVAO(vertices, texcoords, normals, indices);
 		// 	kttMdl->loadTexture("./res/textures/wall.jpg");
 

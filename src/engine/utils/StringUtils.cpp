@@ -9,8 +9,8 @@
 using namespace std;
 using namespace mt::engine;
 
-int StringUtils::parseInt(std::string str)
-{
+
+int StringUtils::parseInt(std::string str) {
 	int num;
 	stringstream ss;
 	ss << str;
@@ -18,35 +18,17 @@ int StringUtils::parseInt(std::string str)
 	return num;
 }
 
+string StringUtils::format(char *fmt, ...) {
+	va_list list;
+	va_start(list, fmt);
+	char buffer[1024];
+	vsnprintf(buffer, sizeof(buffer), fmt, list);
+	va_end(list);
 
-// string StringUtils::format(char *fmt, ...)
-// {
-//     va_list ap;
-//     va_start(ap, fmt);
+	return string(buffer);
+}
 
-// 	char str[80];
-
-//    sprintf(str, "Gia tri cua Pi = %f", M_PI);
-//    puts(str);
-
-//    return(0);
-
-// 	sprintf()
-
-// 	vsprintf (buf, fmt, va);
-
-
-//     int max = va_arg(ap, int);
-//     for (int i = 2; i <= n_args; i++) {
-//         int a = va_arg(ap, int);
-//         if (a > max) max = a;
-//     }
-//     va_end(ap);
-//     return max;
-// }
-
-bool StringUtils::endWith(std::string str, std::string substr)
-{
+bool StringUtils::endWith(std::string str, std::string substr) {
 	if (str.length() >= substr.length())
 		return (0 == str.compare (str.length() - substr.length(), substr.length(), substr));
 	else

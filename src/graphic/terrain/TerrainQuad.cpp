@@ -12,8 +12,8 @@ using namespace mt;
 using namespace mt::engine;
 using namespace mt::graphic;
 
-TerrainQuad::TerrainQuad()
-{
+
+TerrainQuad::TerrainQuad() {
 	parent = nullptr;
 
 	for (unsigned char i=0; i<4; i++)
@@ -23,8 +23,7 @@ TerrainQuad::TerrainQuad()
 	position = vec2();
 }
 
-TerrainQuad::~TerrainQuad()
-{
+TerrainQuad::~TerrainQuad() {
 	for (unsigned char i=0; i<4; i++)
 		if (children[i])
 			delete children[i];
@@ -35,15 +34,13 @@ TerrainQuad::~TerrainQuad()
  *   0  2
  *   1  3
  **/
-void TerrainQuad::generateTreeEx(unsigned char level, TerrainQuad* parent, vec2 _position)
-{
+void TerrainQuad::generateTreeEx(unsigned char level, TerrainQuad* parent, vec2 _position) {
 	this->level = level;
 	this->parent = parent;
 	this->position = _position;
 
-	if (level > 1)
-	{
-		int halfSize = (1 << level - 1);
+	if (level > 1) {
+		int halfSize = (1 << (level - 1));
 		float minX = _position.x;
 		float minZ = _position.y;
 		float midX = minX + halfSize;
@@ -51,13 +48,13 @@ void TerrainQuad::generateTreeEx(unsigned char level, TerrainQuad* parent, vec2 
 
 		children[0] = new TerrainQuad();
 		children[0]->generateTreeEx(level - 1, this, vec2(minX, minZ));
-		
+
 		children[1] = new TerrainQuad();
 		children[1]->generateTreeEx(level - 1, this, vec2(minX, midZ));
-		
+
 		children[2] = new TerrainQuad();
 		children[2]->generateTreeEx(level - 1, this, vec2(midX, minZ));
-		
+
 		children[3] = new TerrainQuad();
 		children[3]->generateTreeEx(level - 1, this, vec2(midX, midZ));
 	}
@@ -69,8 +66,7 @@ void TerrainQuad::generateTreeEx(unsigned char level, TerrainQuad* parent, vec2 
  * 		1		3
  * 			2
  **/
-void TerrainQuad::generateNeighborEx(TerrainQuad* n0, TerrainQuad* n1, TerrainQuad* n2, TerrainQuad* n3)
-{
+void TerrainQuad::generateNeighborEx(TerrainQuad* n0, TerrainQuad* n1, TerrainQuad* n2, TerrainQuad* n3) {
     neighbor[0] = n0;
     neighbor[1] = n1;
     neighbor[2] = n2;
@@ -78,49 +74,43 @@ void TerrainQuad::generateNeighborEx(TerrainQuad* n0, TerrainQuad* n1, TerrainQu
 
     TerrainQuad *noc1, *noc2; // Neighbor outter of children
 
-	if (children[0])
-	{
+	if (children[0]) {
 		noc1 = n0 ? n0->children[1] : nullptr;
 		noc2 = n1 ? n1->children[2] : nullptr;
 		children[0]->generateNeighborEx(noc1, noc2, children[1], children[2]);
 	}
 
-	if (children[1])
-	{
+	if (children[1]) {
 		noc1 = n1 ? n1->children[3] : nullptr;
 		noc2 = n2 ? n2->children[0] : nullptr;
 		children[1]->generateNeighborEx(children[0], noc1, noc2, children[3]);
 	}
 
-	if (children[2])
-	{
+	if (children[2]) {
 		noc1 = n0 ? n0->children[3] : nullptr;
 		noc2 = n3 ? n3->children[0] : nullptr;
 		children[2]->generateNeighborEx(noc1, children[0], children[3], noc2);
 	}
 
-	if (children[3])
-	{
+	if (children[3]) {
 		noc1 = n2 ? n2->children[2] : nullptr;
 		noc2 = n3 ? n3->children[1] : nullptr;
 		children[3]->generateNeighborEx(children[2], children[1], noc1, noc2);
 	}
 }
 
-void TerrainQuad::update()
-{
+void TerrainQuad::update() {
 	// Frustum cull
 	int halfsize = 1 << (level - 1);
 	float midX = position.x + halfsize;
 	float midZ = position.y + halfsize;
 
 	vec3 center(midX, 0.0f, midZ);
-	
+
 	// isVisible = Graphic::ins.camera.frustumCulling.sphere(center, halfsize * 2.0f + 128.0); // #TODO
 	// isVisible = Graphic::ins.camera.frustumCulling.point(center); // #DEBUG
 	isVisible = true; // #TODO remove
-	if (!isVisible)
-	{
+	if (!isVisible) {
 		isRender = true;
 		return;
 	}
@@ -132,8 +122,7 @@ void TerrainQuad::update()
 
 	if (distance > (1 << (level+1)) || level == 1)
 		isRender = true;
-	else
-	{
+	else {
 		isRender = false;
 		for (short i=0; i<4; i++)
 			if (children[i])
@@ -141,27 +130,24 @@ void TerrainQuad::update()
 	}
 }
 
-void TerrainQuad::getData(unsigned int& count, std::vector<vec2>& positions, vector<int>& levels, vector<int>& flags)
-{
+void TerrainQuad::getData(unsigned int& count, std::vector<vec2>& positions, vector<int>& levels, vector<int>& flags) {
 	if (!isVisible)
 		return;
 
-	if (isRender)
-	{
+	if (isRender) {
 		// Check patch
 		Flag32 patch;
 		for (int i=0; i<4; i++)
 			if (neighbor[i] && neighbor[i]->parent->isRender)
 				patch.setOn(i);
-		
+
 		// Set data
 		count++;
 		positions.push_back(position);
 		levels.push_back(level);
 		flags.push_back(patch.get());
 	}
-	else
-	{
+	else {
 		for (unsigned char i=0; i<4; i++)
 			if (children[i])
 				children[i]->getData(count, positions, levels, flags);

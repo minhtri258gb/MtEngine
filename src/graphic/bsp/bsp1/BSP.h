@@ -7,7 +7,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef BSP_H
 #define BSP_H
@@ -15,16 +15,14 @@
 #include "BITSET.h"
 
 //Directory entry in header
-class BSP_DIRECTORY_ENTRY
-{
+class BSP_DIRECTORY_ENTRY {
 public:
 	int offset;
 	int length;
 };
 
 //Types of directory entry
-enum BSP_DIRECTORY_ENTRY_TYPE
-{
+enum BSP_DIRECTORY_ENTRY_TYPE {
 	bspEntities=0,
 	bspTextures,
 	bspPlanes,
@@ -56,8 +54,7 @@ public:
 
 
 //vertex as found in file
-class BSP_LOAD_VERTEX
-{
+class BSP_LOAD_VERTEX {
 public:
 	VECTOR3D position;
 	float decalS, decalT;
@@ -65,10 +62,9 @@ public:
 	VECTOR3D normal;
 	GLubyte color[4];
 };
-	
+
 //vertex as used for drawing
-class BSP_VERTEX
-{
+class BSP_VERTEX {
 public:
 	VECTOR3D position;
 	float decalS, decalT;
@@ -161,14 +157,13 @@ public:
 };
 
 //every patch (curved surface) is split into biquadratic (3x3) patches
-class BSP_BIQUADRATIC_PATCH
-{
+class BSP_BIQUADRATIC_PATCH {
 public:
 	bool Tesselate(int newTesselation);
 	void Draw();
-	
+
 	BSP_VERTEX controlPoints[9];
-		
+
 	int tesselation;
 	BSP_VERTEX * vertices;
 	GLuint * indices;
@@ -179,8 +174,7 @@ public:
 
 	BSP_BIQUADRATIC_PATCH() : vertices(NULL)
 	{}
-	~BSP_BIQUADRATIC_PATCH()
-	{
+	~BSP_BIQUADRATIC_PATCH() {
 		if (vertices)
 			delete [] vertices;
 		vertices=NULL;
@@ -192,8 +186,7 @@ public:
 };
 
 //curved surface
-class BSP_PATCH
-{
+class BSP_PATCH {
 public:
 	int textureIndex;
 	int lightmapIndex;
@@ -204,24 +197,21 @@ public:
 };
 
 //texture as found in file
-class BSP_LOAD_TEXTURE
-{
+class BSP_LOAD_TEXTURE {
 public:
 	char name[64];
 	int flags, contents;	//unknown
 };
 
 //lightmap as found in file
-class BSP_LOAD_LIGHTMAP
-{
+class BSP_LOAD_LIGHTMAP {
 public:
 	GLubyte lightmapData[128*128*3];
 };
 
 
 //leaf of bsp tree as found in file
-class BSP_LOAD_LEAF
-{
+class BSP_LOAD_LEAF {
 public:
 	int cluster;	//cluster index for visdata
 	int area;		//areaportal area
@@ -234,8 +224,7 @@ public:
 };
 
 //leaf of bsp tree as stored
-class BSP_LEAF
-{
+class BSP_LEAF {
 public:
 	int cluster;	//cluster index for visdata
 	VECTOR3D boundingBoxVertices[8];
@@ -244,8 +233,7 @@ public:
 };
 
 //node of BSP tree
-class BSP_NODE
-{
+class BSP_NODE {
 public:
 	int planeIndex;
 	int front, back;	//child nodes
@@ -254,8 +242,7 @@ public:
 };
 
 //VIS data table
-class BSP_VISIBILITY_DATA
-{
+class BSP_VISIBILITY_DATA {
 public:
 	int numClusters;
 	int bytesPerCluster;
@@ -263,8 +250,7 @@ public:
 
 	BSP_VISIBILITY_DATA()
 	{}
-	~BSP_VISIBILITY_DATA()
-	{
+	~BSP_VISIBILITY_DATA() {
 		if (bitset)
 			delete [] bitset;
 		bitset=NULL;
@@ -272,16 +258,15 @@ public:
 };
 
 //main bsp class
-class BSP
-{
+class BSP {
 public:
 	bool Load(char * filename, int curveTesselation);
-	
+
 	int CalculateCameraLeaf(const VECTOR3D & cameraPosition);
 
 	void CalculateVisibleFaces(const VECTOR3D & cameraPosition/*, FRUSTUM frustum*/);
 	void Draw();
-	
+
 	void DrawFace(int faceNumber);
 
 	void DrawPolygonFace(int polygonFaceNumber);
@@ -298,8 +283,6 @@ public:
 	BSP_VERTEX * vertices;
 
 	bool LoadVertices(FILE * file);
-
-
 
 	//faces
 	int numTotalFaces;
@@ -323,9 +306,6 @@ public:
 
 	bool LoadFaces(FILE * file, int curveTesselation);
 
-
-
-
 	//decal textures
 	// int numTextures; // #TODO
 	//OpenGL identifiers for textures
@@ -335,8 +315,6 @@ public:
 
 	// bool LoadTextures(FILE * file); // #TODO
 
-
-
 	//lightmaps
 	// int numLightmaps; // #TODO
 	//OpenGL identifiers for lightmaps
@@ -345,18 +323,13 @@ public:
 
 	// bool LoadLightmaps(FILE * file); // #TODO
 
-
-
-
 	//entities
 	char * entityString;
-
-
 
 	//Leaves
 	int numLeaves;
 	BSP_LEAF * leaves;
-	
+
 	//leaf faces array
 	int * leafFaces;
 
@@ -375,7 +348,6 @@ public:
 
 	bool LoadBSPData(FILE * file);
 
-
 	BSP() : numVertices(0), vertices(NULL),
 			numPolygonFaces(0), polygonFaces(NULL),
 			numPatches(0), patches(NULL),
@@ -383,8 +355,7 @@ public:
 			// numLightmaps(0), lightmapTextures(NULL), // #TODO
 			entityString(NULL)
 	{}
-	~BSP()
-	{
+	~BSP() {
 		if (vertices)
 			delete [] vertices;
 		vertices=NULL;

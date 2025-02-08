@@ -70,7 +70,7 @@ void Sprite::render()
 	position.push_back(vec3(-0.5f, -0.5f, 0.0f));
 	position.push_back(vec3( 0.5f,  0.5f, 0.0f));
 	position.push_back(vec3( 0.5f, -0.5f, 0.0f));
-	
+
 	impl->VAO.updateDynamicAttribute(0, position);
 	impl->VAO.drawPointInstance(position.size());
 	impl->VAO.unbind();

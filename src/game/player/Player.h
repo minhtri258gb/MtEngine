@@ -5,8 +5,7 @@
 namespace mt {
 namespace game {
 
-class Player
-{
+class Player {
 public:
 
 	// Variable

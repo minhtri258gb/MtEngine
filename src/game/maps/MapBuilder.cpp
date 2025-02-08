@@ -1,15 +1,15 @@
 #define __MT_MAP_BUILDER_CPP__
 
 #include "common.h"
-
 #include "engine/Config.h"
+#include "engine/Log.h"
 #include "engine/file/FileCFG.h"
 #include "engine/exception/LoadException.h"
-
 #include "MapBuilder.h"
 
 #include "TestMap.h"
 #include "LobbyMap.h"
+#include "SimpleMap.h"
 #include "AreaBoundMap.h"
 
 using namespace std;
@@ -18,22 +18,21 @@ using namespace mt::engine;
 using namespace mt::game;
 
 
-Map* MapBuilder::firstLoad()
-{
+Map* MapBuilder::firstLoad() {
+	LOG("firstLoad");
 	try {
+
 		string mapName = "lobby"; // lobby is default
 
 		// Tải file state.ini
 		FileCFG* fCFG = nullptr;
 
-		try
-		{
+		try {
 			fCFG = new FileCFG(Config::ins.system_path + "state.cfg");
 			fCFG->select("last");
 			mapName = fCFG->get("map");
 		}
-		catch (LoadException e)
-		{
+		catch (LoadException e) {
 			// Nếu chưa có file thì tạo file với state mặc định
 			delete fCFG;
 			fCFG = new FileCFG();
@@ -41,23 +40,22 @@ Map* MapBuilder::firstLoad()
 			fCFG->set("map", mapName);
 			fCFG->save(Config::ins.system_path + "state.cfg");
 		}
-		
+
 		// Return
 		delete fCFG;
-		return MapBuilder::load(mapName);
+		return this->load(mapName);
 	}
 	catch (Exception e) {
 		track(e);
 		throw e;
 	}
 }
-
-Map* MapBuilder::load(string mapName)
-{
+Map* MapBuilder::load(string mapName) {
+	LOG("load: " + mapName);
 	try {
 
 		// Read type of map
-		string configPath = Config::ins.map_path + mapName + ".cfg";
+		string configPath = Config::ins.map_path + mapName + "/info.cfg";
 		FileCFG* fCFG = new FileCFG(configPath);
 		fCFG->select("general");
 		string type = fCFG->get("type");
@@ -69,6 +67,8 @@ Map* MapBuilder::load(string mapName)
 			map = new TestMap(mapName);
 		else if (type == "lobby")
 			map = new LobbyMap(mapName);
+		else if (type == "simple")
+			map = new SimpleMap(mapName);
 		else if (type == "area_bound")
 			map = new AreaBoundMap(mapName);
 
@@ -79,8 +79,4 @@ Map* MapBuilder::load(string mapName)
 		track(e);
 		throw e;
 	}
-}
-
-void MapBuilder::clear(Map* pMap) {
-	delete pMap;
 }

@@ -4,8 +4,7 @@
 namespace mt {
 namespace physic {
 
-class RigidBody
-{
+class RigidBody {
 public:
 
 	// Variable
@@ -14,14 +13,14 @@ public:
 	RigidBody();
 	~RigidBody();
 
-	void create(std::string name, vec3 pos, quat rot, vec3 scale);
 	void update();
-	void close();
+	void clear();
 
 	void action(bool);
-
 	void getTransForm(vec3 *origin, quat *angle);
 	vec3 getOrigin();
+	void force(vec3);
+	void setVelocity(vec3);
 
 private:
 
@@ -29,7 +28,7 @@ private:
 	class RigidBodyImpl;
 	RigidBodyImpl* impl;
 
-	friend class Physic;
+	friend class PhysicBuilder;
 
 };
 

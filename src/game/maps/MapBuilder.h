@@ -6,15 +6,13 @@
 namespace mt {
 namespace game {
 
-class MapBuilder
-{
+class MapBuilder {
 
 public:
 
 	// Static
-  static Map* firstLoad();
-  static Map* load(std::string name);
-  static void clear(Map* pMap);
+	Map* firstLoad();
+	Map* load(std::string name);
 
 };
 

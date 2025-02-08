@@ -1,0 +1,16 @@
+{
+	"try catch": {
+		"prefix": "trycatch",
+		"description": "Catch Segment",
+		"scope": "cpp",
+		"body": [
+			"LOG(\"...\");",
+			"try {",
+			"}",
+			"catch (Exception e) {",
+			"\ttrack(e);",
+			"\tthrow e;",
+			"}",
+		],
+	}
+}

@@ -26,16 +26,14 @@ using namespace mt::graphic;
 ShaderProgram BspMap::shader;
 
 
-class BspMap::BspMapImpl
-{
+class BspMap::BspMapImpl {
 public:
 	VertexArrayObject VAO;
 
 	Bsp* map_;
 };
 
-BspMap::BspMap()
-{
+BspMap::BspMap() {
 	// Component
 	// impl->map = new bsp("./res/bsp/de_dust2.bsp");
 	// impl->map = new bsp("./res/bsp/css_cs_deadhouse_1.0/cs_deadhouse.bsp");
@@ -45,8 +43,7 @@ BspMap::BspMap()
 	impl = new BspMapImpl();
 }
 
-BspMap::~BspMap()
-{
+BspMap::~BspMap() {
 	// Component
 	// delete impl->map;
 
@@ -54,17 +51,14 @@ BspMap::~BspMap()
 	delete impl;
 }
 
-void BspMap::init(string name)
-{
+void BspMap::init(string name) {
 	impl->map_ = new Bsp("./res/EngineQuakeIII/maps/test1.bsp");// #TODO tao nhung chua xoa
 }
 
-void BspMap::update()
-{
+void BspMap::update() {
 }
 
-void BspMap::render()
-{
+void BspMap::render() {
 
 	this->shader.use();
 
@@ -74,12 +68,12 @@ void BspMap::render()
 	// modelMat.scale(1.0f);
 	// Tham khao: glUniform1f(ShaderManager::GetInstance()->UseShaderProgram(ShaderManager::BasicShader).uniforms[WorldScaleFactor], );
 	this->shader.setMat4(2, modelMat);
-	
+
 	// // Graphic::ins.wireframe(true);
 	// Graphic::ins.cullFaceToogle(false);
 
 	// // impl->texture.bind();
-	
+
 	vec3 camPos = Graphic::ins.camera.position;
 	const glm::vec4 _camPos(camPos.x, camPos.y, camPos.z, 1.0f);
 	std::vector<bsp_face *> renderables_ = impl->map_->ComputeVisibleFaces(_camPos);
@@ -155,7 +149,8 @@ void BspMap::render()
 			glDrawElements(
 					GL_TRIANGLES, current_face.num_meshverts, GL_UNSIGNED_INT,
 					reinterpret_cast<void *>(current_face.meshvert * sizeof(bsp_meshvert)));
-		} else if (current_face.type == PATCH) {
+		}
+		else if (current_face.type == PATCH) {
 			// Shader &shader = *current_shader_; // #TODO
 			auto offset = face->vertex;
 
@@ -196,7 +191,8 @@ void BspMap::render()
 			glPatchParameterfv(GL_PATCH_DEFAULT_INNER_LEVEL, subdivisions);
 			glPatchParameteri(GL_PATCH_VERTICES, face->num_vertices);
 			glDrawArrays(GL_PATCHES, 0, face->num_vertices);
-		} else if (current_face.type == BILLBOARD) {
+		}
+		else if (current_face.type == BILLBOARD) {
 			// RenderBillboard();
 		}
   }

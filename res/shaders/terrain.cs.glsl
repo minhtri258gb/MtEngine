@@ -15,8 +15,7 @@ uniform float heightScale; // at TerrainPath
 uniform vec3 camPos;
 
 
-float getTessFactO(int id)
-{
+float getTessFactO(int id) {
 	float fact = 4.0;
 	if (id == 0 && (c_flag[0] & (1 << 0)) != 0)
 		fact = fact / 2;
@@ -29,8 +28,7 @@ float getTessFactO(int id)
 	return fact;
 }
 
-float getTessFactI(float dis)
-{
+float getTessFactI(float dis) {
 	if (c_level[0] == 1)
 		return clamp((352 - dis) / 24, 4.0, 12.0); // ????
 	else if (c_level[0] <= 7)
@@ -38,16 +36,16 @@ float getTessFactI(float dis)
 	return 2.0;
 }
 
-void main()
-{
-	if (gl_InvocationID == 0)
-	{
+void main() {
+
+	if (gl_InvocationID == 0) {
+
 		float height = texture(texHeight, c_texcoord[0]).r * heightScale;
 		float dis = distance(camPos, vec3(c_position[gl_InvocationID].x, height, c_position[gl_InvocationID].y));
 
 		// gl_TessLevelInner[0] = 4.0;
 		// gl_TessLevelInner[1] = 4.0;
-		
+
 		// gl_TessLevelOuter[0] = 4.0; // -z
 		// gl_TessLevelOuter[1] = 4.0; // -x
 		// gl_TessLevelOuter[2] = 4.0; // z

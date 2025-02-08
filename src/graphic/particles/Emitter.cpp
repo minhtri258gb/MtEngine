@@ -123,7 +123,7 @@ void Emitter::init(string name, list<Particle*> &particles)
 				gravity,
 				Random::ins.rangeF(lifeTime.x, lifeTime.y)
 				));
-	
+
 	// Prepare VAO
 	impl->VAO.init();
 	impl->VAO.bind();

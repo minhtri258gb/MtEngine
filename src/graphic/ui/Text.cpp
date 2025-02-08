@@ -68,17 +68,17 @@ void Text::initText() {
 		throw error("FREETYPE_INIT_FAIL", "Could not init FreeType Library");
 
 	FT_Face face;
-	if (FT_New_Face(ft, (Config::ins.font_path + "desyrel.ttf").c_str(), 0, &face)) // #TODO move config
+	if (FT_New_Face(ft, (Config::ins.font_path + "Alata-Regular.ttf").c_str(), 0, &face)) // #TODO move config
 		throw error("FONT_LOAD_FAIL", "Failed to load font");
 
 	FT_Set_Pixel_Sizes(face, 0, 48);
-	
+
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
 	for (GLubyte c = 32; c < 128; c++) {
 		// Load character glyph
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 			throw error("GLYPH_LOAD_FAIL", "Failed to load Glyph");
-		
+
 		FT_GlyphSlot g = face->glyph;
 
 		// Generate texture
@@ -161,11 +161,11 @@ void Text::render() {
 			continue;
 		}
 
-		float xpos = offset.x + ch.Bearing.x * impl->scale;
-		float ypos = offset.y - (ch.Size.y - ch.Bearing.y) * impl->scale;
+		// float xpos = offset.x + ch.Bearing.x * impl->scale;
+		// float ypos = offset.y - (ch.Size.y - ch.Bearing.y) * impl->scale;
 
-		float w = ch.Size.x * impl->scale;
-		float h = ch.Size.y * impl->scale;
+		// float w = ch.Size.x * impl->scale;
+		// float h = ch.Size.y * impl->scale;
 
 		// Render glyph texture over quad
 		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
@@ -177,7 +177,7 @@ void Text::render() {
 		// vertices[1] = vec4(xpos,     ypos + h, 0.0, 0.0);
 		// vertices[2] = vec4(xpos + w, ypos,     1.0, 1.0);
 		// vertices[3] = vec4(xpos + w, ypos + h, 1.0, 0.0);
-	
+
 		vertices.push_back(vec2( 50.0f, -50.0f));
 		vertices.push_back(vec2(-500.0f, -500.0f));
 		vertices.push_back(vec2( 500.0f, -500.0f));

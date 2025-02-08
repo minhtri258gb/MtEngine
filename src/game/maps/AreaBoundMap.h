@@ -7,17 +7,18 @@
 namespace mt {
 namespace game {
 
-class AreaBoundMap : public Map
-{
+class AreaBoundMap : public Map {
 
 public:
 
+	// Method
 	AreaBoundMap(std::string);
 	~AreaBoundMap();
+
 	void load();
-	void clear();
 	void update();
 	void render();
+	void clear();
 
 private:
 

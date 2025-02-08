@@ -7,8 +7,7 @@
 namespace mt {
 namespace graphic {
 
-class SkyBox
-{
+class SkyBox {
 public:
 
 	// Variables
@@ -20,8 +19,9 @@ public:
 	~SkyBox();
 
 	// Natives
-	void init(std::string name);
+	void init(std::string textureName);
 	void render();
+	void clear();
 
 private:
 

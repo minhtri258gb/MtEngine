@@ -121,7 +121,7 @@ Shader* CreateDefaultShader(std::string name)
   stage.isLightmap = true;
   stage.blendfunc[0] = GL_DST_COLOR;
   stage.blendfunc[1] = GL_ZERO;
-  q3_shader->stages_.push_back(stage);	
+  q3_shader->stages_.push_back(stage);
 
   Shader* shader = new Shader(*q3_shader);
 

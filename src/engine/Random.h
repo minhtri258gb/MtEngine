@@ -4,8 +4,7 @@
 namespace mt {
 namespace engine {
 
-class Random
-{
+class Random {
 public:
 
   // Static
@@ -20,7 +19,7 @@ public:
 	unsigned int rand(unsigned int n);
 	int range(int, int);
 	float rangeF(float, float);
-	
+
 private:
 
   class RandomImpl;

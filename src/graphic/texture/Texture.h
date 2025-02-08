@@ -4,8 +4,7 @@
 namespace mt {
 namespace graphic {
 
-class Texture
-{
+class Texture {
 
 public:
 
@@ -21,7 +20,6 @@ private:
 
 	// Variables
 	unsigned int gl_textureId;
-
 };
 
 }}

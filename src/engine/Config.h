@@ -4,13 +4,15 @@
 namespace mt {
 namespace engine {
 
-class Config
-{
+class Config {
 
 public:
 
 	// Variable
 	static Config ins;
+
+	// Common
+	bool DEBUG;
 
 	// System
 	std::string resource_dir;
@@ -27,7 +29,11 @@ public:
 	int windowHeight;
 	std::string windowName;
 
-	// Camera
+	// Graphic
+	bool graphic_vsync;
+
+	// Physic
+	float physic_gravity;
 
 	// Forward
 	Config();

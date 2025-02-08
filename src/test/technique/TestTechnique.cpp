@@ -31,7 +31,7 @@ void TestTechnique::remove_element_vector()
 	// lstObj.remove_if(vector.begin(), vector.end(), isEven);
 
 	// // vector<vector<int>::iterator> lstIt;
-	
+
 	// for (vector<int>::iterator it = lstObj.begin(), itEnd = lstObj.end(); it != itEnd; it++)
 	// {
 	// 	if ((*it) % 2 == 0)

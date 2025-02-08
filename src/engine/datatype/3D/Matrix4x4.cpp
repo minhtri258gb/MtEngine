@@ -17,10 +17,11 @@ Matrix4x4::Matrix4x4() {
 	this->indentity();
 }
 
-Matrix4x4::Matrix4x4(	float m00, float m01, float m02, float m03,
-						float m04, float m05, float m06, float m07,
-						float m08, float m09, float m10, float m11,
-						float m12, float m13, float m14, float m15
+Matrix4x4::Matrix4x4(
+	float m00, float m01, float m02, float m03,
+	float m04, float m05, float m06, float m07,
+	float m08, float m09, float m10, float m11,
+	float m12, float m13, float m14, float m15
 ) {
 	this->set(m00, m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15);
 }
@@ -231,12 +232,12 @@ void Matrix4x4::scale(const Vector3& v) {
 	m[1] *= v[0];
 	m[2] *= v[0];
 	m[3] *= v[0];
-	
+
 	m[4] *= v[1];
 	m[5] *= v[1];
 	m[6] *= v[1];
 	m[7] *= v[1];
-	
+
 	m[8] *= v[2];
 	m[9] *= v[2];
 	m[10] *= v[2];
@@ -279,11 +280,11 @@ void Matrix4x4::decompose(Vector3& position, Quaternion& rotation, Vector3& scal
 	Vector3 vCols0(m[0], m[4], m[ 8]);
 	Vector3 vCols1(m[1], m[5], m[ 9]);
 	Vector3 vCols2(m[2], m[6], m[10]);
-	
+
 	scaling.x = vCols0.length();
 	scaling.y = vCols1.length();
 	scaling.z = vCols2.length();
-	
+
 	if (determinant() < 0)
 		scaling = -scaling;
 	if (scaling.x)
@@ -304,7 +305,7 @@ void Matrix4x4::decompose(Vector3& position, Quaternion& rotation, Vector3& scal
 
 void Matrix4x4::decompose(Vector3& position, Quaternion& rotation) const {
 	// const Matrix4x4& _this = *this;
-	
+
 	position.x = m[3];
 	position.y = m[7];
 	position.z = m[11];

@@ -11,7 +11,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef VECTOR3D_H
 #define VECTOR3D_H
@@ -36,7 +36,7 @@ public:
 
 	void Set(float newX, float newY, float newZ)
 	{	x=newX;	y=newY;	z=newZ;	}
-	
+
 	//Accessors kept for compatibility
 	void SetX(float newX) {x = newX;}
 	void SetY(float newY) {y = newY;}
@@ -50,20 +50,20 @@ public:
 	{	x=y=z=0.0f;	}
 	void LoadOne(void)
 	{	x=y=z=1.0f;	}
-	
+
 	//vector algebra
 	VECTOR3D CrossProduct(const VECTOR3D & rhs) const
 	{	return VECTOR3D(y*rhs.z - z*rhs.y, z*rhs.x - x*rhs.z, x*rhs.y - y*rhs.x);	}
 
 	float DotProduct(const VECTOR3D & rhs) const
 	{	return x*rhs.x + y*rhs.y + z*rhs.z;	}
-	
+
 	void Normalize();
 	VECTOR3D GetNormalized() const;
-	
+
 	float GetLength() const
 	{	return (float)sqrt((x*x)+(y*y)+(z*z));	}
-	
+
 	float GetSquaredLength() const
 	{	return (x*x)+(y*y)+(z*z);	}
 
@@ -93,13 +93,13 @@ public:
 	//binary operators
 	VECTOR3D operator+(const VECTOR3D & rhs) const
 	{	return VECTOR3D(x + rhs.x, y + rhs.y, z + rhs.z);	}
-	
+
 	VECTOR3D operator-(const VECTOR3D & rhs) const
 	{	return VECTOR3D(x - rhs.x, y - rhs.y, z - rhs.z);	}
 
 	VECTOR3D operator*(const float rhs) const
 	{	return VECTOR3D(x*rhs, y*rhs, z*rhs);	}
-	
+
 	VECTOR3D operator/(const float rhs) const
 	{	return (rhs==0.0f) ? VECTOR3D(0.0f, 0.0f, 0.0f) : VECTOR3D(x / rhs, y / rhs, z / rhs);	}
 
@@ -134,7 +134,7 @@ public:
 
 	void operator*=(const float rhs)
 	{	x*=rhs;	y*=rhs;	z*=rhs;	}
-	
+
 	void operator/=(const float rhs)
 	{	if (rhs==0.0f)
 			return;

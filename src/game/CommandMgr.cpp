@@ -7,6 +7,7 @@
 
 #include "common.h"
 #include "engine/Config.h"
+#include "engine/Log.h"
 #include "engine/Input.h"
 #include "engine/enumKey.h"
 #include "engine/file/FileCFG.h"
@@ -26,7 +27,7 @@ CommandMgr CommandMgr::ins;
 
 class CommandMgr::CommandMgrImpl {
 public:
-	
+
 	// Variable
 	array<function, MAX_KEY> lstFunc; // Danh sach key - chuc nang
 	bitset<MAX_KEY> keyAction;
@@ -39,57 +40,88 @@ public:
 };
 
 CommandMgr::CommandMgr() {
+
 	// Implement
 	this->impl = new CommandMgrImpl();
 }
 
 CommandMgr::~CommandMgr() {
+
 	// Implement
 	delete this->impl;
 }
 
 void CommandMgr::init() {
-	// Init Convert map
-	impl->initConvertMap();
+	LOG("init");
+	try {
 
-	// Reset all Func
-	for (int i=0; i<MAX_KEY; i++)
-		impl->lstFunc[i] = &Command::cmd_void;
+		// Init Convert map
+		impl->initConvertMap();
 
-	// Load keybind
-	FileCFG fKeyBind(Config::ins.system_path + "keybind.cfg");
-	vector<string> lstKey = fKeyBind.keys();
-	vector<string> lstFunc = fKeyBind.values();
-	for (uint i=0, sz=lstKey.size(); i<sz; i++)
-		this->keyBind(lstKey.at(i), lstFunc.at(i));
-	
-	// Set callback
-	Input::ins.setCallBackKeypress(&CommandMgr::cbk_keypress);
+		// Reset all Func
+		for (int i=0; i<MAX_KEY; i++)
+			impl->lstFunc[i] = &Command::cmd_void;
+
+		// Load keybind
+		FileCFG fKeyBind(Config::ins.system_path + "keybind.cfg");
+		vector<string> lstKey = fKeyBind.keys();
+		vector<string> lstFunc = fKeyBind.values();
+		for (uint i=0, sz=lstKey.size(); i<sz; i++)
+			this->keyBind(lstKey.at(i), lstFunc.at(i));
+
+		// Set callback
+		Input::ins.setCallBackKeypress(&CommandMgr::cbk_keypress);
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 void CommandMgr::update() {
-	for (int i=0; i<MAX_KEY; i++) {
-		if (impl->keyAction.test(i)) {
-			// Off key no loop
-			if (!impl->keyLoop.test(i))
-				impl->keyAction.set(i, false);
+	LOG("update");
+	try {
+		for (int i=0; i<MAX_KEY; i++) {
+			if (impl->keyAction.test(i)) {
 
-			// Run function
-			(*impl->lstFunc.at(i))();
+				// Off key no loop
+				if (!impl->keyLoop.test(i))
+					impl->keyAction.set(i, false);
+
+				// Run function
+				(*impl->lstFunc.at(i))();
+			}
 		}
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
 	}
 }
 
 void CommandMgr::keyBind(string key, string func) {
-	if (impl->convertKey.find(key) == impl->convertKey.end())
-		throw error("KEY_INVAIL", "Invail Key \"" + key + "\"");
+	LOG("keyBind");
+	// LOG("keyBind: key="+key+", func="+func);
+	try {
 
-	int keyid = impl->convertKey.at(key);
-	if (keyid == -1)
-		throw error("KEY_BIND_FAIL", "Key \"" + key + "\" false to bind");
+		// Validate
+		if (impl->convertKey.find(key) == impl->convertKey.end())
+			throw error("KEY_INVAIL", "Invail Key \"" + key + "\"");
 
-	impl->keyLoop.set(keyid, func[0] == '+' ? true : false);
-	impl->lstFunc[keyid] = impl->convertFunc.at(func);
+		int keyid = impl->convertKey.at(key);
+		if (keyid == -1)
+			throw error("KEY_NOT_FOUND", "Key \"" + key + "\" not found");
+
+		if (impl->convertFunc.find(func) == impl->convertFunc.end())
+			throw error("FUNCTION_NOT_FOUND", "Function \"" + func + "\" not found");
+
+		impl->keyLoop.set(keyid, func[0] == '+' ? true : false);
+		impl->lstFunc[keyid] = impl->convertFunc.at(func);
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 void CommandMgr::cbk_keypress(int key, bool state) {
@@ -97,77 +129,85 @@ void CommandMgr::cbk_keypress(int key, bool state) {
 }
 
 void CommandMgr::CommandMgrImpl::initConvertMap() {
-	// KeyMap
-	for (uint i=48; i<=57; i++)
-		convertKey.insert({string(1, char(i)), i}); // 0 - 9
-	for (uint i=65; i<=90; i++)
-		convertKey.insert({string(1, char(i)), i}); // A - Z
-	for (uint i=1; i<=25; i++)
-		convertKey.insert({string("F") + to_string(i), 289 + i}); // F1 - F25
-	for (uint i=0; i<=9; i++)
-		convertKey.insert({string("KP_") + to_string(i), 320 + i}); // KP_0 - KP_9
+	LOG("initConvertMap");
+	try {
 
-	convertKey.insert({"BACKSPACE", 259});
-	convertKey.insert({"CAPS_LOCK", 280});
-	convertKey.insert({"DELETE", 261});
-	convertKey.insert({"DOWN", 264});
-	convertKey.insert({"ESCAPE", 256});
-	convertKey.insert({"ENTER", 257});
-	convertKey.insert({"END", 269});
-	convertKey.insert({"HOME", 269});
-	convertKey.insert({"INSERT", 269});
+		// KeyMap
+		for (uint i=48; i<=57; i++)
+			convertKey.insert({string(1, char(i)), i}); // 0 - 9
+		for (uint i=65; i<=90; i++)
+			convertKey.insert({string(1, char(i)), i}); // A - Z
+		for (uint i=1; i<=25; i++)
+			convertKey.insert({string("F") + to_string(i), 289 + i}); // F1 - F25
+		for (uint i=0; i<=9; i++)
+			convertKey.insert({string("KP_") + to_string(i), 320 + i}); // KP_0 - KP_9
 
-	convertKey.insert({"KP_DECIMAL", 330});
-	convertKey.insert({"KP_DIVIDE", 331});
-	convertKey.insert({"KP_MULTIPLY", 332});
-	convertKey.insert({"KP_SUBTRACT", 333});
-	convertKey.insert({"KP_ADD", 334});
-	convertKey.insert({"KP_ENTER", 335});
-	convertKey.insert({"KP_EQUAL", 336});
+		convertKey.insert({"BACKSPACE", 259});
+		convertKey.insert({"CAPS_LOCK", 280});
+		convertKey.insert({"DELETE", 261});
+		convertKey.insert({"DOWN", 264});
+		convertKey.insert({"ESCAPE", 256});
+		convertKey.insert({"ENTER", 257});
+		convertKey.insert({"END", 269});
+		convertKey.insert({"HOME", 269});
+		convertKey.insert({"INSERT", 269});
 
-	convertKey.insert({"LEFT_SHIFT", 340});
-	convertKey.insert({"LEFT_CONTROL", 341});
-	convertKey.insert({"LEFT_ALT", 342});
-	convertKey.insert({"LEFT_SUPER", 343});
-	convertKey.insert({"LEFT", 263});
+		convertKey.insert({"KP_DECIMAL", 330});
+		convertKey.insert({"KP_DIVIDE", 331});
+		convertKey.insert({"KP_MULTIPLY", 332});
+		convertKey.insert({"KP_SUBTRACT", 333});
+		convertKey.insert({"KP_ADD", 334});
+		convertKey.insert({"KP_ENTER", 335});
+		convertKey.insert({"KP_EQUAL", 336});
 
-	convertKey.insert({"MOUSE1", 351});
-	convertKey.insert({"MOUSE2", 352});
-	convertKey.insert({"MOUSE3", 353});
-	convertKey.insert({"MWHEELDOWN", 349});
-	convertKey.insert({"MWHEELUP", 350});
-	convertKey.insert({"MENU", 348});
-	convertKey.insert({"NUM_LOCK", 282});
-	convertKey.insert({"PRINT_SCREEN", 283});
-	convertKey.insert({"PAUSE", 284});
-	convertKey.insert({"PAGE_UP", 266});
-	convertKey.insert({"PAGE_DOWN", 267});
+		convertKey.insert({"LEFT_SHIFT", 340});
+		convertKey.insert({"LEFT_CONTROL", 341});
+		convertKey.insert({"LEFT_ALT", 342});
+		convertKey.insert({"LEFT_SUPER", 343});
+		convertKey.insert({"LEFT", 263});
 
-	convertKey.insert({"RIGHT_SHIFT", 344});
-	convertKey.insert({"RIGHT_SUPER", 347});
-	convertKey.insert({"RIGHT_CONTROL", 345});
-	convertKey.insert({"RIGHT_ALT", 346});
-	convertKey.insert({"RIGHT", 262});
+		convertKey.insert({"MOUSE1", 351});
+		convertKey.insert({"MOUSE2", 352});
+		convertKey.insert({"MOUSE3", 353});
+		convertKey.insert({"MWHEELDOWN", 349});
+		convertKey.insert({"MWHEELUP", 350});
+		convertKey.insert({"MENU", 348});
+		convertKey.insert({"NUM_LOCK", 282});
+		convertKey.insert({"PRINT_SCREEN", 283});
+		convertKey.insert({"PAUSE", 284});
+		convertKey.insert({"PAGE_UP", 266});
+		convertKey.insert({"PAGE_DOWN", 267});
 
-	convertKey.insert({"SPACE", 32});
-	convertKey.insert({"SCROLL_LOCK", 281});
-	convertKey.insert({"TAB", 258});
-	convertKey.insert({"UP", 265});
+		convertKey.insert({"RIGHT_SHIFT", 344});
+		convertKey.insert({"RIGHT_SUPER", 347});
+		convertKey.insert({"RIGHT_CONTROL", 345});
+		convertKey.insert({"RIGHT_ALT", 346});
+		convertKey.insert({"RIGHT", 262});
 
-	convertKey.insert({string(1, '\''), 39});
-	convertKey.insert({string(1, ',' ), 44});
-	convertKey.insert({string(1, '-' ), 45});
-	convertKey.insert({string(1, '.' ), 46});
-	convertKey.insert({string(1, '/' ), 47});
-	convertKey.insert({string(1, ';' ), 59});
-	convertKey.insert({string(1, '=' ), 61});
-	convertKey.insert({string(1, '[' ), 91});
-	convertKey.insert({string(1, '\\'), 92});
-	convertKey.insert({string(1, ']' ), 93});
-	convertKey.insert({string(1, '`' ), 96});
+		convertKey.insert({"SPACE", 32});
+		convertKey.insert({"SCROLL_LOCK", 281});
+		convertKey.insert({"TAB", 258});
+		convertKey.insert({"UP", 265});
 
-	// FuncMap
-	Command::setFuncMap(&convertFunc);
+		convertKey.insert({string(1, '\''), 39});
+		convertKey.insert({string(1, ',' ), 44});
+		convertKey.insert({string(1, '-' ), 45});
+		convertKey.insert({string(1, '.' ), 46});
+		convertKey.insert({string(1, '/' ), 47});
+		convertKey.insert({string(1, ';' ), 59});
+		convertKey.insert({string(1, '=' ), 61});
+		convertKey.insert({string(1, '[' ), 91});
+		convertKey.insert({string(1, '\\'), 92});
+		convertKey.insert({string(1, ']' ), 93});
+		convertKey.insert({string(1, '`' ), 96});
+
+		// FuncMap
+		Command::setFuncMap(&convertFunc);
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 // int Command::CommandImpl::convertKey(string key)

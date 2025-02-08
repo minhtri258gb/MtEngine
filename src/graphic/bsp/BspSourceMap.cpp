@@ -24,11 +24,10 @@ using namespace mt;
 using namespace mt::graphic;
 
 
-class bsp
-{
+class bsp {
 public:
-	bsp (const char* fp)
-	{
+	bsp (const char* fp) {
+
 		std::cout << "Opening file...";
 		map.open (fp, std::ios::binary);
 		std::cout << "done.\n";
@@ -47,42 +46,41 @@ public:
 			std::cout << "BSP is not Dota 2 BSP.\n";
 
 		std::cout << "Verifying lumps...\n";
-		for (int x = 0; x < 64; x++)
-		{
+		for (int x = 0; x < 64; x++) {
 			if (header.lumps[x].length == 0)
 				std::cout << "Lump " << x << " is not included in this file.\n";
 		}
 
 		std::cout << "Reading node lump...";
-		readLump (map, nodes, LUMP_NODES);
+		readLump(map, nodes, LUMP_NODES);
 		std::cout << "done.\n";
 
 		std::cout << "Reading leaf lump...";
-		readLump (map, leafs, LUMP_LEAFS);
+		readLump(map, leafs, LUMP_LEAFS);
 		std::cout << "done.\n";
 
 		std::cout << "Reading face lump...";
-		readLump (map, faces, LUMP_FACES);
+		readLump(map, faces, LUMP_FACES);
 		std::cout << "done.\n";
 
 		std::cout << "Reading edge lump...";
-		readLump (map, edges, LUMP_EDGES);
+		readLump(map, edges, LUMP_EDGES);
 		std::cout << "done.\n";
 
 		std::cout << "Reading surfedge lump...";
-		readLump (map, SurfEdges, LUMP_SURFEDGES);
+		readLump(map, SurfEdges, LUMP_SURFEDGES);
 		std::cout << "done.\n";
 
 		std::cout << "Creating leafface lump...";\
-		readLump (map, leafFaces, LUMP_LEAFFACES);
+		readLump(map, leafFaces, LUMP_LEAFFACES);
 		std::cout << "done.\n";
 
 		std::cout << "Reading vertex lump...";
-		readLump (map, vertices, LUMP_VERTICES);
+		readLump(map, vertices, LUMP_VERTICES);
 		std::cout << "done.\n";
 
 		std::cout << "Reading plane lump...";
-		readLump (map, planes, LUMP_PLANES);
+		readLump(map, planes, LUMP_PLANES);
 		std::cout << "done.\n";
 
 		map.close();
@@ -90,14 +88,14 @@ public:
 		mapNormals.resize (vertices.size(), Vertex(0,0,0));
 	}
 
-	void LoadMapDetails(glm::vec3 pos)
-	{
+	void LoadMapDetails(glm::vec3 pos) {
+
 		int curLeaf = WalkBSPTree (pos, 0);
 		std::cout << "Current leaf: " << curLeaf;
 
 		ComputeBSP (0, curLeaf, pos);
 	}
-	
+
 	enum lumpTypes {LUMP_ENTITIES = 0, LUMP_PLANES, LUMP_TEXDATA, LUMP_VERTICES, LUMP_VISIBILITY, LUMP_NODES, LUMP_TEXINFO, LUMP_FACES, LUMP_LIGHTING, LUMP_OCCLUSION, LUMP_LEAFS, LUMP_FACEIDS, LUMP_EDGES, LUMP_SURFEDGES, LUMP_MODELS, LUMP_WORLDLIGHTS,
 				LUMP_LEAFFACES, LUMP_LEAFBRUSHES, LUMP_BRUSHES, LUMP_BRUSHSIDES, LUMP_AREAS, LUMP_AREAPORTALS, LUMP_PORTALS, LUMP_UNUSED0, LUMP_PROPCOLLISION, LUMP_CLUSTERS, LUMP_UNUSED1, LUMP_PROPHULLS, LUMP_PORTALVERTS, LUMP_UNUSED2,
 				LUMP_PROPTRIS, LUMP_DISPINFO, LUMP_ORIGINALFACES, LUMP_PHYSDISP, LUMP_PHYSCOLLIDE, LUMP_VERTNORMALS, LUMP_VERTNORMALINDICES, LUMP_DISP_LIGHTMAP_ALPHAS, LUMP_DISP_VERTS, LUMP_DISP_LIGHTMAP_SAMPLE_POSITIONS,
@@ -111,8 +109,7 @@ public:
 	///////////////////////////
 
 	// Contains the info of every lump (offset from beginning of file, length of lump, version (usually 0), and identification (usually 0)
-	struct lumpInfo
-	{
+	struct lumpInfo {
 		int offset;
 		int length;
 		int version;
@@ -120,8 +117,7 @@ public:
 	};
 
 	// Main header struct
-	struct Header
-	{
+	struct Header {
 		int magic;
 		int version;
 		lumpInfo lumps[HEADER_LUMPS];
@@ -129,18 +125,15 @@ public:
 	};
 
 	// Vertex struct
-	struct Vertex
-	{
+	struct Vertex {
 		float x, y, z;
 
 		// cleaner usage of verts
-		Vertex pos()
-		{
+		Vertex pos() {
 			return Vertex (x, y, z);
 		};
 
-		Vertex (float a, float b, float c)
-		{
+		Vertex (float a, float b, float c) {
 			x = a;
 			y = b;
 			z = c;
@@ -150,16 +143,14 @@ public:
 	};
 	std::vector <Vertex> vertices; // map verts
 
-	struct Plane
-	{
+	struct Plane {
 		Vertex normal;
 		float distance;
 		int type;
 	};
 	std::vector <Vertex> mapNormals; // map normals
 
-	struct Node
-	{
+	struct Node {
 		int planeIndex;
 		int children[2];
 		short mins[3];
@@ -171,8 +162,7 @@ public:
 	};
 	std::vector <Node> nodes;
 
-	struct Leaf
-	{
+	struct Leaf {
 		int contents;
 		short cluster;
 		short area:9; // use only 9 bits
@@ -189,8 +179,7 @@ public:
 	std::vector <Leaf> leafs;
 	std::vector <unsigned short> leafFaces;
 
-	struct Face
-	{
+	struct Face {
 		unsigned short planeIndex;
 		unsigned __int8 side; // visual c++ stuffs, change it later
 		unsigned __int8 onNode;
@@ -210,10 +199,8 @@ public:
 		unsigned int smoothingGroups;
 	};
 	std::vector <Face> faces;
-	
 
-	struct Edge
-	{
+	struct Edge {
 		unsigned short vert[2];
 	};
 	std::vector <Edge> edges;
@@ -227,20 +214,17 @@ public:
 private:
 	std::ifstream map;
 	Header header;
-	
+
 	//http://sourceforge.net/p/hlbsp/code/HEAD/tree/hlbsp.cpp#l897
 	// a lot of the code right here is from ^, make own code once I get everything solid
 	int WalkBSPTree (glm::vec3 pos, int node)
 	{
-		for (int x = 0; x < 2; x++)
-		{
-			if (nodes[node].children[x] >= 0) // node
-			{
+		for (int x = 0; x < 2; x++) {
+			if (nodes[node].children[x] >= 0) { // node
 				if (PointIsInside (pos, nodes[nodes[node].children[x]].mins, nodes[nodes[node].children[x]].maxs))
 					return WalkBSPTree (pos, nodes[node].children[x]);
 			}
-			else if (~nodes[node].children[x] != 0) // NOT x = -x - 1, so this an index for the leaves
-			{
+			else if (~nodes[node].children[x] != 0) { // NOT x = -x - 1, so this an index for the leaves
 				if (PointIsInside (pos, leafs[~(nodes[node].children[x])].mins, leafs[~(nodes[node].children[x])].maxs))
 					return ~nodes[node].children[x];
 			}
@@ -249,8 +233,7 @@ private:
 		return -1;
 	}
 
-	bool PointIsInside (glm::vec3 pos, short min[3], short max[3])
-	{
+	bool PointIsInside (glm::vec3 pos, short min[3], short max[3]) {
 		if ((min[0] <= pos.x && pos.x <= max[0] &&
 					min[1] <= pos.y && pos.y <= max[1] &&
 					min[2] <= pos.z && pos.z <= max[2]) ||
@@ -262,10 +245,8 @@ private:
 			return false;
 	}
 
-	void ComputeBSP (int node, int leaf, glm::vec3 pos) // my mind i dont even
-	{
-		if (node < 0)
-		{
+	void ComputeBSP (int node, int leaf, glm::vec3 pos) { // my mind i dont even
+		if (node < 0) {
 			if (node == -1)
 				return;
 
@@ -284,30 +265,25 @@ private:
 		else
 			location = dotProduct (planes[nodes[node].planeIndex].normal, pos) - planes[nodes[node].planeIndex].distance;
 
-		if (location > 0)
-		{
+		if (location > 0) {
 			ComputeBSP (nodes[node].children[1], leaf, pos);
 			ComputeBSP (nodes[node].children[0], leaf, pos);
 		}
-		else
-		{
+		else {
 			ComputeBSP (nodes[node].children[0], leaf, pos);
 			ComputeBSP (nodes[node].children[1], leaf, pos);
 		}
 	}
 
-	void RenderLeaf (int leaf) // loadleaf()
-	{
+	void RenderLeaf (int leaf) { // loadleaf()
 		for (int x = 0; x < leafs[leaf].numLeafFaces; x++)
 			RenderFace (leafFaces[leafs[leaf].firstLeafFace + x]);
 	}
 
-	void RenderFace (int face) // loadface()
-	{
+	void RenderFace (int face) { // loadface()
 		int hub, firstPoint, newPoint; // key indices for each face
 		// 8 and 9, 20 and 21, 12, and 13, 24 and 25, 38 and 39,
-		for (int x = 0; x < faces[face].numEdges; x++) // loop through every single edge in a face, this will end up making a triangle fan
-		{
+		for (int x = 0; x < faces[face].numEdges; x++) { // loop through every single edge in a face, this will end up making a triangle fan
 			int EdgeIndex = SurfEdges[faces[face].firstEdge + x]; // Edge index
 			EdgeIndex = std::abs (EdgeIndex); // don't want to be accessing using negatives
 
@@ -331,24 +307,21 @@ private:
 		indices.push_back(UINT_MAX); // once we are done rendering our plane we put in our primitive restart index to start a new plane
 	}
 
-	float dotProduct (Vertex a, glm::vec3 b)
-	{
+	float dotProduct (Vertex a, glm::vec3 b) {
 		return  (a.x * b.x + a.y * b.y + a.z * b.z);
 	}
 
 	bool loadHeader();
-	
-	template <typename T> void readLump (std::ifstream& map, std::vector<T>& elements, unsigned int index)
-	{
+
+	template <typename T> void readLump (std::ifstream& map, std::vector<T>& elements, unsigned int index) {
 		elements.clear();
-		
+
 		if (header.lumps[index].length == 0) // lump doesn't exist
 			return;
 
 		map.seekg (header.lumps[index].offset);
 
-		for (int x = 0; x < header.lumps[index].length / sizeof(T); x++)
-		{
+		for (int x = 0; x < header.lumps[index].length / sizeof(T); x++) {
 			T element;
 			map.read ((char*)&element, sizeof(T));
 			elements.push_back (element);
@@ -363,21 +336,18 @@ private:
 ShaderProgram BspSourceMap::shader;
 
 
-class BspSourceMap::BspSourceMapImpl
-{
+class BspSourceMap::BspSourceMapImpl {
 public:
 	bsp* map;
 	VertexArrayObject VAO;
 };
 
-BspSourceMap::BspSourceMap()
-{
+BspSourceMap::BspSourceMap() {
 	// Implement
 	impl = new BspSourceMapImpl();
 }
 
-BspSourceMap::~BspSourceMap()
-{
+BspSourceMap::~BspSourceMap() {
 	// Component
 	delete impl->map;
 
@@ -385,8 +355,7 @@ BspSourceMap::~BspSourceMap()
 	delete impl;
 }
 
-void BspSourceMap::init(string name)
-{
+void BspSourceMap::init(string name) {
 	// Load
 	// impl->map = new bsp("./res/bsp/de_dust2.bsp");
 	// impl->map = new bsp("./res/bsp/css_cs_deadhouse_1.0/cs_deadhouse.bsp");
@@ -395,24 +364,21 @@ void BspSourceMap::init(string name)
 	vec3 camPos = Graphic::ins.camera.position;
 	glm::vec3 camPos2(camPos.x, camPos.y, camPos.z);
 	impl->map->LoadMapDetails(camPos2);
-	
+
 	vector<vec3> vertices;
-	for (int i=0; i<impl->map->vertices.size(); i++)
-	{
+	for (long long unsigned int i=0; i<impl->map->vertices.size(); i++) {
 		bsp::Vertex v = impl->map->vertices[i];
 		vertices.push_back(vec3(v.x, v.y, v.z));
 	}
 
 	vector<vec3> normals;
-	for (int i=0; i<impl->map->mapNormals.size(); i++)
-	{
+	for (long long unsigned int i=0; i<impl->map->mapNormals.size(); i++) {
 		bsp::Vertex n = impl->map->mapNormals[i];
 		normals.push_back(vec3(n.x, n.y, n.z));
 	}
 
 	vector<unsigned int> indices;
-	for (int i=0; i<impl->map->indices.size(); i++)
-	{
+	for (long long unsigned int i=0; i<impl->map->indices.size(); i++) {
 		GLuint index = impl->map->indices[i];
 		indices.push_back((unsigned int)index);
 	}
@@ -429,12 +395,10 @@ void BspSourceMap::init(string name)
 	glPrimitiveRestartIndex (UINT_MAX);
 }
 
-void BspSourceMap::update()
-{
+void BspSourceMap::update() {
 }
 
-void BspSourceMap::render()
-{
+void BspSourceMap::render() {
 
 	this->shader.use();
 
@@ -443,7 +407,7 @@ void BspSourceMap::render()
 	modelMat.rotate(quat(Math::toRadian(-90.0), vec3 (1,0,0)));
 	modelMat.scale(0.1f);
 	this->shader.setMat4(2, modelMat);
-	
+
 	// Graphic::ins.wireframe(true);
 	Graphic::ins.cullFaceToogle(false);
 

@@ -4,8 +4,7 @@
 namespace mt {
 namespace graphic {
 
-class TerrainQuad
-{
+class TerrainQuad {
 public:
 
 	// Variables
@@ -23,7 +22,7 @@ public:
 
 	void generateTreeEx(unsigned char level, TerrainQuad* parent, vec2 position);
 	void generateNeighborEx(TerrainQuad* n0, TerrainQuad* n1, TerrainQuad* n2, TerrainQuad* n3);
-	
+
 	void update();
 	void getData(unsigned int& count, std::vector<vec2>& positions, std::vector<int>& levels, std::vector<int>& flags);
 

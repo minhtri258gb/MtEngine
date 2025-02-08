@@ -82,8 +82,7 @@ struct Animation {
 	unordered_map<string, BoneTransformTrack> boneTransforms = {};
 };
 
-class AnimationModel::AnimationModelImpl
-{
+class AnimationModel::AnimationModelImpl {
 public:
 	VertexArrayObject VAO;
 	Texture texture;
@@ -92,14 +91,14 @@ public:
 	Animation animation;
 	Bone skeleton;
 	mat4 globalInverseTransform;
-	
+
 	mat4 identity;
 	vector<mat4> currentPose = {};
 	// vector<mat4> currentPose = {};
 
 	AnimationModelImpl() {
 	}
-	
+
 	// a recursive function to read all bones and form skeleton
 	bool readSkeleton(Bone& boneOutput, aiNode* node, unordered_map<string, pair<int, mat4>>& boneInfoTable) {
 
@@ -108,7 +107,7 @@ public:
 			boneOutput.id = boneInfoTable[boneOutput.name].first;
 			boneOutput.offset = boneInfoTable[boneOutput.name].second;
 
-			for (int i = 0; i < node->mNumChildren; i++) {
+			for (unsigned int i = 0; i < node->mNumChildren; i++) {
 				Bone child;
 				readSkeleton(child, node->mChildren[i], boneInfoTable);
 				boneOutput.children.push_back(child);
@@ -116,7 +115,7 @@ public:
 			return true;
 		}
 		else { // find bones in children
-			for (int i = 0; i < node->mNumChildren; i++) {
+			for (unsigned int i = 0; i < node->mNumChildren; i++) {
 				if (readSkeleton(boneOutput, node->mChildren[i], boneInfoTable)) {
 					return true;
 				}
@@ -127,7 +126,7 @@ public:
 	}
 
 	void loadModel(const aiScene* scene, aiMesh* mesh, vector<Vertex>& verticesOutput, vector<uint>& indicesOutput, Bone& skeletonOutput, uint &nBoneCount) {
-		
+
 		verticesOutput = {};
 		indicesOutput = {};
 		//load position, normal, uv
@@ -169,7 +168,7 @@ public:
 			boneInfo[bone->mName.C_Str()] = { i, m };
 
 			//loop through each vertex that have that bone
-			for (int j = 0; j < bone->mNumWeights; j++) {
+			for (unsigned int j = 0; j < bone->mNumWeights; j++) {
 				uint id = bone->mWeights[j].mVertexId;
 				float weight = bone->mWeights[j].mWeight;
 				boneCounts[id]++;
@@ -199,7 +198,7 @@ public:
 		}
 
 		//normalize weights to make all weights sum 1
-		for (int i = 0; i < verticesOutput.size(); i++) {
+		for (long long unsigned int i = 0; i < verticesOutput.size(); i++) {
 			vec4 & boneWeights = verticesOutput[i].boneWeights;
 			float totalWeight = boneWeights.x + boneWeights.y + boneWeights.z + boneWeights.w;
 			if (totalWeight > 0.0f) {
@@ -213,7 +212,7 @@ public:
 		}
 
 		//load indices
-		for (int i = 0; i < mesh->mNumFaces; i++) {
+		for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
 			aiFace& face = mesh->mFaces[i];
 			for (unsigned int j = 0; j < face.mNumIndices; j++)
 				indicesOutput.push_back(face.mIndices[j]);
@@ -238,22 +237,20 @@ public:
 
 		//load positions rotations and scales for each bone
 		// each channel represents each bone
-		for (int i = 0; i < anim->mNumChannels; i++) {
+		for (unsigned int i = 0; i < anim->mNumChannels; i++) {
 			aiNodeAnim* channel = anim->mChannels[i];
 			BoneTransformTrack track;
-			for (int j = 0; j < channel->mNumPositionKeys; j++) {
+			for (unsigned int j = 0; j < channel->mNumPositionKeys; j++) {
 				track.positionTimestamps.push_back(channel->mPositionKeys[j].mTime);
 				track.positions.push_back(assimpToMtVec3(channel->mPositionKeys[j].mValue));
 			}
-			for (int j = 0; j < channel->mNumRotationKeys; j++) {
+			for (unsigned int j = 0; j < channel->mNumRotationKeys; j++) {
 				track.rotationTimestamps.push_back(channel->mRotationKeys[j].mTime);
 				track.rotations.push_back(assimpToMtQuat(channel->mRotationKeys[j].mValue));
-
 			}
-			for (int j = 0; j < channel->mNumScalingKeys; j++) {
+			for (unsigned int j = 0; j < channel->mNumScalingKeys; j++) {
 				track.scaleTimestamps.push_back(channel->mScalingKeys[j].mTime);
 				track.scales.push_back(assimpToMtVec3(channel->mScalingKeys[j].mValue));
-		
 			}
 			animation.boneTransforms[channel->mNodeName.C_Str()] = track;
 		}
@@ -279,7 +276,7 @@ public:
 		vec3 position1 = btt.positions[fp.first - 1];
 		vec3 position2 = btt.positions[fp.first];
 		vec3 position = position1.mix(position2, fp.second);
-		
+
 		//calculate interpolated rotation
 		fp = getTimeFraction(btt.rotationTimestamps, dt);
 		quat rotation1 = btt.rotations[fp.first - 1];
@@ -330,7 +327,7 @@ AnimationModel::AnimationModel()
 	//as the name suggests just inverse the global transform
 	this->impl->globalInverseTransform = assimpToMtMatrix(scene->mRootNode->mTransformation);
 	this->impl->globalInverseTransform.inverse();
-	
+
 	vector<Vertex> vertices = {};
 	vector<uint> indices = {};
 	this->impl->loadModel(scene, mesh, vertices, indices, this->impl->skeleton, this->impl->boneCount);
@@ -398,7 +395,7 @@ void AnimationModel::render()
 	float elapsedTime = (float)glfwGetTime();
 	this->impl->getPose(this->impl->skeleton, elapsedTime, this->impl->currentPose, this->impl->identity);
 	this->shader.setListMat4(3, this->impl->currentPose);
-	
+
 	// draw
 	this->impl->texture.bind();
 

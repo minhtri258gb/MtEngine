@@ -8,7 +8,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef VECTOR2D_H
 #define VECTOR2D_H
@@ -33,7 +33,7 @@ public:
 
 	void Set(float newX, float newY)
 	{	x=newX;	y=newY;	}
-	
+
 	//Accessors kept for compatibility
 	void SetX(float newX) {x = newX;}
 	void SetY(float newY) {y = newY;}
@@ -43,13 +43,13 @@ public:
 
 	void LoadZero(void);
 	void LoadOne(void);					//fill with (1, 1)
-	
+
 	void Normalize();
 	VECTOR2D GetNormalized() const;
-	
+
 	float GetLength() const
 	{	return (float)sqrt((x*x)+(y*y));	}
-	
+
 	float GetSquaredLength() const
 	{	return (x*x)+(y*y);	}
 
@@ -70,7 +70,7 @@ public:
 
 	VECTOR2D operator*(const float rhs) const
 	{	return VECTOR2D(x*rhs, y*rhs);	}
-	
+
 	VECTOR2D operator/(const float rhs) const
 	{	return (rhs==0) ? VECTOR2D(0.0f, 0.0f) : VECTOR2D(x / rhs, y / rhs);	}
 

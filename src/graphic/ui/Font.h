@@ -6,8 +6,7 @@
 namespace mt {
 namespace graphic {
 
-class Font
-{
+class Font {
 public:
 
 	// Variables
@@ -18,7 +17,7 @@ public:
 	// Forwards
 	Font();
 	~Font();
-	
+
 	void init();
 	void render();
 

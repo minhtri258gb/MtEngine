@@ -5,20 +5,17 @@
 
 using namespace mt::game;
 
-Entity::Entity()
-{
+
+Entity::Entity() {
 }
 
-Entity::~Entity()
-{
+Entity::~Entity() {
 }
 
-void Entity::update()
-{
+void Entity::update() {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
 }
 
-void Entity::render()
-{
+void Entity::render() {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
 }

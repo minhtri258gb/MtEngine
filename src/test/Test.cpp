@@ -6,6 +6,7 @@
 
 #include "common.h"
 
+#include "engine/Log.h"
 #include "engine/exception/LoadException.h"
 
 #include "Test.h"
@@ -24,25 +25,23 @@ using namespace mt;
 using namespace mt::engine;
 using namespace mt::test;
 
-void Test::run()
-{
+void Test::run() {
+
 	// ===============================================================================================
-	try
-	{
+	try {
+		LOG("Chay lan 1");
 		// TestMath test;
-		TestString test;
-		test.run();
+		// TestString test;
+		// test.run();
+		LOG("Chay lan 2");
 	}
-	catch (Exception e)
-	{
+	catch (Exception e) {
 		cerr << "[ERROR]: " << e.getMessage() << endl;
 	}
-	catch (string e)
-	{
+	catch (string e) {
 		cerr << "[ERROR]: " << e << endl;
 	}
-	catch (std::exception e)
-	{
+	catch (std::exception e) {
 		cerr << "[ERROR]: " << e.what() << '\n';
 	}
 	// ==============================================================================================
@@ -64,19 +63,19 @@ void Test::run()
 
 	// glm::mat4 b(32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17);
 	// mat4 d = engine::DevUtils::glm2mt(b);
-	
+
 	// cout << d[ 0] << '\t' << d[ 1] << '\t' << d[ 2] << '\t' << d[ 3] << '\t' << endl;
 	// cout << d[ 4] << '\t' << d[ 5] << '\t' << d[ 6] << '\t' << d[ 7] << '\t' << endl;
 	// cout << d[ 8] << '\t' << d[ 9] << '\t' << d[10] << '\t' << d[11] << '\t' << endl;
 	// cout << d[12] << '\t' << d[13] << '\t' << d[14] << '\t' << d[15] << '\t' << endl;
 	// cout << "===============\n";
-	
+
 	// cout << b[0][0] << '\t' << b[0][1] << '\t' << b[0][2] << '\t' << b[0][3] << '\t' << endl;
 	// cout << b[1][0] << '\t' << b[1][1] << '\t' << b[1][2] << '\t' << b[1][3] << '\t' << endl;
 	// cout << b[2][0] << '\t' << b[2][1] << '\t' << b[2][2] << '\t' << b[2][3] << '\t' << endl;
 	// cout << b[3][0] << '\t' << b[3][1] << '\t' << b[3][2] << '\t' << b[3][3] << '\t' << endl;
 	// cout << "===============\n";
-	
+
 	// ############# DOT va CROSS: SUCCESS
 	// vec3 a1(1,2,3);
 	// vec3 b1(7,8,9);
@@ -155,7 +154,7 @@ void Test::run()
 	// cout << mb[ 8] << '\t' << mb[ 9] << '\t' << mb[10] << '\t' << mb[11] << '\t' << endl;
 	// cout << mb[12] << '\t' << mb[13] << '\t' << mb[14] << '\t' << mb[15] << '\t' << endl;
 	// cout << "===============\n";
-	
+
 	// glm::mat4 a2(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
 	// glm::mat4 b2(32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17);
 	// glm::mat4 ma = a2 * b2;
@@ -165,12 +164,12 @@ void Test::run()
 	// cout << ma[ 8] << '\t' << ma[ 9] << '\t' << ma[10] << '\t' << ma[11] << '\t' << endl;
 	// cout << ma[12] << '\t' << ma[13] << '\t' << ma[14] << '\t' << ma[15] << '\t' << endl;
 	// cout << "===============\n";
-	
+
 	// nhan ma tran
 	// mt::mat4 a(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
 	// mt::mat4 b(32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17);
 	// mt::mat4 mb = a * b;
-	
+
 	// float dd[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
 	// float ee[16] = {32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17};
 	// mt2::mat4 d(dd);
@@ -183,12 +182,12 @@ void Test::run()
 	// cout << mb[ 8] << '\t' << mb[ 9] << '\t' << mb[10] << '\t' << mb[11] << '\t' << endl;
 	// cout << mb[12] << '\t' << mb[13] << '\t' << mb[14] << '\t' << mb[15] << '\t' << endl;
 	// cout << "===============\n";
-	
+
 	// cout << ma[ 0] << '\t' << ma[ 1] << '\t' << ma[ 2] << '\t' << ma[ 3] << '\t' << endl;
 	// cout << ma[ 4] << '\t' << ma[ 5] << '\t' << ma[ 6] << '\t' << ma[ 7] << '\t' << endl;
 	// cout << ma[ 8] << '\t' << ma[ 9] << '\t' << ma[10] << '\t' << ma[11] << '\t' << endl;
 	// cout << ma[12] << '\t' << ma[13] << '\t' << ma[14] << '\t' << ma[15] << '\t' << endl;
-	
+
 	// ===============================================================================================
 
 	// TestJson test; // faild hien loi nhung build duoc

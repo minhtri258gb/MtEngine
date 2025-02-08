@@ -10,8 +10,8 @@ using namespace mt::engine;
 
 Config Config::ins;
 
-Config::Config()
-{
+Config::Config() {
+
 	// File path
 	string root = "./res/";
 	this->resource_dir = root;
@@ -26,17 +26,26 @@ Config::Config()
 	// Load setting.ini
 	FileCFG setting(this->system_path + "setting.cfg");
 
+	// Common
+	setting.select("common");
+	this->DEBUG = setting.getBool("debug");
+
 	// Window
 	setting.select("window");
 	this->windowWidth = setting.getInt("width");
 	this->windowHeight = setting.getInt("height");
 	this->windowName = "Master Engine";
 
-	// Camera
-	
+	// Graphic
+	setting.select("graphic");
+	this->graphic_vsync = setting.getBool("vsync");
+
+	// Physic
+	setting.select("physic");
+	this->physic_gravity = setting.getFloat("gravity");
+
 	// #ADD
 }
 
-Config::~Config()
-{
+Config::~Config() {
 }

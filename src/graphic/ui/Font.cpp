@@ -13,8 +13,7 @@ using namespace std;
 using namespace mt;
 using namespace mt::graphic;
 
-class Font::FontImpl
-{
+class Font::FontImpl {
 public:
 
 	// Datatype
@@ -31,38 +30,34 @@ public:
 
 ShaderProgram Font::shader;
 
-Font::Font()
-{
+Font::Font() {
 	// Implement
 	impl = new FontImpl;
 }
 
-Font::~Font()
-{
+Font::~Font() {
 	// Implement
 	delete impl;
 }
 
-void Font::init()
-{
+void Font::init() {
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
-		throw error("Could not init FreeType Library");
-	
+		throw error("FREETYPE_INIT_FAIL", "Could not init FreeType Library");
+
 	FT_Face face;
 	if (FT_New_Face(ft, "./res/fonts/OCRAEXT.ttf", 0, &face))
-		throw error("Failed to load font");
-	
+		throw error("FONT_LOAD_FAIL", "Failed to load font");
+
 	FT_Set_Pixel_Sizes(face, 0, 48);
 
 	// Load per char
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
 
-	for (unsigned char c=0; c<128; c++)
-	{
+	for (unsigned char c=0; c<128; c++) {
 		// load character glyph
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-			throw error("Failed to load Glyph");
+			throw error("GLYPH_LOAD_FAIL", "Failed to load Glyph");
 
 		// generate texture
 		unsigned int texture;
@@ -83,27 +78,8 @@ void Font::init()
 		};
 		impl->Characters.insert(pair<char, FontImpl::Character>(c, character));
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
-void Font::render()
-{
-	
+void Font::render() {
+
 }

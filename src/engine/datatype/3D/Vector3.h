@@ -7,8 +7,7 @@ namespace mt {
 
 class Quaternion;
 
-class Vector3 : public Vector2
-{
+class Vector3 : public Vector2 {
 public:
 
 	// Variables
@@ -29,6 +28,7 @@ public:
 	void set(const Vector3 &v);
 	bool equal(const Vector3& v, double epsilon = 1e-6) const;
 	Vector3 mix(const Vector3& v, float factor);
+	bool isZero();
 
 	// Operator
 	Vector3 operator + (const Vector3&) const;
@@ -39,12 +39,12 @@ public:
 	Vector3 operator ^ (const Vector3&) const; // cross product
 	const Vector3& operator += (const Vector3& v);
 	const Vector3& operator -= (const Vector3& v);
-    const Vector3& operator *= (float f);
-    const Vector3& operator /= (float f);
+	const Vector3& operator *= (float f);
+	const Vector3& operator /= (float f);
 	bool operator == (const Vector3&) const;
 	bool operator != (const Vector3&) const;
-    float operator [] (unsigned int index) const;
-    float& operator [] (unsigned int index);
+	float operator [] (unsigned int index) const;
+	float& operator [] (unsigned int index);
 	Vector3& operator = (const Vector3 &v);
 	Vector3 operator - ();
 

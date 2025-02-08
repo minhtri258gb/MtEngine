@@ -26,46 +26,40 @@ using namespace std;
 using namespace mt::test;
 
 
-void show(mt::mat3 m)
-{
+void show(mt::mat3 m) {
 	cout << "mtMat3: " << endl;
 	cout << "\t" << m[0] << " " << m[1] << " " << m[2] << endl;
 	cout << "\t" << m[3] << " " << m[4] << " " << m[5] << endl;
 	cout << "\t" << m[6] << " " << m[7] << " " << m[8] << endl;
 }
-void show(mt::mat4 m)
-{
+void show(mt::mat4 m) {
 	cout << "mtMat4: " << endl;
 	cout << "\t" << m[ 0] << " " << m[ 1] << " " << m[ 2] << " " << m[ 3] << endl;
 	cout << "\t" << m[ 4] << " " << m[ 5] << " " << m[ 6] << " " << m[ 7] << endl;
 	cout << "\t" << m[ 8] << " " << m[ 9] << " " << m[10] << " " << m[11] << endl;
 	cout << "\t" << m[12] << " " << m[13] << " " << m[14] << " " << m[15] << endl;
 }
-void show(glm::mat3 m)
-{
+void show(glm::mat3 m) {
 	cout << "glMat3: " << endl;
 	cout << "\t" << m[0][0] << " " << m[0][1] << " " << m[0][2] << endl;
 	cout << "\t" << m[1][0] << " " << m[1][1] << " " << m[1][2] << endl;
 	cout << "\t" << m[2][0] << " " << m[2][1] << " " << m[2][2] << endl;
 }
-void show(glm::mat4 m)
-{
+void show(glm::mat4 m) {
 	cout << "glMat4: " << endl;
 	cout << "\t" << m[0][0] << " " << m[0][1] << " " << m[0][2] << " " << m[0][3] << endl;
 	cout << "\t" << m[1][0] << " " << m[1][1] << " " << m[1][2] << " " << m[1][3] << endl;
 	cout << "\t" << m[2][0] << " " << m[2][1] << " " << m[2][2] << " " << m[2][3] << endl;
 	cout << "\t" << m[3][0] << " " << m[3][1] << " " << m[3][2] << " " << m[3][3] << endl;
 }
-void show(btMatrix3x3 m)
-{
+void show(btMatrix3x3 m) {
 	cout << "btMat3: " << endl;
 	cout << "\t" << m[0][0] << " " << m[0][1] << " " << m[0][2] << endl;
 	cout << "\t" << m[1][0] << " " << m[1][1] << " " << m[1][2] << endl;
 	cout << "\t" << m[2][0] << " " << m[2][1] << " " << m[2][2] << endl;
 }
 
-void matrix_proj()
-{
+void matrix_proj() {
 	float width = 1280.0f;
 	float height = 720.0f;
 	float aspect = width / height;
@@ -73,15 +67,14 @@ void matrix_proj()
 
 	mt::mat4 mtMat4;
 	mtMat4.perspective(fovy, aspect, 0.1f, 99999.0f);
-	
+
 	glm::mat4 glMat4 = glm::perspective(fovy, aspect, 0.1f, 99999.0f);
 
 	show(mtMat4);
 	show(glMat4);
 }
 
-void matrix_ortho()
-{
+void matrix_ortho() {
 	float width = 1280.0f;
 	float height = 720.0f;
 
@@ -94,8 +87,7 @@ void matrix_ortho()
 	show(glMat4);
 }
 
-void TestMath::run()
-{
+void TestMath::run() {
 	// matrix_proj(); // PASS
 	matrix_ortho();
 
@@ -133,14 +125,12 @@ void TestMath::run()
 	// aiQuaternion aiQuat2(w, x, y, z); // aiQuaterniont(ai_real pw, ai_real px, ai_real py, ai_real pz)
 
 	// mtQuat = mtQuat ^ mtQuat2;
-	
 
 	// [X] (bt Unkown) conjugate
 	// mtQuat = mtQuat.conjugate();
 	// glQuat = glm::conjugate(glQuat);
 	// // btQuat = ?
 	// aiQuat = aiQuat.Conjugate();
-	
 
 	// [ ] (mt Unkown, bt is conjugate) inverse
 	// mtQuat = mtQuat. ?
@@ -171,7 +161,7 @@ void TestMath::run()
 	// cout << "mtQuat: " << mtQuat * mtQuat2 << endl;
 	// cout << "glQuat: " << glm::dot(glQuat, glQuat2) << endl;
 	// cout << "btQuat: " << btQuat.dot(btQuat2) << endl;
-	
+
 	// [X] (bt Unkown) Cross product
 	// mtQuat = mtQuat ^ mtQuat2;
 	// glQuat = glm::cross(glQuat, glQuat2);

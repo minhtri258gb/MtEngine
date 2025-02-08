@@ -5,16 +5,16 @@
 #include <bitset>
 
 #include "common.h"
+#include "Log.h"
 #include "Input.h"
 
 using namespace std;
 using namespace mt::engine;
 
-
 Input Input::ins;
 
-class Input::InputImpl
-{
+
+class Input::InputImpl {
 public:
 	bitset<354> keyPress;
 	bitset<354> keyHold;
@@ -24,84 +24,93 @@ public:
 	void (*cbkKeypress)(int key, bool state); // Callback function pointer
 };
 
-Input::Input()
-{
+Input::Input() {
 	// Implement
 	impl = new InputImpl();
 }
 
-Input::~Input()
-{
+Input::~Input() {
 	// Implement
 	delete impl;
 }
 
-void Input::resetStatus()
-{
+void Input::resetStatus() {
 	impl->keyPress.reset();
 	impl->keyRelease.reset();
 	impl->dx = 0.0;
 	impl->dy = 0.0;
 }
 
-void Input::keyPress(int key, bool state)
-{
-	if (state)
-	{
-		#if DEBUG_SHOW_BUTTON
-			cout << "key: " << idkey << endl;
-		#endif
+void Input::keyPress(int key, bool state) {
+	LOG("keyPress");
+	try {
 
-		impl->keyPress.set(key, true);
-		impl->keyHold.set(key, true);
-	}
-	else
-	{
-		impl->keyRelease.set(key, true);
-		impl->keyHold.set(key, false);
-	}
+		if (state) {
+			#if DEBUG_SHOW_BUTTON
+				cout << "key: " << idkey << endl;
+			#endif
 
-	// Call cbk
-	impl->cbkKeypress(key, state);
+			impl->keyPress.set(key, true);
+			impl->keyHold.set(key, true);
+		}
+		else {
+			impl->keyRelease.set(key, true);
+			impl->keyHold.set(key, false);
+		}
+
+		// Call cbk
+		impl->cbkKeypress(key, state);
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
-void Input::cursorPos(double xpos, double ypos)
-{
-	impl->dx = xpos - impl->mx;
-	impl->dy = impl->my - ypos;
+void Input::cursorPos(double xpos, double ypos, bool reset) {
+	LOG("cursorPos");
+	try {
 
-	impl->mx = xpos;
-	impl->my = ypos;
+		if (!reset) {
+			impl->dx = xpos - impl->mx;
+			impl->dy = impl->my - ypos;
+		}
+		else {
+			impl->dx = 0;
+			impl->dy = 0;
+		}
 
-	// cout << vec2(impl->dx, impl->dy).length() << endl;
+		impl->mx = xpos;
+		impl->my = ypos;
+
+		// cout << vec2(impl->dx, impl->dy).length() << endl;
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
-bool Input::checkPress(int idkey)
-{
+bool Input::checkPress(int idkey) {
 	return impl->keyPress.test(idkey);
 }
 
-bool Input::checkHold(int idkey)
-{
+bool Input::checkHold(int idkey) {
 	return impl->keyHold.test(idkey);
 }
 
-bool Input::checkRelease(int idkey)
-{
+bool Input::checkRelease(int idkey) {
 	return impl->keyRelease.test(idkey);
 }
 
-double Input::getCursorX()
-{
+double Input::getCursorX() {
 	return impl->dx;
 }
 
-double Input::getCursorY()
-{
+double Input::getCursorY() {
 	return impl->dy;
 }
 
-void Input::setCallBackKeypress(void (*_func)(int key, bool state))
-{
+void Input::setCallBackKeypress(void (*_func)(int key, bool state)) {
 	impl->cbkKeypress = _func;
 }

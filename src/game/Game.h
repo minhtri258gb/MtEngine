@@ -1,8 +1,9 @@
 #ifndef __MT_GAME_H__
 #define __MT_GAME_H__
 
+#include "Screen.h"
 #include "maps/Map.h"
-#include "hud/Screen.h"
+#include "maps/MapBuilder.h"
 
 
 namespace mt {
@@ -17,19 +18,22 @@ public:
 	Map* map;
 	Screen screen;
 
+	MapBuilder mapBuilder;
+
 	// Forward
 	Game();
 	~Game();
 	void run();
 
 	// Native
+	void exit();
 
 	// Stock
 
 private:
 
 	// Variable
-	bool mainloop;
+	bool m_mainloop;
 
 	// Forward
 	void init();

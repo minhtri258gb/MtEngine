@@ -1,296 +1,157 @@
 #define __MT_RIGID_BODY_CPP__
 
-// #define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
-
-#include <btBulletDynamicsCommon.h>
-#include <BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h>
+#include <reactphysics3d/reactphysics3d.h>
 
 #include "common.h"
+#include "engine/Config.h"
+#include "engine/Log.h"
 #include "engine/file/FileCFG.h"
 #include "physic/Physic.h"
 #include "RigidBody.h"
 
 using namespace std;
 using namespace mt;
+using namespace mt::engine;
 using namespace mt::physic;
+namespace rp3 = reactphysics3d;
 
-class RigidBody::RigidBodyImpl
-{
+
+class Physic::PhysicImpl {
 public:
-
-	// Variable
-	btCollisionShape* shape;
-	btRigidBody* body;
-	bool isAction;
-
-	// Method
-	void createPlane(vec3 pos, vec4 plane, float mass);
-	void createSphere(vec3 pos, float radius, float mass);
-	void createBox(vec3 pos, quat rot, vec3 scale, float mass);
-	void createCylinder(vec3 pos, quat rot, vec3 size, float mass);
+	rp3::PhysicsCommon common;
+	rp3::PhysicsWorld* world;
+};
+class RigidBody::RigidBodyImpl {
+public:
+	rp3::RigidBody* body; // Cơ thể
+	rp3::Collider* collider; // Bộ phận
 };
 
-RigidBody::RigidBody()
-{
-	
-	#ifdef LOG
-	LOG
-	#endif
+RigidBody::RigidBody() {
+	LOG("RigidBody");
+	try {
+
+		// Implement
+		impl = new RigidBodyImpl();
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
+}
+RigidBody::~RigidBody() {
+	LOG("~RigidBody");
 
 	// Implement
-	impl = new RigidBodyImpl();
-	impl->isAction = false;
-	
-	#ifdef LOG
-	LOG
-	#endif
-
+	delete this->impl;
 }
 
-RigidBody::~RigidBody()
-{
-	
-	#ifdef LOG
-	LOG
-	#endif
+void RigidBody::update() {
+	LOG("update");
+	try {
 
-	delete impl->body->getMotionState();
-	
-	#ifdef LOG
-	LOG
-	#endif
+		// const dReal* pos = dBodyGetPosition(impl->body);
+		// std::cout << "Body position: x = " << pos[0] << ", y = " << pos[1] << ", z = " << pos[2] << std::endl;
 
-	delete impl->body;
-	
-	#ifdef LOG
-	LOG
-	#endif
+		// // Áp dụng lực hấp dẫn
+		// dMass mass;
+		// dBodyGetMass(impl->body, &mass);
+		// dBodyAddForce(impl->body, 0, -9.8 * mass.mass, 0);
 
-	delete impl->shape;
-
-	#ifdef LOG
-	LOG
-	#endif
-
-	// Implement
-	delete impl;
-	
-	#ifdef LOG
-	LOG
-	#endif
-
-}
-
-void RigidBody::create(std::string name, vec3 pos, quat rot, vec3 scale)
-{
-	
-	#ifdef LOG
-	LOG
-	#endif
-
-	FileCFG fCFG("./res/models/" + name + "/info.cfg");
-	fCFG.select("physic");
-	string shape = fCFG.get("shape");
-	float mass = fCFG.getFloat("mass");
-
-	#ifdef LOG
-	LOG
-	#endif
-
-	impl->body = nullptr;
-	if (shape == "box")
-	{
-		vec3 size = fCFG.getVec3("size");
-		size = vec3(size.x*scale.x, size.y*scale.y, size.z*scale.z);
-		impl->createBox(pos, rot, size, mass);
 	}
-	else if (shape == "sphere")
-	{
-		float radius = fCFG.getFloat("radius");
-		radius = radius * (scale.x + scale.y + scale.z) / 3.0f;
-		impl->createSphere(pos, radius, mass);
+	catch (Exception e) {
+		track(e);
+		throw e;
 	}
-	else if (shape == "plane")
-	{
-		vec4 plane = fCFG.getVec4("plane");
-		impl->createPlane(pos, plane, mass);
+}
+void RigidBody::clear() {
+	LOG("close");
+	try {
+		if (impl->body != nullptr)
+			Physic::ins.impl->world->destroyRigidBody(impl->body);
 	}
-	else if (shape == "cylinder")
-	{
-		vec3 size = fCFG.getVec3("size");
-		size = vec3(size.x*scale.x, size.y*scale.y, size.z*scale.z);
-		impl->createCylinder(pos, rot, size, mass);
+	catch (Exception e) {
+		track(e);
+		throw e;
 	}
-	
-	#ifdef LOG
-	LOG
-	#endif
-
 }
 
-void RigidBody::update()
-{
+void RigidBody::action(bool toogle) {
+	LOG("action");
+	try {
 
+		// if (impl->body == nullptr)
+		// 	return;
+
+		// bool curToogle = dBodyIsEnabled(impl->body);
+		// if (curToogle = toogle)
+		// 	return;
+
+		// if (toogle)
+		// 	dBodyEnable(impl->body);
+		// else
+		// 	dBodyDisable(impl->body);
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
+void RigidBody::getTransForm(vec3 *origin, quat *angle) {
+	LOG("getTransForm");
+	try {
 
-void RigidBody::close()
-{
-	if (impl->isAction)
-		Physic::ins.remove(this);
+		if (impl->body == nullptr)
+			throw error("BODY_NULL", "Chua khoi tao body!");
+
+		const rp3::Transform& transform = impl->body->getTransform();
+		const rp3::Vector3& position = transform.getPosition();
+		const rp3::Quaternion& rotate = transform.getOrientation();
+
+		origin->set(position.x, position.y, position.z);
+		angle->set(rotate.x, rotate.y, rotate.z, rotate.w);
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
+vec3 RigidBody::getOrigin() {
+	LOG("getOrigin");
+	try {
 
-void RigidBody::action(bool toogle)
-{
-	
-	#ifdef LOG
-	LOG
-	#endif
+		if (impl->body == nullptr)
+			throw error("BODY_NULL", "Chua khoi tao body!");
 
-	if (impl->isAction != toogle)
-	{
+		const rp3::Transform& transform = impl->body->getTransform();
+		const rp3::Vector3& position = transform.getPosition();
+
+		return vec3(position.x, position.y, position.z);
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
+}
+void RigidBody::force(vec3 velocity) { // Áp dụng lực
+	LOG("force");
+	try {
+		impl->body->applyLocalForceAtCenterOfMass(rp3::Vector3(velocity.x, velocity.y, velocity.z));
+		// impl->body->applyWorldForceAtCenterOfMass(rp3::Vector3(velocity.x, velocity.y, velocity.z));
 		
-		#ifdef LOG
-		LOG
-		#endif
-
-		impl->isAction = toogle;
-		if (toogle)
-			Physic::ins.add(this);
-		else
-			Physic::ins.remove(this);
-		
-		#ifdef LOG
-		LOG
-		#endif
-
 	}
-	
-	#ifdef LOG
-	LOG
-	#endif
-
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
-
-void RigidBody::getTransForm(vec3 *origin, quat *angle)
-{
-
-	#ifdef LOG
-	LOG
-	#endif
-
-	btTransform t;
-	impl->body->getMotionState()->getWorldTransform(t);
-
-	btVector3 pos = t.getOrigin();
-	origin->x = pos.getX();
-	origin->y = pos.getY();
-	origin->z = pos.getZ();
-
-	btQuaternion rot = t.getRotation();
-	*angle = quat(rot.getX(), rot.getY(), rot.getZ(), rot.getW());
-	
-	#ifdef LOG
-	LOG
-	#endif
-
-}
-
-vec3 RigidBody::getOrigin()
-{
-	
-	#ifdef LOG
-	LOG
-	#endif
-
-	btTransform trans;
-	impl->body->getMotionState()->getWorldTransform(trans);
-	btVector3 origin = trans.getOrigin();
-	return vec3(origin.getX(), origin.getY(), origin.getZ());
-	
-	#ifdef LOG
-	LOG
-	#endif
-
-}
-
-void RigidBody::RigidBodyImpl::createPlane(vec3 pos, vec4 plane, float mass)
-{
-	btTransform transform;
-	transform.setIdentity();
-	transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
-	
-	btVector3 inertia(0, 0, 0);
-
-	bool isDynamic = (mass != 0.f);
-
-	this->shape = new btStaticPlaneShape(btVector3(plane.x, plane.y, plane.z), plane.w);
-	if (isDynamic)
-		this->shape->calculateLocalInertia(mass, inertia);
-
-	btDefaultMotionState* motionState = new btDefaultMotionState(transform);
-	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, this->shape, inertia);
-	this->body = new btRigidBody(rigidBodyCI);
-}
-
-void RigidBody::RigidBodyImpl::createSphere(vec3 pos, float radius, float mass)
-{
-	btTransform transform;
-	transform.setIdentity();
-	transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
-	
-	btVector3 inertia(0, 0, 0);
-
-	bool isDynamic = (mass != 0.f);
-
-	this->shape = new btSphereShape(radius);
-	if (isDynamic)
-		this->shape->calculateLocalInertia(mass, inertia);
-
-	btDefaultMotionState* motionState = new btDefaultMotionState(transform);
-	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, this->shape, inertia);
-	this->body = new btRigidBody(rigidBodyCI);
-}
-
-void RigidBody::RigidBodyImpl::createBox(vec3 pos, quat rot, vec3 scale, float mass)
-{
-	btTransform transform;
-	transform.setIdentity();
-	transform.setRotation(btQuaternion(rot.x, rot.y, rot.z, rot.w));
-	transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
-	
-	btVector3 inertia(0, 0, 0);
-
-	bool isDynamic = (mass != 0.f);
-
-	RigidBody* body = new RigidBody();
-
-	this->shape = new btBoxShape(btVector3(scale.x, scale.y, scale.z));
-	if (isDynamic)
-		this->shape->calculateLocalInertia(mass, inertia);
-
-	btDefaultMotionState* motionState = new btDefaultMotionState(transform);
-	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, this->shape, inertia);
-	this->body = new btRigidBody(rigidBodyCI);
-}
-
-void RigidBody::RigidBodyImpl::createCylinder(vec3 pos, quat rot, vec3 size, float mass)
-{
-	btTransform transform;
-	transform.setIdentity();
-	transform.setRotation(btQuaternion(rot.x, rot.y, rot.z, rot.w));
-	transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
-	
-	btVector3 inertia(0, 0, 0);
-
-	bool isDynamic = (mass != 0.f);
-
-	RigidBody* body = new RigidBody();
-
-	this->shape = new btCylinderShape(btVector3(size.x, size.y, size.z));
-	if (isDynamic)
-		this->shape->calculateLocalInertia(mass, inertia);
-
-	btDefaultMotionState* motionState = new btDefaultMotionState(transform);
-	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, this->shape, inertia);
-	this->body = new btRigidBody(rigidBodyCI);
+void RigidBody::setVelocity(vec3 velocity) { // Áp dụng lực
+	LOG("setVelocity");
+	try {
+		impl->body->setLinearVelocity(rp3::Vector3(velocity.x, velocity.y, velocity.z));
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }

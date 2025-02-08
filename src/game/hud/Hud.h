@@ -4,8 +4,7 @@
 namespace mt {
 namespace game {
 
-class Hud
-{
+class Hud {
 
 public:
 

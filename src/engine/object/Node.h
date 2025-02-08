@@ -4,8 +4,7 @@
 namespace mt {
 namespace engine {
 
-class Node
-{
+class Node {
 public:
 
 	// Variables
@@ -13,7 +12,7 @@ public:
 	// Forwards
 	Node();
 	~Node();
-	
+
 private:
 
 };

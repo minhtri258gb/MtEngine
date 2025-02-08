@@ -6,8 +6,7 @@
 namespace mt {
 namespace graphic {
 
-class Text
-{
+class Text {
 public:
 
 	// Variables
@@ -15,7 +14,7 @@ public:
 
 	// Static method
 	static void initText();
-	
+
 	// Forwards
 	Text();
 	~Text();

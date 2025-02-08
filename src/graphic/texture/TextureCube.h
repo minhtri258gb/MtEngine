@@ -12,7 +12,7 @@ public:
 	TextureCube();
 	~TextureCube();
 	void init(std::string filepath, bool flip = false);
-	
+
 	// Native
 	void bind(unsigned int location = 0);
 

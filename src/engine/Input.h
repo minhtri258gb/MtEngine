@@ -6,8 +6,7 @@
 namespace mt {
 namespace engine {
 
-class Input
-{
+class Input {
 public:
 
 	// Variables
@@ -21,7 +20,7 @@ public:
 
 	// Natives
 	void keyPress(int idkey, bool state);
-	void cursorPos(double xpos, double ypos);
+	void cursorPos(double xpos, double ypos, bool reset);
 	bool checkPress(int idkey);
 	bool checkHold(int idkey);
 	bool checkRelease(int idkey);

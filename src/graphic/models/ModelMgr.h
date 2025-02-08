@@ -7,16 +7,17 @@
 namespace mt {
 namespace graphic {
 
-class ModelMgr
-{
+class ModelMgr {
 
 public:
 
 	// Variable
 
-	// Forward
+	// Constructor
 	ModelMgr();
 	~ModelMgr();
+
+	// Method
 	void init();
 	void clear();
 

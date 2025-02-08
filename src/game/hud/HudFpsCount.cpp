@@ -7,7 +7,7 @@
 
 #include "common.h"
 #include "graphic/Graphic.h"
-#include "graphic/hud/Text.h"
+#include "graphic/ui/Text.h"
 #include "HudFpsCount.h"
 
 using namespace std;

@@ -10,7 +10,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 
 #include "Maths.h"
 
@@ -58,7 +58,7 @@ int PLANE::ClassifyPoint(const VECTOR3D & point) const
 
 	if (distance>EPSILON)	//==0.0f is too exact, give a bit of room
 		return POINT_IN_FRONT_OF_PLANE;
-	
+
 	if (distance<-EPSILON)
 		return POINT_BEHIND_PLANE;
 

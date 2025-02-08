@@ -17,8 +17,8 @@ using namespace mt::graphic;
 using namespace mt::game;
 using namespace mt::mod;
 
-void PluginSystem::load()
-{
+
+void PluginSystem::load() {
 	WIN32_FIND_DATA fileData;
 	HANDLE fileHandle = FindFirstFile(R"(./plugins/*.dll)", &fileData);
 
@@ -29,14 +29,12 @@ void PluginSystem::load()
 
 	do {
 		Plugin* plugin = nullptr;
-		try
-		{
+		try {
 			plugin = new Plugin();
 			plugin->load(string(fileData.cFileName));
 			this->plugins.push_back(plugin);
 		}
-		catch (LoadException e)
-		{
+		catch (LoadException e) {
 			if (plugin)
 				delete plugin;
 			cout << e.getMessage() << endl;
@@ -44,59 +42,46 @@ void PluginSystem::load()
 	} while (FindNextFile(fileHandle, &fileData));
 }
 
-void PluginSystem::clean()
-{
-	for (Plugin* plugin : this->plugins)
-	{
+void PluginSystem::clean() {
+	for (Plugin* plugin : this->plugins) {
 		plugin->close();
 		delete plugin;
 	}
 }
 
-void PluginSystem::run()
-{
+void PluginSystem::run() {
 	this->load();
-	
-	for (Plugin* plugin : this->plugins)
-	{
-		try
-		{
+
+	for (Plugin* plugin : this->plugins) {
+		try {
 			PluginBase* base = dynamic_cast<PluginBase*>(plugin->getObject());
 			if (!base)
 				throw string("Fail to get PluginBase");
 
 			PluginBase::PLUGIN_TYPE type = base->getPluginType();
-			if (type == PluginBase::PLUGIN_TYPE::MODEL)
-			{
+			if (type == PluginBase::PLUGIN_TYPE::MODEL) {
 				Model* mdl = dynamic_cast<Model*>(base);
-				if (mdl)
-				{
+				if (mdl) {
 					// mdl->render();
 				}
 			}
-			else if (type == PluginBase::PLUGIN_TYPE::ENTITY)
-			{
+			else if (type == PluginBase::PLUGIN_TYPE::ENTITY) {
 				Entity* ent = dynamic_cast<Entity*>(base);
-				if (ent)
-				{
+				if (ent) {
 					ent->update();
 					ent->render();
 				}
 			}
-			else if (type == PluginBase::PLUGIN_TYPE::MAP)
-			{
+			else if (type == PluginBase::PLUGIN_TYPE::MAP) {
 			}
-			else // PROCESS
-			{
+			else { // PROCESS
 				base->framework();
 			}
 		}
-		catch (string s)
-		{
+		catch (string s) {
 			cout << s << endl;
 		}
-		catch (...)
-		{
+		catch (...) {
 			cout << "Object by plugin have issue" << endl;
 		}
 	}

@@ -7,8 +7,7 @@
 namespace mt {
 namespace game {
 
-class TestEnt : public Entity
-{
+class TestEnt : public Entity {
 
 public:
 

@@ -11,7 +11,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 
 #include "Maths.h"
 
@@ -80,7 +80,7 @@ VECTOR3D VECTOR3D::GetRotatedZ(double angle) const
 
 	float sinAngle=(float)sin(M_PI*angle/180);
 	float cosAngle=(float)cos(M_PI*angle/180);
-	
+
 	return VECTOR3D(x*cosAngle - y*sinAngle,
 					x*sinAngle + y*cosAngle,
 					z);
@@ -111,7 +111,7 @@ VECTOR3D VECTOR3D::GetRotatedAxis(double angle, const VECTOR3D & axis) const
 	rotMatrixRow1.x=(u.x)*(u.y)*(oneMinusCosAngle) + sinAngle*u.z;
 	rotMatrixRow1.y=(u.y)*(u.y) + cosAngle*(1-(u.y)*(u.y));
 	rotMatrixRow1.z=(u.y)*(u.z)*(oneMinusCosAngle) - sinAngle*u.x;
-	
+
 	rotMatrixRow2.x=(u.x)*(u.z)*(oneMinusCosAngle) - sinAngle*u.y;
 	rotMatrixRow2.y=(u.y)*(u.z)*(oneMinusCosAngle) + sinAngle*u.x;
 	rotMatrixRow2.z=(u.z)*(u.z) + cosAngle*(1-(u.z)*(u.z));
@@ -129,7 +129,7 @@ void VECTOR3D::RotateAxis(double angle, const VECTOR3D & axis)
 
 void VECTOR3D::PackTo01()
 {
-	(*this)=GetPackedTo01();	
+	(*this)=GetPackedTo01();
 }
 
 VECTOR3D VECTOR3D::GetPackedTo01() const
@@ -139,7 +139,7 @@ VECTOR3D VECTOR3D::GetPackedTo01() const
 	temp.Normalize();
 
 	temp=temp*0.5f+VECTOR3D(0.5f, 0.5f, 0.5f);
-	
+
 	return temp;
 }
 

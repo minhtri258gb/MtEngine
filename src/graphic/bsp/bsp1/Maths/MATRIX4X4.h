@@ -15,7 +15,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef MATRIX4X4_H
 #define MATRIX4X4_H
@@ -37,10 +37,10 @@ public:
 	float GetEntry(int position) const;
 	VECTOR4D GetRow(int position) const;
 	VECTOR4D GetColumn(int position) const;
-	
+
 	void LoadIdentity(void);
 	void LoadZero(void);
-	
+
 	//binary operators
 	MATRIX4X4 operator+(const MATRIX4X4 & rhs) const;
 	MATRIX4X4 operator-(const MATRIX4X4 & rhs) const;
@@ -62,7 +62,7 @@ public:
 	//unary operators
 	MATRIX4X4 operator-(void) const;
 	MATRIX4X4 operator+(void) const {return (*this);}
-	
+
 	//multiply a vector by this matrix
 	VECTOR4D operator*(const VECTOR4D rhs) const;
 
@@ -82,7 +82,7 @@ public:
 
 	void InverseTranslateVector3D(VECTOR3D & rhs) const
 	{rhs=GetInverseTranslatedVector3D(rhs);}
-	
+
 	VECTOR3D GetTranslatedVector3D(const VECTOR3D & rhs) const;
 	VECTOR3D GetInverseTranslatedVector3D(const VECTOR3D & rhs) const;
 
@@ -124,7 +124,7 @@ public:
 	//cast to pointer to a (float *) for glGetFloatv etc
 	operator float* () const {return (float*) this;}
 	operator const float* () const {return (const float*) this;}
-	
+
 	//member variables
 	float entries[16];
 };

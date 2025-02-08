@@ -5,8 +5,7 @@
 namespace mt {
 namespace game {
 
-class CommandMgr
-{
+class CommandMgr {
 public:
 
 	static CommandMgr ins;

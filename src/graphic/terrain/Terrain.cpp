@@ -9,8 +9,8 @@
 #include <GLFW/glfw3.h>
 
 #include "common.h"
-
 #include "engine/Config.h"
+#include "engine/Log.h"
 #include "engine/file/FileCFG.h"
 #include "engine/file/Image.h"
 #include "graphic/Graphic.h"
@@ -25,8 +25,7 @@ using namespace mt::engine;
 using namespace mt::graphic;
 
 
-class Terrain::TerrainImpl
-{
+class Terrain::TerrainImpl {
 public:
 	array<TerrainPart*, 61> parts;
 	Texture texture;
@@ -34,31 +33,38 @@ public:
 
 ShaderProgram Terrain::shader;
 
-Terrain::Terrain()
-{
-	// Implement
-	impl = new TerrainImpl();
 
-	// m_maxwidth = 0;
-	// m_maxlength = 0;
+Terrain::Terrain() {
+	LOG("Terrain");
+	try {
+
+		// Implement
+		impl = new TerrainImpl();
+
+		// m_maxwidth = 0;
+		// m_maxlength = 0;
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
+Terrain::~Terrain() {
+	LOG("~Terrain");
 
-Terrain::~Terrain()
-{
 	// Implement
 	delete impl;
 }
 
-void Terrain::init(string name)
-{
+void Terrain::init(string name) {
+	LOG("init");
 	try {
 
 		// Data
 		FileCFG fCFG(Config::ins.terrain_path + name + "/info.cfg");
 
 		// Doc du lieu tu file cau hinh
-		enum eTerrainSizeStyle
-		{
+		enum eTerrainSizeStyle {
 			VerySmall = 1,
 			Small = 9,
 			Medium = 21,
@@ -134,29 +140,34 @@ void Terrain::init(string name)
 		}
 	}
 }
+void Terrain::render() {
+	LOG("init");
+	try {
 
-void Terrain::render()
-{
-	Terrain::shader.use();
+		Terrain::shader.use();
 
-	Graphic::ins.setPatchParameter(4);
+		Graphic::ins.setPatchParameter(4);
 
-	#if FLAG_WIREFRAME
-	Graphic::ins.wireframe(true);
-	#endif
+		#if FLAG_WIREFRAME
+		Graphic::ins.wireframe(true);
+		#endif
 
-	impl->texture.bind(0);
+		impl->texture.bind(0);
 
-	for (unsigned short i=0; i<61; i++)
-	{
-		TerrainPart* part = impl->parts[i];
-		if (part)
-			part->render();
+		for (unsigned short i=0; i<61; i++) {
+			TerrainPart* part = impl->parts[i];
+			if (part)
+				part->render();
+		}
+
+		#if FLAG_WIREFRAME
+		Graphic::ins.wireframe(false);
+		#endif
 	}
-	
-	#if FLAG_WIREFRAME
-	Graphic::ins.wireframe(false);
-	#endif
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 // void Terrain::renderPre()

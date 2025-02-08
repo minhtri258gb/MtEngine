@@ -15,7 +15,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 #include <memory.h>
 #include "Maths.h"
 
@@ -57,7 +57,7 @@ void MATRIX4X4::SetEntry(int position, float value)
 	if (position>=0 && position<=15)
 		entries[position]=value;
 }
-	
+
 float MATRIX4X4::GetEntry(int position) const
 {
 	if (position>=0 && position<=15)
@@ -70,13 +70,13 @@ VECTOR4D MATRIX4X4::GetRow(int position) const
 {
 	if (position==0)
 		return VECTOR4D(entries[0], entries[4], entries[8], entries[12]);
-	
+
 	if (position==1)
 		return VECTOR4D(entries[1], entries[5], entries[9], entries[13]);
-	
+
 	if (position==2)
 		return VECTOR4D(entries[2], entries[6], entries[10], entries[14]);
-	
+
 	if (position==3)
 		return VECTOR4D(entries[3], entries[7], entries[11], entries[15]);
 
@@ -87,13 +87,13 @@ VECTOR4D MATRIX4X4::GetColumn(int position) const
 {
 	if (position==0)
 		return VECTOR4D(entries[0], entries[1], entries[2], entries[3]);
-	
+
 	if (position==1)
 		return VECTOR4D(entries[4], entries[5], entries[6], entries[7]);
-	
+
 	if (position==2)
 		return VECTOR4D(entries[8], entries[9], entries[10], entries[11]);
-	
+
 	if (position==3)
 		return VECTOR4D(entries[12], entries[13], entries[14], entries[15]);
 
@@ -220,8 +220,8 @@ MATRIX4X4 MATRIX4X4::operator*(const MATRIX4X4 & rhs) const
 							entries[1]*rhs.entries[12]+entries[5]*rhs.entries[13]+entries[9]*rhs.entries[14]+entries[13],
 							entries[2]*rhs.entries[12]+entries[6]*rhs.entries[13]+entries[10]*rhs.entries[14]+entries[14],
 							entries[3]*rhs.entries[12]+entries[7]*rhs.entries[13]+entries[11]*rhs.entries[14]+entries[15]);
-	}	
-	
+	}
+
 	return MATRIX4X4(	entries[0]*rhs.entries[0]+entries[4]*rhs.entries[1]+entries[8]*rhs.entries[2]+entries[12]*rhs.entries[3],
 						entries[1]*rhs.entries[0]+entries[5]*rhs.entries[1]+entries[9]*rhs.entries[2]+entries[13]*rhs.entries[3],
 						entries[2]*rhs.entries[0]+entries[6]*rhs.entries[1]+entries[10]*rhs.entries[2]+entries[14]*rhs.entries[3],
@@ -264,7 +264,7 @@ MATRIX4X4 MATRIX4X4::operator/(const float rhs) const
 {
 	if (rhs==0.0f || rhs==1.0f)
 		return (*this);
-		
+
 	float temp=1/rhs;
 
 	return (*this)*temp;
@@ -347,7 +347,7 @@ VECTOR4D MATRIX4X4::operator*(const VECTOR4D rhs) const
 
 						rhs.w);
 	}
-	
+
 	return VECTOR4D(	entries[0]*rhs.x
 					+	entries[4]*rhs.y
 					+	entries[8]*rhs.z
@@ -523,7 +523,7 @@ MATRIX4X4 MATRIX4X4::GetInverseTranspose(void) const
 		MATRIX4X4 id;
 		return id;
 	}
-	
+
 	result=result/det;
 
 	return result;
@@ -622,7 +622,7 @@ void MATRIX4X4::SetRotationAxis(const double angle, const VECTOR3D & axis)
 	entries[1]=(u.x)*(u.y)*(oneMinusCosAngle) + sinAngle*u.z;
 	entries[5]=(u.y)*(u.y) + cosAngle*(1-(u.y)*(u.y));
 	entries[9]=(u.y)*(u.z)*(oneMinusCosAngle) - sinAngle*u.x;
-	
+
 	entries[2]=(u.x)*(u.z)*(oneMinusCosAngle) - sinAngle*u.y;
 	entries[6]=(u.y)*(u.z)*(oneMinusCosAngle) + sinAngle*u.x;
 	entries[10]=(u.z)*(u.z) + cosAngle*(1-(u.z)*(u.z));

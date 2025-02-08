@@ -4,12 +4,10 @@
 #include "Map.h"
 #include "game/entities/Entity.h"
 
-
 namespace mt {
 namespace game {
 
-class TestMap : public Map
-{
+class TestMap : public Map {
 
 public:
 
@@ -18,8 +16,8 @@ public:
 	~TestMap();
 
 	void load();
-	void clear();
 	void update();
+	void clear();
 
 private:
 

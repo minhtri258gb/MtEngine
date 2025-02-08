@@ -7,7 +7,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 #include <windows.h>
 #include <stdio.h>
 
@@ -33,13 +33,11 @@
 
 ////////////////////BSP::Load///////////////
 ////////////////////////////////////////////
-bool BSP::Load(char * filename, int curveTesselation)
-{
+bool BSP::Load(char * filename, int curveTesselation) {
 	FILE * file;
 
 	file=fopen(filename, "rb");
-	if (!file)
-	{
+	if (!file) {
 		// errorLog.OutputError("Unable to open %s", filename);
 		return false;
 	}
@@ -50,8 +48,8 @@ bool BSP::Load(char * filename, int curveTesselation)
 	//check header data is correct
 	if (	header.string[0]!='I' || header.string[1]!='B' ||
 		header.string[2]!='S' || header.string[3]!='P' ||
-		header.version  !=0x2E )
-	{
+		header.version  !=0x2E
+	) {
 		// errorLog.OutputError("%s is not a version 0x2E .bsp map file", filename);
 		return false;
 	}
@@ -61,15 +59,13 @@ bool BSP::Load(char * filename, int curveTesselation)
 	if (!LoadVertices(file))
 		return false;
 
-
 	//Load in mesh indices
 	//Calculate number of indices
 	int numMeshIndices=header.directoryEntries[bspMeshIndices].length/sizeof(int);
 
 	//Create space
 	meshIndices=new int[numMeshIndices];
-	if (!meshIndices)
-	{
+	if (!meshIndices) {
 		// errorLog.OutputError("Unable to allocate memory for %d mesh indices", numMeshIndices);
 		return false;
 	}
@@ -78,18 +74,14 @@ bool BSP::Load(char * filename, int curveTesselation)
 	fseek(file, header.directoryEntries[bspMeshIndices].offset, SEEK_SET);
 	fread(meshIndices, header.directoryEntries[bspMeshIndices].length, 1, file);
 
-	
-
 	//Load in faces
 	if (!LoadFaces(file, curveTesselation))
 		return false;
 
-	
 	//Load textures
 	// if (!LoadTextures(file)) // #TODO
 		// return false; // #TODO
 
-		
 	//Load Lightmaps
 	// if (!LoadLightmaps(file)) // #TODO
 		// return false; // #TODO
@@ -102,8 +94,7 @@ bool BSP::Load(char * filename, int curveTesselation)
 
 	//Load in entity string
 	entityString=new char[header.directoryEntries[bspEntities].length];
-	if (!entityString)
-	{
+	if (!entityString) {
 		// errorLog.OutputError(	"Unable to allocate memory for %d length entity string",
 		// 						header.directoryEntries[bspEntities].length);
 		return false;
@@ -125,11 +116,9 @@ bool BSP::Load(char * filename, int curveTesselation)
 }
 
 
-
 ///////////////////BSP::LoadVertices////////
 ////////////////////////////////////////////
-bool BSP::LoadVertices(FILE * file)
-{
+bool BSP::LoadVertices(FILE * file) {
 	//calculate number of vertices
 	numVertices=header.directoryEntries[bspVertices].length/sizeof(BSP_LOAD_VERTEX);
 
@@ -211,7 +200,7 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 		// 						numTotalFaces);
 		return false;
 	}
-	
+
 	//Clear the face directory
 	memset(faceDirectory, 0, numTotalFaces*sizeof(BSP_FACE_DIRECTORY_ENTRY));
 
@@ -289,9 +278,6 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 
 		++currentMeshFace;
 	}
-	
-
-
 
 	//Create space for BSP_PATCHes
 	patches=new BSP_PATCH[numPatches];
@@ -312,7 +298,7 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 		patches[currentPatch].lightmapIndex=loadFaces[i].lightmapIndex;
 		patches[currentPatch].width=loadFaces[i].patchSize[0];
 		patches[currentPatch].height=loadFaces[i].patchSize[1];
-		
+
 		//fill in this entry on the face directory
 		faceDirectory[i].faceType=bspPatch;
 		faceDirectory[i].typeFaceNumber=currentPatch;
@@ -389,7 +375,7 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 // 		// errorLog.OutputError("Unable to create storage space for %d texture IDs", numTextures);
 // 		return false;
 // 	}
-	
+
 // 	//Create storage space for that many booleans to tell if texture has loaded
 // 	isTextureLoaded=new bool[numTextures];
 // 	if (!isTextureLoaded)
@@ -397,7 +383,6 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 // 		// errorLog.OutputError("Unable to create storage space for %d booleans", numTextures);
 // 		return false;
 // 	}
-	
 
 // 	//Generate the texture identifiers
 // 	glGenTextures(numTextures, decalTextures);
@@ -408,7 +393,7 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 // 	for (int i=0; i<numTextures; ++i)
 // 	{
 // 		glBindTexture(GL_TEXTURE_2D, decalTextures[i]);
-		
+
 // 		//add file extension to the name
 // 		char tgaExtendedName[68];
 // 		char jpgExtendedName[68];
@@ -416,7 +401,7 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 // 		strcat(tgaExtendedName, ".tga");
 // 		strcpy(jpgExtendedName, loadTextures[i].name);
 // 		strcat(jpgExtendedName, ".jpg");
-		
+
 // 		//Load texture image
 // 		bool isJpgTexture=false;				//have we loaded a jpg?
 // 		if (!textureImage.Load(tgaExtendedName))	//try to load .tga, if not
@@ -431,7 +416,7 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 // 		}
 // 		else
 // 			isTextureLoaded[i]=true;
-		
+
 // 		//if a jpg texture, need to set UNPACK_ALIGNMENT to 1
 // 		if (isJpgTexture)
 // 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -482,7 +467,7 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 // 		errorLog.OutputError("Unable to create storage space for %d texture IDs", numLightmaps);
 // 		return false;
 // 	}
-	
+
 // 	//Generate the texture identifiers
 // 	glGenTextures(numLightmaps, lightmapTextures);
 
@@ -509,7 +494,7 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 // 			if (b > 1.0f && (temp = (1.0f/b)) < scale) scale=temp;
 
 // 			// scale up color values
-// 			scale*=255.0f;		
+// 			scale*=255.0f;
 // 			r*=scale;
 // 			g*=scale;
 // 			b*=scale;
@@ -524,7 +509,7 @@ bool BSP::LoadFaces(FILE * file, int curveTesselation)
 // 	for (int i=0; i<numLightmaps; ++i)
 // 	{
 // 		glBindTexture(GL_TEXTURE_2D, lightmapTextures[i]);
-		
+
 // 		//Create texture
 // 		gluBuild2DMipmaps(	GL_TEXTURE_2D, GL_RGBA8, 128, 128,
 // 							GL_RGB, GL_UNSIGNED_BYTE, loadLightmaps[i].lightmapData);
@@ -604,8 +589,6 @@ bool BSP::LoadBSPData(FILE * file)
 			leaves[i].boundingBoxVertices[j]/=64;
 	}
 
-	
-	
 	//Load leaf faces array
 	int numLeafFaces=header.directoryEntries[bspLeafFaces].length/sizeof(int);
 
@@ -621,8 +604,6 @@ bool BSP::LoadBSPData(FILE * file)
 	fseek(file, header.directoryEntries[bspLeafFaces].offset, SEEK_SET);
 	fread(leafFaces, 1, header.directoryEntries[bspLeafFaces].length, file);
 
-
-	
 	//Load Planes
 	numPlanes=header.directoryEntries[bspPlanes].length/sizeof(PLANE);
 
@@ -697,18 +678,11 @@ bool BSP::LoadBSPData(FILE * file)
 	return true;
 }
 
-
-
-
-
-
-
 //BSP Functions
 //calculate which leaf the camera lies in
-int BSP::CalculateCameraLeaf(const VECTOR3D & cameraPosition)
-{
+int BSP::CalculateCameraLeaf(const VECTOR3D & cameraPosition) {
 	int currentNode=0;
-	
+
 	//loop until we find a negative index
 	while(currentNode>=0)
 	{
@@ -724,8 +698,7 @@ int BSP::CalculateCameraLeaf(const VECTOR3D & cameraPosition)
 }
 
 //See if one cluster is visible from another
-int BSP::isClusterVisible(int cameraCluster, int testCluster)
-{
+int BSP::isClusterVisible(int cameraCluster, int testCluster) {
 	int index=	cameraCluster*visibilityData.bytesPerCluster + testCluster/8;
 
 	int returnValue=visibilityData.bitset[index] & (1<<(testCluster & 7));
@@ -734,11 +707,10 @@ int BSP::isClusterVisible(int cameraCluster, int testCluster)
 }
 
 //Calculate which faces to draw given a position & frustum
-void BSP::CalculateVisibleFaces(const VECTOR3D & cameraPosition/*, FRUSTUM frustum*/)
-{
+void BSP::CalculateVisibleFaces(const VECTOR3D & cameraPosition/*, FRUSTUM frustum*/) {
 	//Clear the list of faces drawn
 	facesToDraw.ClearAll();
-	
+
 	//calculate the camera leaf
 	int cameraLeaf=CalculateCameraLeaf(cameraPosition);
 	int cameraCluster=leaves[cameraLeaf].cluster;
@@ -760,23 +732,12 @@ void BSP::CalculateVisibleFaces(const VECTOR3D & cameraPosition/*, FRUSTUM frust
 			facesToDraw.Set(leafFaces[leaves[i].firstLeafFace+j]);
 		}
 	}
-
-	
 }
-
-
-
-
-
-
-
-
 
 
 //DRAWING FUNCTIONS
 //Draw all faces marked as visible
-void BSP::Draw()
-{
+void BSP::Draw() {
 	glFrontFace(GL_CW);
 
 	//enable vertex arrays
@@ -794,7 +755,7 @@ void BSP::Draw()
 		if (facesToDraw.IsSet(i))
 			DrawFace(i);
 	}
-	
+
 	//disable vertex arrays
 	// glClientActiveTextureARB(GL_TEXTURE1_ARB); // #TODO
 	// glDisableClientState(GL_TEXTURE_COORD_ARRAY); // #TODO
@@ -808,12 +769,11 @@ void BSP::Draw()
 
 
 //Draw a face
-void BSP::DrawFace(int faceNumber)
-{
+void BSP::DrawFace(int faceNumber) {
 	//look this face up in the face directory
 	if (faceDirectory[faceNumber].faceType==0)
 		return;
-	
+
 	if (faceDirectory[faceNumber].faceType==bspPolygonFace)
 		DrawPolygonFace(faceDirectory[faceNumber].typeFaceNumber);
 
@@ -826,23 +786,21 @@ void BSP::DrawFace(int faceNumber)
 
 
 //Draw a polygon face
-void BSP::DrawPolygonFace(int polygonFaceNumber)
-{
+void BSP::DrawPolygonFace(int polygonFaceNumber) {
 	//skip this face if its texture was not loaded
 	// if (isTextureLoaded[polygonFaces[polygonFaceNumber].textureIndex]==false) // #TODO
 		// return; // #TODO
 
 	//set array pointers
 	glVertexPointer(	3, GL_FLOAT, sizeof(BSP_VERTEX), &vertices[0].position);
-	
+
 	//Unit 0 - decal textures
 	// glTexCoordPointer(	2, GL_FLOAT, sizeof(BSP_VERTEX), &vertices[0].decalS); // #TODO
-	
+
 	//Unit 1 - Lightmaps
 	// glClientActiveTextureARB(GL_TEXTURE1_ARB); // #TODO
 	// glTexCoordPointer(2, GL_FLOAT, sizeof(BSP_VERTEX), &vertices[0].lightmapS); // #TODO
 	// glClientActiveTextureARB(GL_TEXTURE0_ARB); // #TODO
-	
 
 	//bind textures
 	//unit 0 - decal texture
@@ -1009,22 +967,20 @@ bool BSP_BIQUADRATIC_PATCH::Tesselate(int newTesselation)
 
 
 //Draw a biquadratic patch
-void BSP_BIQUADRATIC_PATCH::Draw()
-{
+void BSP_BIQUADRATIC_PATCH::Draw() {
 	//set array pointers
 	glVertexPointer(3, GL_FLOAT, sizeof(BSP_VERTEX), &vertices[0].position);
-		
+
 	// glTexCoordPointer(2, GL_FLOAT, sizeof(BSP_VERTEX), &vertices[0].decalS); // #TODO
-	
+
 	// glClientActiveTextureARB(GL_TEXTURE1_ARB); // #TODO
 	// glTexCoordPointer(2, GL_FLOAT, sizeof(BSP_VERTEX), &vertices[0].lightmapS); // #TODO
 	// glClientActiveTextureARB(GL_TEXTURE0_ARB); // #TODO
-	
+
 	//Draw a triangle strip for each row
 	// if (!EXT_multi_draw_arrays_supported) // #TODO
 	// { // #TODO
-		for (int row=0; row<tesselation; ++row)
-		{
+		for (int row=0; row<tesselation; ++row) {
 			glDrawElements(	GL_TRIANGLE_STRIP, 2*(tesselation+1), GL_UNSIGNED_INT,
 							&indices[row*2*(tesselation+1)]);
 		}

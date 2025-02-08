@@ -1,6 +1,12 @@
 #ifndef __MT_COMMON_H__
 #define __MT_COMMON_H__
 
+#if 1
+#define LOG(msg) Log::ins.l(__FILE__, __LINE__, msg)
+#else
+#define LOG ;
+#endif
+
 #include <iostream>
 #include <vector>
 #include <map>

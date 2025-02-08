@@ -16,7 +16,7 @@ public:
 	static ShaderProgram shader;
 
 	// Constructor
-	SimpleModel();
+	SimpleModel(std::string name);
 	~SimpleModel();
 
 	// Load custom

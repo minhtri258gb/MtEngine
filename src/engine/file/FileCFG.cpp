@@ -12,50 +12,41 @@ using namespace std;
 using namespace mt;
 
 
-FileCFG::FileCFG()
-{
+FileCFG::FileCFG() {
 	sessionID = 0;
 }
 
-FileCFG::FileCFG(string filename)
-{
+FileCFG::FileCFG(string filename) {
 	sessionID = 0;
 	load(filename);
 }
 
-FileCFG::~FileCFG()
-{
+FileCFG::~FileCFG() {
 }
 
-void FileCFG::select(string sessionName)
-{
+void FileCFG::select(string sessionName) {
 	short sizeArr = m_sessions.size();
-	for (short i = 0; i < sizeArr; i++)
-	{
-		if (m_sessions.at(i) == sessionName)
-		{
+	for (short i = 0; i < sizeArr; i++) {
+		if (m_sessions.at(i) == sessionName) {
 			this->sessionID = i;
 			return;
 		}
 	}
-	
+
 	throw error("SESSION_NOT_FOUND", "Session \"" + sessionName + "\" not found!");
 }
 
-void FileCFG::addSession(string sessionName)
-{
+void FileCFG::addSession(string sessionName) {
 	short sizeArr = m_sessions.size();
-	for (short i = 0; i < sizeArr; i++)
-	{
-		if (m_sessions.at(i) == sessionName)
-		{
+	for (short i = 0; i < sizeArr; i++) {
+		if (m_sessions.at(i) == sessionName) {
 			sessionID = i;
 			return;
 		}
 	}
-	
+
 	vector<string> keys, values;
-	
+
 	m_sessions.push_back(sessionName);
 	m_key.push_back(keys);
 	m_value.push_back(values);
@@ -63,8 +54,7 @@ void FileCFG::addSession(string sessionName)
 	sessionID = m_sessions.size() - 1;
 }
 
-void FileCFG::set(string key, string value)
-{
+void FileCFG::set(string key, string value) {
 	// Validate
 	short sizeArr = m_sessions.size();
 	if (this->sessionID == sizeArr)
@@ -74,39 +64,32 @@ void FileCFG::set(string key, string value)
 
 	// Find pos of key
 	short pos = -1;
-	for (short i = 0; i < sizeArr; i++)
-	{
-		if (m_key[sessionID][i] == key)
-		{
+	for (short i = 0; i < sizeArr; i++) {
+		if (m_key[sessionID][i] == key) {
 			pos = i;
 			break;
 		}
 	}
 
-	if (pos >= 0) // if found
-	{
+	if (pos >= 0) { // if found
 		m_value[sessionID][pos] = value;
 	}
-	else // if not found then add
-	{
+	else { // if not found then add
 		m_key[sessionID].push_back(key);
 		m_value[sessionID].push_back(value);
 	}
 }
 
-void FileCFG::save(string filepath)
-{
+void FileCFG::save(string filepath) {
 	fstream file(filepath, fstream::out);
 
-	for (short i=0, szi=m_sessions.size(); i<szi; i++)
-	{
+	for (short i=0, szi=m_sessions.size(); i<szi; i++) {
 		string session = m_sessions[i];
 		file << '[' << session << ']' << endl;
 
 		vector<string> keys = m_key[i];
 		vector<string> values = m_value[i];
-		for (short j=0, szj=keys.size(); j<szj; j++)
-		{
+		for (short j=0, szj=keys.size(); j<szj; j++) {
 			string key = keys[j];
 			string value = values[j];
 
@@ -119,8 +102,7 @@ void FileCFG::save(string filepath)
 	file.close();
 }
 
-vector<string> FileCFG::keys()
-{
+vector<string> FileCFG::keys() {
 	vector<string> res;
 
 	// Validate
@@ -132,8 +114,7 @@ vector<string> FileCFG::keys()
 	return res;
 }
 
-vector<string> FileCFG::values()
-{
+vector<string> FileCFG::values() {
 	vector<string> res;
 
 	// Validate
@@ -145,8 +126,7 @@ vector<string> FileCFG::values()
 	return res;
 }
 
-string FileCFG::get(string key)
-{
+string FileCFG::get(string key) {
 	// Validate
 	short sizeArr = m_sessions.size();
 	if (this->sessionID == sizeArr)
@@ -157,12 +137,11 @@ string FileCFG::get(string key)
 	for (short i = 0; i < sizeArr; i++)
 		if (m_key[sessionID][i] == key)
 			return m_value[sessionID][i];
-			
+
 	return "";
 }
 
-bool FileCFG::getBool(string key)
-{
+bool FileCFG::getBool(string key) {
 	string data = get(key);
 	if (!data.length())
 		return false;
@@ -173,8 +152,7 @@ bool FileCFG::getBool(string key)
 	return true;
 }
 
-int FileCFG::getInt(string key)
-{
+int FileCFG::getInt(string key) {
 	string data = get(key);
 	if (!data.length())
 		return 0;
@@ -185,8 +163,7 @@ int FileCFG::getInt(string key)
 	return x;
 }
 
-uint FileCFG::getUInt(string key)
-{
+uint FileCFG::getUInt(string key) {
 	string data = get(key);
 	if (!data.length())
 		return 0;
@@ -198,8 +175,7 @@ uint FileCFG::getUInt(string key)
 	return x;
 }
 
-float FileCFG::getFloat(string key)
-{
+float FileCFG::getFloat(string key) {
 	string data = get(key);
 	if (!data.length())
 		return 0.0f;
@@ -211,8 +187,7 @@ float FileCFG::getFloat(string key)
 	return x;
 }
 
-vec2 FileCFG::getVec2(string key)
-{
+vec2 FileCFG::getVec2(string key) {
 	string data = get(key);
 	if (!data.length())
 		return vec3();
@@ -224,8 +199,7 @@ vec2 FileCFG::getVec2(string key)
 	return vec2(x, y);
 }
 
-vec3 FileCFG::getVec3(string key)
-{
+vec3 FileCFG::getVec3(string key) {
 	string data = get(key);
 	if (!data.length())
 		return vec3();
@@ -237,8 +211,7 @@ vec3 FileCFG::getVec3(string key)
 	return vec3(x, y, z);
 }
 
-vec4 FileCFG::getVec4(string key)
-{
+vec4 FileCFG::getVec4(string key) {
 	string data = get(key);
 	if (!data.length())
 		return vec4();
@@ -250,27 +223,23 @@ vec4 FileCFG::getVec4(string key)
 	return vec4(x, y, z, w);
 }
 
-void FileCFG::load(string filename)
-{
+void FileCFG::load(string filename) {
 	ifstream fCFG;
 	fCFG.open(filename.c_str(), ios::in);
 	if (!fCFG.is_open())
 		throw error("LOAD_FAIL", "Can't read file: " + filename);
-	
+
 	string line;
 	vector<string> sessionKey, sessionValue;
 	short session = 0;
 
-	while (!fCFG.eof())
-	{
+	while (!fCFG.eof()) {
 		getline(fCFG, line);
 		if (line.length() == 0 || line[0] == ';')
 			continue;
 
-		if (line[0] == '[')
-		{ // session
-			if (session)
-			{
+		if (line[0] == '[') { // session
+			if (session) {
 				m_key.push_back(sessionKey);
 				m_value.push_back(sessionValue);
 				sessionKey.clear();
@@ -280,22 +249,18 @@ void FileCFG::load(string filename)
 			m_sessions.push_back(line.substr(1, line.length() - 2));
 			session++;
 		}
-		else
-		{
+		else {
 			int pos = line.find("=");
-			if (pos >= 0)
-			{
+			if (pos >= 0) {
 				sessionKey.push_back(line.substr(0, pos));
 				sessionValue.push_back(line.substr(pos+1, line.length()-pos-1));
 			}
-			else
-			{
+			else {
 				sessionValue.push_back(line);
 			}
 		}
 	}
-	if (session)
-	{
+	if (session) {
 		m_key.push_back(sessionKey);
 		m_value.push_back(sessionValue);
 		sessionKey.clear();

@@ -11,7 +11,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef VECTOR4D_H
 #define VECTOR4D_H
@@ -23,7 +23,7 @@ public:
 	VECTOR4D(void)	:	x(0.0f), y(0.0f), z(0.0f), w(0.0f)
 	{}
 
-	VECTOR4D(float newX, float newY, float newZ, float newW)	
+	VECTOR4D(float newX, float newY, float newZ, float newW)
 		:	x(newX), y(newY), z(newZ), w(newW)
 	{}
 
@@ -41,13 +41,13 @@ public:
 
 	void Set(float newX, float newY, float newZ, float newW)
 	{	x=newX;	y=newY;	z=newZ; w=newW;	}
-	
+
 	//accessors kept for compatability
 	void SetX(float newX) {x = newX;}
 	void SetY(float newY) {y = newY;}
 	void SetZ(float newZ) {z = newZ;}
 	void SetW(float newW) {w = newW;}
-	
+
 	float GetX() const {return x;}	//public accessor functions
 	float GetY() const {return y;}	//inline, const
 	float GetZ() const {return z;}
@@ -72,7 +72,7 @@ public:
 	VECTOR4D GetRotatedZ(double angle) const;
 	void RotateAxis(double angle, const VECTOR3D & axis);
 	VECTOR4D GetRotatedAxis(double angle, const VECTOR3D & axis) const;
-	
+
 	VECTOR4D lerp(const VECTOR4D & v2, float factor) const
 	{	return (*this)*(1.0f-factor)+v2*factor;	}
 

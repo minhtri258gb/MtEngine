@@ -50,7 +50,7 @@ public:
 	void drawPatches();
 	void drawPatchesInstance(int num);
 	void drawElementTriangle();
-	
+
 	int getCount();
 	void setCount(int count);
 

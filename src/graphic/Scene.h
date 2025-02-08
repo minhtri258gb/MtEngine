@@ -12,16 +12,14 @@
 namespace mt {
 namespace graphic {
 
-struct ModelRender
-{
+struct ModelRender {
 	Model* model;
 	vec3* pos;
 	quat* rot;
 	vec3* scale;
 	bool isActive;
 
-	ModelRender(Model* _model, vec3* _pos, quat* _rot, vec3* _scale)
-	{
+	ModelRender(Model* _model, vec3* _pos, quat* _rot, vec3* _scale) {
 		model = _model;
 		pos = _pos;
 		rot = _rot;
@@ -30,15 +28,14 @@ struct ModelRender
 	}
 };
 
-class Scene
-{
+class Scene {
 
 public:
 
 	// Variable
 	mat4 proj;
 	mat4 view;
-	
+
 	// Enviroment
 	SkyBox* sky;
 	StaticTerrain* terrainStatic;

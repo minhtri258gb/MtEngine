@@ -5,28 +5,24 @@
 
 using namespace mt::game;
 
-Hud::Hud()
-{
+
+Hud::Hud() {
+
 	// Default
 	this->isActive = true;
 }
 
-Hud::~Hud()
-{
-	
+Hud::~Hud() {
 }
 
-void Hud::load()
-{
+void Hud::load() {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
 }
 
-void Hud::clear()
-{
+void Hud::update() {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
 }
 
-void Hud::update()
-{
+void Hud::clear() {
 	std::cout << "\033[0;31mERROR\033[0m: " << __FILE__ << ", " << __LINE__ << std::endl;
 }

@@ -4,14 +4,13 @@
 namespace mt {
 namespace graphic {
 
-class FrustumCulling
-{
+class FrustumCulling {
 public:
 
 	// Forwards
 	FrustumCulling();
 	~FrustumCulling();
-	
+
 	void update();
 
 	// Natives

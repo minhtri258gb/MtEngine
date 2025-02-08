@@ -6,7 +6,7 @@
 #include "Scene.h"
 #include "GUI.h"
 #include "Camera.h"
-#include "hud/Text.h"
+#include "ui/Text.h"
 
 namespace mt {
 namespace graphic {
@@ -30,19 +30,22 @@ public:
 	~Graphic();
 
 	void init();
-	void close();
 	void update();
 	void render();
+	void close();
 
 	void addModel(Model* model, vec3* pos, quat* rot, vec3* scale);
 
-	void processInput();
+	// void processInput();
 	void renderPre();
 	void renderPost();
 
 	// Native
 	bool checkWindow();
 	double getTime();
+
+	bool isShowCursor();
+	void showCursor(bool toogle);
 
 	void setDepthTest(bool value = true);
 	void setDepthMark(bool);
@@ -63,6 +66,8 @@ private:
 	// Variable
 	class GraphicImpl;
 	GraphicImpl* impl;
+
+	friend class GUI;
 
 };
 

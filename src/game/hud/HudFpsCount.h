@@ -6,14 +6,13 @@
 namespace mt {
 namespace game {
 
-class HudFpsCount : public Hud
-{
+class HudFpsCount : public Hud {
 
 public:
 
 	HudFpsCount();
 	~HudFpsCount();
-	
+
 	void load();
 	void clear();
 	void update();

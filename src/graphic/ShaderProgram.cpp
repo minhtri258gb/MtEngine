@@ -71,7 +71,7 @@ void ShaderProgram::init(string _filename, int _flag) {
 		glDeleteShader(tessControlShaderId);
 	if (_flag & SHADER_TYPE::TESS_EVALUATION)
 		glDeleteShader(tessEvaluationShaderId);
-	
+
 	// Check
 	int success;
 	char infoLog[512];
@@ -131,7 +131,7 @@ void ShaderProgram::setVec4(int _locationId, vec4 _value) {
 
 void ShaderProgram::setMat4(int _locationId, mat4 _value) {
 	glUniformMatrix4fv(this->locations.at(_locationId), 1, GL_FALSE, &_value[0]);
-	
+
 	// debug - begin
 	// cout << "=================\n";
 	// cout << _value[0][0] << " " << _value[0][1] << " " << _value[0][2] << " " << _value[0][3] << " " << endl;
@@ -155,7 +155,7 @@ unsigned int ShaderProgram::initShaderPath(string _filepath, SHADER_TYPE _type) 
 	stringstream shaderStream;
 	shaderStream << shaderFile.rdbuf();
 	shaderFile.close();
-	
+
 	string shaderSrc = shaderStream.str();
 	const char* bufferSource = shaderSrc.c_str();
 
@@ -178,7 +178,7 @@ unsigned int ShaderProgram::initShaderPath(string _filepath, SHADER_TYPE _type) 
 		shaderId = glCreateShader(GL_TESS_EVALUATION_SHADER);
 		break;
 	}
-	
+
 	glShaderSource(shaderId, 1, &bufferSource, NULL);
 	glCompileShader(shaderId);
 

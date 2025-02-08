@@ -12,8 +12,8 @@ uniform mat4 proj;
 uniform mat4 view;
 uniform mat4 model;
 
-void main()
-{
+void main() {
+
 	// Cal
 	f_trans_position = vec3(model * vec4(v_position, 1.0f));
 

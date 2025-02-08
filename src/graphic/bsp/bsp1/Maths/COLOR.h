@@ -13,7 +13,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef COLOR_H
 #define COLOR_H
@@ -38,13 +38,13 @@ public:
 
 	void Set(float newR, float newG, float newB, float newA=0.0f)
 	{	r=newR;	g=newG;	b=newB;	a=newA;	}
-	
+
 	//accessors kept for compatability
 	void SetR(float newR) {r = newR;}
 	void SetG(float newG) {g = newG;}
 	void SetB(float newB) {b = newB;}
 	void SetA(float newA) {a = newA;}
-	
+
 	float GetR() const {return r;}	//public accessor functions
 	float GetG() const {return g;}	//inline, const
 	float GetB() const {return b;}

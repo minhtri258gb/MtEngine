@@ -3,8 +3,7 @@
 
 namespace mt {
 
-class Image
-{
+class Image {
 public:
 
 	// Variable

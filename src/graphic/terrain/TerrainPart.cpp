@@ -17,16 +17,14 @@ using namespace mt::engine;
 using namespace mt::graphic;
 
 
-class TerrainPart::TerrainPartImpl
-{
+class TerrainPart::TerrainPartImpl {
 public:
 	TerrainQuad* root;
 	VertexArrayObject VAO;
 	Texture heightMapTex;
 };
 
-TerrainPart::TerrainPart()
-{
+TerrainPart::TerrainPart() {
 	// Implement
 	impl = new TerrainPartImpl();
 
@@ -48,11 +46,9 @@ TerrainPart::TerrainPart()
 	// Init Texture
 	this->heightScale = 50.0f; // #TODO config
 	impl->heightMapTex.init("./res/terrains/static/chadvernon/heightmap.png");
-	
 }
 
-TerrainPart::~TerrainPart()
-{
+TerrainPart::~TerrainPart() {
 	// Delete root
 	delete impl->root;
 
@@ -60,8 +56,7 @@ TerrainPart::~TerrainPart()
 	delete impl;
 }
 
-void TerrainPart::render()
-{
+void TerrainPart::render() {
 	// Update Shader
 	Terrain::shader.setFloat(4, this->heightScale);
 
@@ -73,8 +68,7 @@ void TerrainPart::render()
 	impl->root->update();
 	impl->root->getData(count, positions, levels, parts);
 
-	if (count)
-	{
+	if (count) {
 		impl->heightMapTex.bind(1);
 
 		impl->VAO.bind();

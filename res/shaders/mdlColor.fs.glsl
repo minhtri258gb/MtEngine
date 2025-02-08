@@ -10,8 +10,8 @@ uniform vec3 camPos;
 uniform vec4 lightColor = vec4(1.0f, 1.0f, 1.0f, 1.0f); // #TODO
 uniform vec3 lightPos = vec3(-200.0f, 500.0f, -400.0f); // #TODO
 
-void main()
-{
+void main() {
+
 	// // Ambient light
 	// float ambient = 0.50f;
 

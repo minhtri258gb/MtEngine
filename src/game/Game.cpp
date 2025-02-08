@@ -1,7 +1,5 @@
 #define __MT_GAME_CPP__
 
-// #define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
-
 #include <iostream>
 #include <vector>
 #include <map>
@@ -9,11 +7,13 @@
 
 #include "common.h"
 
+#include "engine/Log.h"
 #include "engine/Timer.h"
 #include "engine/math/Math.h"
 #include "graphic/Graphic.h"
 #include "physic/Physic.h"
 #include "Game.h"
+
 #include "game/CommandMgr.h"
 #include "game/maps/MapBuilder.h"
 
@@ -27,76 +27,50 @@ using namespace mt::game;
 Game Game::ins;
 
 Game::Game() {
-	this->mainloop = true;
+	LOG("Game");
+	try {
+		this->m_mainloop = true;
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
-
 Game::~Game() {
+	LOG("~Game");
 }
 
 void Game::run() {
-
-	#ifdef LOG
-	LOG
-	#endif
-
+	LOG("run");
 	try {
-		this->init();
 
-		#ifdef LOG
-		LOG
-		#endif
+		this->init();
 
 		this->framework();
 
-		#ifdef LOG
-		LOG
-		#endif
-	
 		this->close();
-	
-		#ifdef LOG
-		LOG
-		#endif
-
 	}
 	catch (Exception e) {
-
-		#ifdef LOG
-		LOG
-		#endif
-
+		track(e);
 		cerr << "[ERROR]: " << std::endl << e.getMessage() << '\n';
 	}
 	catch (exception &e) {
-		
-		#ifdef LOG
-		LOG
-		#endif
-	
 		cerr << "[ERROR]: " << e.what() << '\n';
 	}
-	
-	#ifdef LOG
-	LOG
-	#endif
 }
-
-void Game::init()
-{
+void Game::init() {
+	LOG("init");
 	try {
+
 		// Init module
 		Timer::ins.init();
 		Graphic::ins.init();
 		Physic::ins.init();
 		CommandMgr::ins.init();
 
-		#ifdef LOG
-		LOG
-		#endif
-		
 		// Init component
 		this->screen.init();
-		this->map = MapBuilder::firstLoad();
+		this->map = this->mapBuilder.firstLoad();
 
 		// #EXTRA
 	}
@@ -105,70 +79,38 @@ void Game::init()
 		throw e;
 	}
 }
-
-void Game::framework()
-{
+void Game::framework() {
+	LOG("framework");
 	try {
-		#ifdef LOG
-		LOG
-		#endif
 
 		// Before loop
 		// Timer::ins.init();
 
 		// Main loop
-		while (this->mainloop)
-		{
-			// input
-			Graphic::ins.processInput();
+		while (this->m_mainloop) {
 
-			#ifdef LOG
-			LOG
-			#endif
+			// input
+			// Graphic::ins.processInput();
 
 			// Input network
 
-			#ifdef LOG
-			LOG
-			#endif
-			
 			// Process Command
 			CommandMgr::ins.update();
 
 			// loading
 			this->map->load();
 
-			#ifdef LOG
-			LOG
-			#endif
-			
 			// Physic
 			Physic::ins.update();
 
-			#ifdef LOG
-			LOG
-			#endif
-			
 			// Pre Process
 			Graphic::ins.camera.update();
 
-			#ifdef LOG
-			LOG
-			#endif
-			
 			// Map update
 			this->map->update();
 
-			#ifdef LOG
-			LOG
-			#endif
-			
 			// rendering commands here
 			Graphic::ins.renderPre();
-
-			#ifdef LOG
-			LOG
-			#endif
 
 			// Bind Buffer
 
@@ -184,17 +126,13 @@ void Game::framework()
 			// Graphic
 			Graphic::ins.render();
 
-			#ifdef LOG
-			LOG
-			#endif
-
 			// #ADD
 
 			// reset state input
 
 			// check and call events and swap the buffers
 			if (!Graphic::ins.checkWindow())
-				this->mainloop = false;
+				this->m_mainloop = false;
 			Graphic::ins.renderPost();
 
 			// Sync FPS
@@ -206,19 +144,35 @@ void Game::framework()
 		throw e;
 	}
 }
+void Game::close() {
+	LOG("close");
+	try {
+		// Clear component
 
-void Game::close()
-{
-	// Clear component
-	
-	// #EXTRA
-	this->map->clear();
-	delete this->map;
+		// #EXTRA
+		this->map->clear();
+		delete this->map;
 
-	// Close Module
-	
-	// #EXTRA
-	
-	Physic::ins.close();
-	Graphic::ins.close();
+		// Close Module
+
+		// #EXTRA
+
+		Physic::ins.close();
+		Graphic::ins.close();
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
+}
+
+void Game::exit() {
+	LOG("exit");
+	try {
+		this->m_mainloop = false;
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }

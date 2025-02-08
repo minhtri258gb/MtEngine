@@ -7,8 +7,7 @@
 namespace mt {
 namespace game {
 
-class Map
-{
+class Map {
 
 public:
 

@@ -10,7 +10,7 @@
 //	Copyright (c) 2006, Paul Baker
 //	Distributed under the New BSD Licence. (See accompanying file License.txt or copy at
 //	http://www.paulsprojects.net/NewBSDLicense.txt)
-//////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef PLANE_H
 #define PLANE_H
@@ -26,24 +26,24 @@ public:
 	{	normal=rhs.normal;	intercept=rhs.intercept;	}
 
 	~PLANE() {}
-	
+
 	void SetNormal(const VECTOR3D & rhs) { normal=rhs; }
 	void SetIntercept(float newIntercept) { intercept=newIntercept; }
 	void SetFromPoints(const VECTOR3D & p0, const VECTOR3D & p1, const VECTOR3D & p2);
 
 	void CalculateIntercept(const VECTOR3D & pointOnPlane) { intercept=-normal.DotProduct(pointOnPlane); }
-	
+
 	void Normalize(void);
 
 	VECTOR3D GetNormal() { return normal; }
 	float GetIntercept() { return intercept; }
-	
+
 	//find point of intersection of 3 planes
 	bool Intersect3(const PLANE & p2, const PLANE & p3, VECTOR3D & result);
 
 	float GetDistance(const VECTOR3D & point) const;
 	int ClassifyPoint(const VECTOR3D & point) const;
-	
+
 	PLANE lerp(const PLANE & p2, float factor);
 
 	//operators

@@ -4,8 +4,7 @@
 namespace mt {
 namespace engine {
 
-class Timer
-{
+class Timer {
 public:
 
 	// Variables
@@ -14,7 +13,7 @@ public:
 	// Forwards
 	Timer();
 	~Timer();
-	
+
 	void init();
 	void sleep();
 

@@ -8,8 +8,7 @@
 namespace mt {
 namespace graphic {
 
-class ColorModel : public Model
-{
+class ColorModel : public Model {
 
 public:
 
@@ -17,7 +16,7 @@ public:
 	static ShaderProgram shader;
 
 	// Constructor
-	ColorModel();
+	ColorModel(std::string name);
 	~ColorModel();
 
 	// Load custom

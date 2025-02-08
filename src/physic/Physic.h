@@ -1,38 +1,41 @@
 #ifndef __MT_PHYSIC_H__
 #define __MT_PHYSIC_H__
 
-#include "body/RigidBody.h"
-#include "body/ControlBody.h"
+#include "PhysicBuilder.h"
 
 namespace mt {
 namespace physic {
 
-class Physic
-{
+class RigidBody;
+class PhysicBuilder;
+
+class Physic {
 public:
 
 	// Variable
 	static Physic ins;
+	PhysicBuilder builder;
 
 	// General
 	Physic();
 	~Physic();
 
+	// Static
+	static void cbkInteract();
+
+	// Native
 	void init();
-	void close();
-
 	void update();
-
-	void add(RigidBody*);
-	void add(ControlBody*);
-	void remove(RigidBody*);
-	void remove(ControlBody*);
+	void close();
 
 private:
 
 	// Variable
 	class PhysicImpl;
 	PhysicImpl* impl;
+
+	friend class RigidBody;
+	friend class PhysicBuilder;
 
 };
 

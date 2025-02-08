@@ -97,7 +97,7 @@ vec3 FindPlayerStart(const char *entities)
 class BspQuakeMap::BspQuakeMapImpl {
 public:
 	VertexArrayObject VAO;
-	
+
 	Q3BspMap* m_q3map;
 };
 
@@ -161,7 +161,7 @@ void BspQuakeMap::render() {
 	// Tham khao: glUniform1f(ShaderManager::GetInstance()->UseShaderProgram(ShaderManager::BasicShader).uniforms[WorldScaleFactor], );
 	modelMat.scale(1.f / Q3BspMap::s_worldScale);
 	this->shader.setMat4(2, modelMat);
-	
+
 	// // Graphic::ins.wireframe(true);
 	// Graphic::ins.cullFaceToogle(false);
 
@@ -170,7 +170,7 @@ void BspQuakeMap::render() {
 	impl->m_q3map->OnRenderStart();
 	impl->m_q3map->Render();
 	impl->m_q3map->OnRenderFinish();
-	
+
 	// impl->VAO.bind();
 	// impl->VAO.drawElementTriangle();
 	// impl->VAO.unbind();

@@ -5,9 +5,15 @@
 - [X] kiểm tra FPS
 - [ ] Text - VAO ko update dynamic được
 
+# UI
+- [ ] Nhập thư viện ImGUI
+- [ ] Mở 1 cửa sổ khi nhấn F1
+- [ ] Mở console khi nhấn `
+- [ ] ...
+
 # Player
 - [X] gắn vào người chơi
-- [ ] đi lòng vòng
+- [X] đi lòng vòng
 - [ ] tạo heightmap field
 - [ ] đi trên đó
 
@@ -22,6 +28,7 @@
 
 # Physic body plane
 - [Chưa test] Đã sửa lỗi phương trình mặt phẳng planeConst thay vì tham số scale
+- [ ] Lỗi chưa set vị trí ban đầu cho ControlBody được -> Player chưa có vị trí ban đầu theo config
 
 # StackTrace
 * backward-cpp-1.6

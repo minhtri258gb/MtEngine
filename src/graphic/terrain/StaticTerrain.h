@@ -15,8 +15,11 @@ public:
 	// Forwards
 	StaticTerrain();
 	~StaticTerrain();
-	void init(std::string filepath);
+
+	void initVAO(int depth, int width, std::vector<float> heightData, float cellScale);
+	void initTexture(std::string filepath);
 	void render();
+	void clear();
 
 	// Natives
 

@@ -5,12 +5,9 @@
 
 using namespace mt::engine;
 
-Node::Node()
-{
-	
+
+Node::Node() {
 }
 
-Node::~Node()
-{
-	
+Node::~Node() {
 }

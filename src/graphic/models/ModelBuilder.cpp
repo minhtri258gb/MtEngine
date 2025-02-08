@@ -1,7 +1,5 @@
 #define __MT_MODEL_BUILDER_CPP__
 
-// #define LOG cout << __FILE__ << " | " << __LINE__ << '\n';
-
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
@@ -11,6 +9,7 @@
 
 #include "common.h"
 #include "engine/Config.h"
+#include "engine/Log.h"
 #include "engine/file/FileCFG.h"
 #include "engine/utils/StringUtils.h"
 #include "engine/utils/FilePathUtils.h"
@@ -23,6 +22,7 @@ using namespace std;
 using namespace mt;
 using namespace mt::engine;
 using namespace mt::graphic;
+
 
 class ModelBuilder::ModelBuilderImpl {
 public:
@@ -54,36 +54,35 @@ public:
 };
 
 ModelBuilder::ModelBuilder() {
-	// Implement
-	this->impl = new ModelBuilderImpl();
+	LOG("ModelBuilder");
+	try {
+
+		// Implement
+		this->impl = new ModelBuilderImpl();
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 ModelBuilder::~ModelBuilder() {
+	LOG("~ModelBuilder");
+
 	// Implement
 	delete this->impl;
 }
 
 Model* ModelBuilder::loadModel(string name) {
+	LOG("loadModel");
+	try {
 
-	#ifdef LOG
-	LOG
-	#endif
-
-	Model* model = this->createDefaultModel(name);
-	if (!model) {
-		
-		#ifdef LOG
-		LOG
-		#endif
+		Model* model = nullptr;
 
 		// Load config
 		string modelDir = Config::ins.model_path + name + "/";
 		string configPath = modelDir + "info.cfg";
 		FileCFG fCFG(configPath);
-	
-		#ifdef LOG
-		LOG
-		#endif
 
 		fCFG.select("graphic");
 		string type = fCFG.get("type");
@@ -91,178 +90,188 @@ Model* ModelBuilder::loadModel(string name) {
 		vec3 modelPos = fCFG.getVec3("pos");
 		vec3 modelRot = fCFG.getVec3("rot");
 		vec3 modelScale = fCFG.getVec3("scale");
-	
-		#ifdef LOG
-		LOG
-		#endif
-
-		// Load model
-		string modelPath = modelDir + modelFile;
-		
-		vector<vec3> vertices;
-		vector<vec4> colors;
-		vector<vec2> texcoords;
-		vector<vec3> normals;
-		vector<uint> indices;
-	
-		// string ext = FilePathUtils::getExtension(modelPath);
-		// if (ext == "obj")
-		// 	impl->loadByTinyOBJLoader(modelDir, modelPath, vertices, colors, texcoords, normals, indices);
-		// else if (ext == "glb" || ext == "glft")
-		// 	impl->loadByTinyGLFT(modelPath, vertices, colors, texcoords, normals, indices);
-		// else
-			impl->loadByAssimp(modelPath, vertices, colors, texcoords, normals, indices);
-	
-		#ifdef LOG
-		LOG
-		#endif
 
 		// Create model
-		if (type == "color") {
-			
-			#ifdef LOG
-			LOG
-			#endif
+		if (type == "shape") {
+			model = this->createDefaultModel(modelFile);
+			model->pos = modelPos;
+			model->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
+			model->scale = modelScale;
+		}
+		else if (type == "color") {
 
-			ColorModel *newModel = new ColorModel();
+			ColorModel *newModel = new ColorModel(name);
 			newModel->pos = modelPos;
 			newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
 			newModel->scale = modelScale;
-			
-			#ifdef LOG
-			LOG
-			#endif
+
+			// Load model
+			string modelPath = modelDir + modelFile;
+
+			vector<vec3> vertices;
+			vector<vec4> colors;
+			vector<vec2> texcoords;
+			vector<vec3> normals;
+			vector<uint> indices;
+
+			// string ext = FilePathUtils::getExtension(modelPath);
+			// if (ext == "obj")
+			// 	impl->loadByTinyOBJLoader(modelDir, modelPath, vertices, colors, texcoords, normals, indices);
+			// else if (ext == "glb" || ext == "glft")
+			// 	impl->loadByTinyGLFT(modelPath, vertices, colors, texcoords, normals, indices);
+			// else
+			impl->loadByAssimp(modelPath, vertices, colors, texcoords, normals, indices);
 
 			newModel->loadVAO(vertices, colors, indices);
-
-			#ifdef LOG
-			LOG
-			#endif
 
 			model = newModel; // Override class
 		}
 		else { // simple
 
-			#ifdef LOG
-			LOG
-			#endif
-
 			string textureFile = fCFG.get("texture");
 
-			SimpleModel *newModel = new SimpleModel();
+			SimpleModel *newModel = new SimpleModel(name);
 			newModel->pos = modelPos;
 			newModel->rot = quat(Math::toRadian(modelRot.x), Math::toRadian(modelRot.y), Math::toRadian(modelRot.z));
 			newModel->scale = modelScale;
 
-			#ifdef LOG
-			LOG
-			#endif
+			// Load model
+			string modelPath = modelDir + modelFile;
+
+			vector<vec3> vertices;
+			vector<vec4> colors;
+			vector<vec2> texcoords;
+			vector<vec3> normals;
+			vector<uint> indices;
+
+			// string ext = FilePathUtils::getExtension(modelPath);
+			// if (ext == "obj")
+			// 	impl->loadByTinyOBJLoader(modelDir, modelPath, vertices, colors, texcoords, normals, indices);
+			// else if (ext == "glb" || ext == "glft")
+			// 	impl->loadByTinyGLFT(modelPath, vertices, colors, texcoords, normals, indices);
+			// else
+			impl->loadByAssimp(modelPath, vertices, colors, texcoords, normals, indices);
 
 			newModel->loadVAO(vertices, texcoords, indices);
-			
-			#ifdef LOG
-			LOG
-			#endif
 
 			newModel->loadTexture(modelDir + textureFile);
 
-			#ifdef LOG
-			LOG
-			#endif
-
 			model = newModel; // Override class
 		}
-	}
-	
-	#ifdef LOG
-	LOG
-	#endif
 
-	return model;
+		return model;
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 Model* ModelBuilder::createDefaultModel(string _name) {
-	if (_name == "box")
-		return this->createBox();
-	else if (_name == "plane")
-		return this->createPlane();
-	
-	return nullptr;
+	LOG("createDefaultModel");
+	try {
+		if (_name == "box")
+			return this->createBox();
+		else if (_name == "plane")
+			return this->createPlane();
+
+		return nullptr;
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 Model* ModelBuilder::createBox() {
-	SimpleModel *model = new SimpleModel();
+	LOG("createBox");
+	try {
 
-	vector<vec3> vertices;
-	vertices.push_back(vec3( 1.0f,  1.0f,  1.0f));
-	vertices.push_back(vec3( 1.0f,  1.0f, -1.0f));
-	vertices.push_back(vec3( 1.0f, -1.0f,  1.0f));
-	vertices.push_back(vec3( 1.0f, -1.0f, -1.0f));
-	vertices.push_back(vec3(-1.0f,  1.0f,  1.0f));
-	vertices.push_back(vec3(-1.0f,  1.0f, -1.0f));
-	vertices.push_back(vec3(-1.0f, -1.0f,  1.0f));
-	vertices.push_back(vec3(-1.0f, -1.0f, -1.0f));
+		SimpleModel *model = new SimpleModel("default_box");
 
-	// vector<vec2> texcoords; // crash
-	// texcoords.push_back(vec2(1.0f, 1.0f));
-	// texcoords.push_back(vec2(1.0f, 0.0f));
-	// texcoords.push_back(vec2(1.0f, 1.0f));
-	// texcoords.push_back(vec2(1.0f, 0.0f));
-	// texcoords.push_back(vec2(0.0f, 1.0f));
-	// texcoords.push_back(vec2(0.0f, 0.0f));
-	// texcoords.push_back(vec2(0.0f, 1.0f));
-	// texcoords.push_back(vec2(0.0f, 0.0f));
+		vector<vec3> vertices;
+		vertices.push_back(vec3( 1.0f,  1.0f,  1.0f));
+		vertices.push_back(vec3( 1.0f,  1.0f, -1.0f));
+		vertices.push_back(vec3( 1.0f, -1.0f,  1.0f));
+		vertices.push_back(vec3( 1.0f, -1.0f, -1.0f));
+		vertices.push_back(vec3(-1.0f,  1.0f,  1.0f));
+		vertices.push_back(vec3(-1.0f,  1.0f, -1.0f));
+		vertices.push_back(vec3(-1.0f, -1.0f,  1.0f));
+		vertices.push_back(vec3(-1.0f, -1.0f, -1.0f));
 
-	vector<uint> indices;
-	indices.push_back(0); indices.push_back(1); indices.push_back(3);
-	indices.push_back(0); indices.push_back(3); indices.push_back(2);
-	indices.push_back(6); indices.push_back(7); indices.push_back(5);
-	indices.push_back(6); indices.push_back(5); indices.push_back(4);
-	indices.push_back(2); indices.push_back(3); indices.push_back(7);
-	indices.push_back(2); indices.push_back(7); indices.push_back(6);
-	indices.push_back(4); indices.push_back(5); indices.push_back(1);
-	indices.push_back(4); indices.push_back(1); indices.push_back(0);
-	indices.push_back(6); indices.push_back(4); indices.push_back(0);
-	indices.push_back(6); indices.push_back(0); indices.push_back(2);
-	indices.push_back(5); indices.push_back(7); indices.push_back(3);
-	indices.push_back(5); indices.push_back(3); indices.push_back(1);
+		// vector<vec2> texcoords; // crash
+		// texcoords.push_back(vec2(1.0f, 1.0f));
+		// texcoords.push_back(vec2(1.0f, 0.0f));
+		// texcoords.push_back(vec2(1.0f, 1.0f));
+		// texcoords.push_back(vec2(1.0f, 0.0f));
+		// texcoords.push_back(vec2(0.0f, 1.0f));
+		// texcoords.push_back(vec2(0.0f, 0.0f));
+		// texcoords.push_back(vec2(0.0f, 1.0f));
+		// texcoords.push_back(vec2(0.0f, 0.0f));
 
-	model->loadVAO(vertices, indices);
+		vector<uint> indices;
+		indices.push_back(0); indices.push_back(1); indices.push_back(3);
+		indices.push_back(0); indices.push_back(3); indices.push_back(2);
+		indices.push_back(6); indices.push_back(7); indices.push_back(5);
+		indices.push_back(6); indices.push_back(5); indices.push_back(4);
+		indices.push_back(2); indices.push_back(3); indices.push_back(7);
+		indices.push_back(2); indices.push_back(7); indices.push_back(6);
+		indices.push_back(4); indices.push_back(5); indices.push_back(1);
+		indices.push_back(4); indices.push_back(1); indices.push_back(0);
+		indices.push_back(6); indices.push_back(4); indices.push_back(0);
+		indices.push_back(6); indices.push_back(0); indices.push_back(2);
+		indices.push_back(5); indices.push_back(7); indices.push_back(3);
+		indices.push_back(5); indices.push_back(3); indices.push_back(1);
 
-	// model->texture.init("./res/textures/default.png");
+		model->loadVAO(vertices, indices);
 
-	return model;
+		// model->texture.init("./res/textures/default.png");
+
+		return model;
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 Model* ModelBuilder::createPlane() {
-	SimpleModel *model = new SimpleModel();
+	LOG("createPlane");
+	try {
 
-	vector<vec3> vertices;
-	vertices.push_back(vec3(-0.5f, 0.0f, -0.5f));
-	vertices.push_back(vec3( 0.5f, 0.0f, -0.5f));
-	vertices.push_back(vec3(-0.5f, 0.0f,  0.5f));
-	vertices.push_back(vec3( 0.5f, 0.0f,  0.5f));
+		SimpleModel *model = new SimpleModel("default_plane");
 
-	vector<vec2> texcoords;
-	texcoords.push_back(vec2(0.0f, 1.0f));
-	texcoords.push_back(vec2(1.0f, 1.0f));
-	texcoords.push_back(vec2(0.0f, 0.0f));
-	texcoords.push_back(vec2(1.0f, 0.0f));
+		vector<vec3> vertices;
+		vertices.push_back(vec3(-0.5f, 0.0f, -0.5f));
+		vertices.push_back(vec3( 0.5f, 0.0f, -0.5f));
+		vertices.push_back(vec3(-0.5f, 0.0f,  0.5f));
+		vertices.push_back(vec3( 0.5f, 0.0f,  0.5f));
 
-	vector<vec3> normals;
-	normals.push_back(vec3(0.0f, 1.0f, 0.0f));
-	normals.push_back(vec3(0.0f, 1.0f, 0.0f));
-	normals.push_back(vec3(0.0f, 1.0f, 0.0f));
-	normals.push_back(vec3(0.0f, 1.0f, 0.0f));
+		vector<vec2> texcoords;
+		texcoords.push_back(vec2(0.0f, 1.0f));
+		texcoords.push_back(vec2(1.0f, 1.0f));
+		texcoords.push_back(vec2(0.0f, 0.0f));
+		texcoords.push_back(vec2(1.0f, 0.0f));
 
-	vector<uint> indices;
-	indices.push_back(0); indices.push_back(2); indices.push_back(1);
-	indices.push_back(1); indices.push_back(2); indices.push_back(3);
-	
-	model->loadVAO(vertices, texcoords, normals, indices);
-	model->loadTexture("./res/textures/default.tga");
+		vector<vec3> normals;
+		normals.push_back(vec3(0.0f, 1.0f, 0.0f));
+		normals.push_back(vec3(0.0f, 1.0f, 0.0f));
+		normals.push_back(vec3(0.0f, 1.0f, 0.0f));
+		normals.push_back(vec3(0.0f, 1.0f, 0.0f));
 
-	return model;
+		vector<uint> indices;
+		indices.push_back(0); indices.push_back(2); indices.push_back(1);
+		indices.push_back(1); indices.push_back(2); indices.push_back(3);
+
+		model->loadVAO(vertices, texcoords, normals, indices);
+		model->loadTexture("./res/textures/default.tga");
+
+		return model;
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 
@@ -275,6 +284,8 @@ void ModelBuilder::ModelBuilderImpl::loadByAssimp(
 	,vector<vec3>& normals
 	,vector<uint>& indices
 ) {
+	LOG("loadByAssimp");
+
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(modelPath,
 		  aiProcess_Triangulate
@@ -283,7 +294,7 @@ void ModelBuilder::ModelBuilderImpl::loadByAssimp(
 	);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		throw error("ASSIMP_SCENE_ERROR", importer.GetErrorString());
-	
+
 	// Build mesh
 	aiMesh* mesh = scene->mMeshes[0]; // #HARD chỉ load 1 mesh
 
@@ -299,7 +310,7 @@ void ModelBuilder::ModelBuilderImpl::loadByAssimp(
 		}
 		else
 			texcoords.push_back(vec2(0.0f, 0.0f));
-		
+
 		// Normal
 		aiVector3D normal = mesh->mNormals[i];
 		normals.push_back(vec3(normal.x, normal.y, normal.z));
@@ -361,6 +372,8 @@ void ModelBuilder::ModelBuilderImpl::loadByTinyGLFT(
 		,vector<vec3>& normals
 		,vector<uint>& indices
 ) {
+	LOG("loadByTinyGLFT");
+
 	tinygltf::Model model;
 	tinygltf::TinyGLTF loader;
 	string err;
@@ -379,7 +392,7 @@ void ModelBuilder::ModelBuilderImpl::loadByTinyGLFT(
 	if (!isLoaded)
 		throw error("TINYGIFT_LOAD_FAIL", "Faild to load Model with tinyglft");
 
-	int a=1;
+	// int a=1;
 
 	// #TODO
 }
@@ -393,13 +406,15 @@ void ModelBuilder::ModelBuilderImpl::loadByTinyOBJLoader(
 	,vector<vec3>& normals
 	,vector<uint>& indices
 ) {
+	LOG("loadByTinyOBJLoader");
+
 	tinyobj::attrib_t inattrib;
 	vector<tinyobj::shape_t> inshapes;
 	std::vector<tinyobj::material_t> materials;
 	std::string warn;
 	std::string err;
-	bool ret = tinyobj::LoadObj(&inattrib, &inshapes, &materials, &err, modelPath.c_str(), modelDir.c_str(), true);
-	int a = 1;
+	// bool ret = tinyobj::LoadObj(&inattrib, &inshapes, &materials, &err, modelPath.c_str(), modelDir.c_str(), true);
+	// int a = 1;
 
 	uint sizeBuffer = inattrib.vertices.size();
 	vector<bool> hasVertices(sizeBuffer, false);

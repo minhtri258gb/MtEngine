@@ -1,103 +1,94 @@
 #define __MT_PHYSIC_CPP__
 
-#include <btBulletDynamicsCommon.h>
-#include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
-#include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include <BulletDynamics/Character/btKinematicCharacterController.h>
+/**
+ * https://www.reactphysics3d.com/documentation/index.html
+ */
+
+#include <reactphysics3d/reactphysics3d.h>
 
 #include "common.h"
+#include "engine/Config.h"
+#include "engine/Log.h"
 #include "engine/Timer.h"
+#include "engine/utils/StringUtils.h"
 #include "Physic.h"
 
 using namespace std;
 using namespace mt::engine;
 using namespace mt::physic;
+namespace rp3 = reactphysics3d;
+
 
 Physic Physic::ins;
 
-class Physic::PhysicImpl
-{
+class Physic::PhysicImpl {
 public:
-	btBroadphaseInterface* broadphase;
-	btDefaultCollisionConfiguration* collisionConfiguration;
-	btCollisionDispatcher* dispatcher;
-	btDiscreteDynamicsWorld* dynamicsWorld;
-	btSequentialImpulseConstraintSolver* solver;
+	rp3::PhysicsCommon common;
+	rp3::PhysicsWorld* world;
 };
 
-class RigidBody::RigidBodyImpl
-{
-public:
-	btCollisionShape* shape;
-	btRigidBody* body;
-	bool isAction;
-};
 
-class ControlBody::ControlBodyImpl
-{
-public:
-	btPairCachingGhostObject *ghostObject;
-	btKinematicCharacterController* controller;
-	bool isAction;
-};
+Physic::Physic() {
+	LOG("Physic");
+	try {
 
-Physic::Physic()
-{
+		// Impliment
+		impl = new PhysicImpl();
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
+}
+Physic::~Physic() {
+	LOG("~Physic");
+
 	// Impliment
-	this->impl = new PhysicImpl();
+	delete impl;
 }
 
-Physic::~Physic()
-{
-	// Impliment
-	delete this->impl;
-}
+void Physic::init() {
+	LOG("init");
+	try {
 
-void Physic::init()
-{
-	impl->broadphase = new btDbvtBroadphase();
-	impl->collisionConfiguration = new btDefaultCollisionConfiguration();
-	impl->dispatcher = new btCollisionDispatcher(impl->collisionConfiguration);
-	// btGImpactCollisionAlgorithm::registerAlgorithm(impl->dispatcher);
-	impl->solver = new btSequentialImpulseConstraintSolver;
-	impl->dynamicsWorld = new btDiscreteDynamicsWorld(impl->dispatcher, impl->broadphase, impl->solver, impl->collisionConfiguration);
-	impl->dynamicsWorld->setGravity(btVector3(0, -9.8, 0));
-}
+		// Tạo thế giới
+		impl->world = impl->common.createPhysicsWorld();
 
-void Physic::close()
-{
-	delete impl->dynamicsWorld;
-	delete impl->solver;
-	delete impl->dispatcher;
-	delete impl->collisionConfiguration;
-	delete impl->broadphase;
+		// Trọng lực
+		float gravity = Config::ins.physic_gravity;
+		impl->world->setGravity(reactphysics3d::Vector3(0, -gravity, 0));
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
+void Physic::update() {
+	// static int i = 0;
+	// LOG(StringUtils::format("update: %d", i++));
+	LOG("update");
+	try {
 
-void Physic::update()
-{
-	impl->dynamicsWorld->stepSimulation(Timer::ins.getTimePassed(), 1);
+		// Vòng lặp mô phỏng vật lý
+		float timestep = Timer::ins.getTimePassed();
+		if (timestep > 2)
+			timestep = 2;
+		impl->world->update(timestep);
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
+void Physic::close() {
+	LOG("close");
+	try {
 
-void Physic::add(RigidBody* body)
-{
-	impl->dynamicsWorld->addRigidBody(body->impl->body);
-}
-
-void Physic::add(ControlBody* body)
-{
-	impl->dynamicsWorld->getPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
-	impl->dynamicsWorld->addCollisionObject(body->impl->ghostObject, btBroadphaseProxy::CharacterFilter,
-			btBroadphaseProxy::StaticFilter | btBroadphaseProxy::DefaultFilter);
-	impl->dynamicsWorld->addAction(body->impl->controller);
-}
-
-void Physic::remove(RigidBody* body)
-{
-	impl->dynamicsWorld->removeRigidBody(body->impl->body);
-}
-
-void Physic::remove(ControlBody* body)
-{
-	impl->dynamicsWorld->removeCollisionObject(body->impl->ghostObject);
-	impl->dynamicsWorld->removeAction(body->impl->controller);
+		// Dọn dẹp
+		impl->common.destroyPhysicsWorld(impl->world);
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }

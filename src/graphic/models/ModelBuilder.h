@@ -6,8 +6,7 @@
 namespace mt {
 namespace graphic {
 
-class ModelBuilder
-{
+class ModelBuilder {
 
 public:
 

@@ -9,8 +9,8 @@ using namespace std::chrono;
 using namespace std::chrono::_V2;
 using namespace mt::engine;
 
-class Timer::TimerImpl
-{
+
+class Timer::TimerImpl {
 public:
 	long frameTimeLimit;
 	long lastTime;
@@ -21,8 +21,7 @@ public:
 
 Timer Timer::ins;
 
-Timer::Timer()
-{
+Timer::Timer() {
 	// Implement
 	impl = new TimerImpl;
 
@@ -31,48 +30,40 @@ Timer::Timer()
 	impl->elapsedTime = 0.0f;
 }
 
-Timer::~Timer()
-{
+Timer::~Timer() {
 	// Implement
 	delete impl;
 }
 
-void Timer::init()
-{
+void Timer::init() {
 	impl->lastTime = clock();
 }
 
-void Timer::setFPSLimit(int value)
-{
+void Timer::setFPSLimit(int value) {
 	impl->frameTimeLimit = (long)(1000.0 / value);
 }
 
-int Timer::getFPS()
-{
-    return (impl->elapsedTime != 0.0f) ? int(1.0f / impl->elapsedTime) : 0;
+int Timer::getFPS() {
+	return (impl->elapsedTime != 0.0f) ? int(1.0f / impl->elapsedTime) : 0;
 }
 
-void Timer::sleep()
-{
+void Timer::sleep() {
 	long nextTime = impl->frameTimeLimit + impl->lastTime;
 	while (clock() < nextTime) { } // Sleep
 	long curTime = clock();
-    impl->elapsedTime = (curTime - impl->lastTime) / 1000.0f;
-    impl->lastTime = curTime;
+	impl->elapsedTime = (curTime - impl->lastTime) / 1000.0f;
+	impl->lastTime = curTime;
 }
 
-float Timer::getTimePassed()
-{
-    return impl->elapsedTime;
+float Timer::getTimePassed() {
+	return impl->elapsedTime;
 }
 
-void Timer::startCount()
-{
+void Timer::startCount() {
 	impl->startCount = high_resolution_clock::now();
 }
 
-long long Timer::stopCount()
-{
+long long Timer::stopCount() {
 	time_point stop = high_resolution_clock::now();
 	microseconds duration = duration_cast<microseconds>(stop - impl->startCount);
 	return duration.count();
