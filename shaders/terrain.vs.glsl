@@ -13,8 +13,8 @@ uniform float cellSpace = 1; // #TODO
 uniform ivec2 location = ivec2(0.0, 0.0); // #TODO
 
 
-void main()
-{
+void main() {
+
 	// Data
 	float size = float(1 << v_level);
 	const vec2 vertices[] = vec2[] (vec2(0, 0), vec2(0, size), vec2(size, 0), vec2(size, size));

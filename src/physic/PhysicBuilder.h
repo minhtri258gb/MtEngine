@@ -1,6 +1,7 @@
 #ifndef __MT_PHYSIC_BUILDER_H__
 #define __MT_PHYSIC_BUILDER_H__
 
+#include "engine/data/HeightmapData.h"
 #include "body/RigidBody.h"
 
 namespace mt {
@@ -22,7 +23,7 @@ public:
 	// RigidBody* createCapsule(vec3 pos, float radius, float height);
 
 	RigidBody* createPlayer(vec3 pos);
-	RigidBody* createHeightField(int width, int length, std::vector<float> heightData, float cellScale, vec3 origin);
+	RigidBody* createHeightField(engine::HeightmapData* data, float cellScale);
 
 private:
 

@@ -1,13 +1,14 @@
-#define __MT_STATIC_TERRAIN_CPP__
+#define __MT_TERRAIN_STATIC_CPP__
 
 // #include <stb_image.h>
 
 #include "common.h"
 #include "engine/Log.h"
 #include "graphic/Graphic.h"
-#include "StaticTerrain.h"
+#include "TerrainStatic.h"
 
 // #include "engine/file/BTFile.h"
+#include "engine/data/HeightmapData.h"
 #include "graphic/buffer/VertexArrayObject.h"
 #include "graphic/texture/Texture.h"
 
@@ -19,37 +20,40 @@ using namespace mt::engine;
 using namespace mt::graphic;
 
 
-class StaticTerrain::StaticTerrainImpl {
+class TerrainStatic::TerrainStaticImpl {
 public:
 	VertexArrayObject VAO;
 	Texture texture;
 };
 
-ShaderProgram StaticTerrain::shader;
+ShaderProgram TerrainStatic::shader;
 
 
-StaticTerrain::StaticTerrain() {
-	LOG("StaticTerrain");
+TerrainStatic::TerrainStatic() {
+	LOG("TerrainStatic");
 	try {
 
 		// Implement
-		impl = new StaticTerrainImpl();
+		impl = new TerrainStaticImpl();
 	}
 	catch (Exception e) {
 		track(e);
 		throw e;
 	}
 }
-StaticTerrain::~StaticTerrain() {
-	LOG("~StaticTerrain");
+TerrainStatic::~TerrainStatic() {
+	LOG("~TerrainStatic");
 
 	// Implement
 	delete impl;
 }
 
-void StaticTerrain::initVAO(int depth, int width, std::vector<float> heightData, float cellScale) {
+void TerrainStatic::initVAO(HeightmapData* data, float cellScale) {
 	LOG("initVAO");
 	try {
+
+		int depth = data->getDepth();
+		int width = data->getWidth();
 
 		// VAO
 		vector<vec3> vertices;
@@ -57,8 +61,7 @@ void StaticTerrain::initVAO(int depth, int width, std::vector<float> heightData,
 		vector<unsigned int> indices;
 		for (int z = 0; z < depth; z++) {
 			for (int x = 0; x < width; x++) {
-				int index = (z*width + x);
-				float height = heightData.at(index);
+				float height = data->get(z, x);
 				float xc = x * cellScale;
 				float zc = z * cellScale;
 
@@ -96,19 +99,19 @@ void StaticTerrain::initVAO(int depth, int width, std::vector<float> heightData,
 		throw e;
 	}
 }
-void StaticTerrain::initTexture(string filepath) {
+void TerrainStatic::initTexture(string filepath) {
 	LOG("initTexture");
 	try {
 
 		// Texture
-		impl->texture.init(filepath);
+		impl->texture.loadImage(filepath);
 	}
 	catch (Exception e) {
 		track(e);
 		throw e;
 	}
 }
-void StaticTerrain::render() {
+void TerrainStatic::render() {
 	LOG("render");
 	try {
 
@@ -129,7 +132,7 @@ void StaticTerrain::render() {
 		throw e;
 	}
 }
-void StaticTerrain::clear() {
+void TerrainStatic::clear() {
 	LOG("clear");
 	try {
 		// Ko có con trỏ cần giải phóng

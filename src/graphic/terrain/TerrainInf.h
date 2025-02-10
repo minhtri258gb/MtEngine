@@ -4,13 +4,13 @@
 // #include "../../API/OpenGL/vao/VertexBufferDynamic.h"
 // #include "../../API/OpenGL/texture/Texture2DPack.h"
 
-#include "../ShaderProgram.h"
+#include "engine/data/HeightmapData.h"
+#include "graphic/ShaderProgram.h"
 
 namespace mt {
 namespace graphic {
 
-class Terrain
-{
+class TerrainInf {
 public:
 
 	// Variables
@@ -19,10 +19,14 @@ public:
 	// float m_maxwidth, m_maxlength;
 
 	// Forwards
-	Terrain();
-	~Terrain();
-	void init(std::string name);
+	TerrainInf();
+	~TerrainInf();
+
+	void initVAO(engine::HeightmapData* data);
+	void initTexture(std::string filepath);
 	void render();
+	void clear();
+
 	// void renderPre();
 	// void render(vec2 origin, unsigned short level, mt::flag patch);
 	// void renderPost();
@@ -34,8 +38,8 @@ public:
 private:
 
 	// Variable
-	class TerrainImpl;
-	TerrainImpl* impl;
+	class TerrainInfImpl;
+	TerrainInfImpl* impl;
 	// Texture2DPack m_texture;
 	// vector<float> heightmap, heightmapPhysic;
 

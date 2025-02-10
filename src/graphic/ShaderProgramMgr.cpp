@@ -4,12 +4,13 @@
 
 #include "common.h"
 #include "ShaderProgramMgr.h"
+
 #include "models/SimpleModel.h"
 #include "models/ColorModel.h"
 #include "models/animation/AnimationModel.h"
 #include "sky/SkyBox.h"
-#include "terrain/StaticTerrain.h"
-#include "terrain/Terrain.h"
+#include "terrain/TerrainStatic.h"
+#include "terrain/TerrainInf.h"
 #include "bsp/BspSourceMap.h"
 #include "bsp/BspQuakeMap.h"
 #include "bsp/BspMap.h"
@@ -73,30 +74,31 @@ void ShaderProgramMgr::init() {
 	SkyBox::shader.addLocation("proj");			// 0
 	SkyBox::shader.addLocation("view");			// 1
 
-	// Static Terrain
-	StaticTerrain::shader.init("terrain_static",
+	// Terrain Static
+	TerrainStatic::shader.init("terrain_static",
 		ShaderProgram::SHADER_TYPE::VERTEX |
 		ShaderProgram::SHADER_TYPE::FRAGMENT);
-	StaticTerrain::shader.use();
-	StaticTerrain::shader.addLocation("proj");			// 0
-	StaticTerrain::shader.addLocation("view");			// 1
-	StaticTerrain::shader.addLocation("ourTexture");	// 2
-	StaticTerrain::shader.setInt(2, 0);
+	TerrainStatic::shader.use();
+	TerrainStatic::shader.addLocation("proj");			// 0
+	TerrainStatic::shader.addLocation("view");			// 1
+	TerrainStatic::shader.addLocation("ourTexture");	// 2
+	TerrainStatic::shader.setInt(2, 0);
 
 	// Terrain QuaTree
-	Terrain::shader.init("terrain",
+	TerrainInf::shader.init("terrain",
 		ShaderProgram::SHADER_TYPE::VERTEX |
 		ShaderProgram::SHADER_TYPE::FRAGMENT |
 		ShaderProgram::SHADER_TYPE::TESS_CONTROL |
 		ShaderProgram::SHADER_TYPE::TESS_EVALUATION);
-	Terrain::shader.use();
-	Terrain::shader.addLocation("proj");			// 0
-	Terrain::shader.addLocation("view");			// 1
-	Terrain::shader.addLocation("texColor");		// 2
-	Terrain::shader.addLocation("texHeight");		// 3
-	Terrain::shader.addLocation("heightScale");		// 4
-	Terrain::shader.setInt(2, 0);
-	Terrain::shader.setInt(3, 1);
+	TerrainInf::shader.use();
+	TerrainInf::shader.addLocation("proj"); // 0
+	TerrainInf::shader.addLocation("view"); // 1
+	TerrainInf::shader.addLocation("texColor"); // 2
+	TerrainInf::shader.addLocation("texHeight"); // 3
+	TerrainInf::shader.addLocation("heightScale"); // 4
+	TerrainInf::shader.addLocation("heightOffset"); // 5
+	TerrainInf::shader.setInt(2, 0);
+	TerrainInf::shader.setInt(3, 1);
 
 	// BspSourceMap
 	BspSourceMap::shader.init("bsp_source",
@@ -178,8 +180,8 @@ void ShaderProgramMgr::init() {
 void ShaderProgramMgr::close() {
 	// Enviroment
 	SkyBox::shader.close();
-	StaticTerrain::shader.close();
-	Terrain::shader.close();
+	TerrainStatic::shader.close();
+	TerrainInf::shader.close();
 	BspSourceMap::shader.close();
 	BspQuakeMap::shader.close();
 	BspMap::shader.close();
@@ -217,10 +219,10 @@ void ShaderProgramMgr::setSceneProj(mat4 value) {
 	Emitter::shader.setMat4(0, value);
 	SkyBox::shader.use();
 	SkyBox::shader.setMat4(0, value);
-	StaticTerrain::shader.use();
-	StaticTerrain::shader.setMat4(0, value);
-	Terrain::shader.use();
-	Terrain::shader.setMat4(0, value);
+	TerrainStatic::shader.use();
+	TerrainStatic::shader.setMat4(0, value);
+	TerrainInf::shader.use();
+	TerrainInf::shader.setMat4(0, value);
 	BspSourceMap::shader.use();
 	BspSourceMap::shader.setMat4(0, value);
 	BspQuakeMap::shader.use();
@@ -249,10 +251,10 @@ void ShaderProgramMgr::setSceneView(mat4 value) {
 	viewTmp[12] = viewTmp[13] = viewTmp[14] = 0.0f;
 	SkyBox::shader.use();
 	SkyBox::shader.setMat4(1, viewTmp);
-	StaticTerrain::shader.use();
-	StaticTerrain::shader.setMat4(1, value);
-	Terrain::shader.use();
-	Terrain::shader.setMat4(1, value);
+	TerrainStatic::shader.use();
+	TerrainStatic::shader.setMat4(1, value);
+	TerrainInf::shader.use();
+	TerrainInf::shader.setMat4(1, value);
 	BspSourceMap::shader.use();
 	BspSourceMap::shader.setMat4(1, value);
 	BspQuakeMap::shader.use();

@@ -31,6 +31,7 @@ public:
 
 	// Graphic
 	bool graphic_vsync;
+	bool graphic_terrain_wireframe;
 
 	// Physic
 	float physic_gravity;

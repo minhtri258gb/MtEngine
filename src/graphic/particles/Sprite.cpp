@@ -45,7 +45,7 @@ void Sprite::load(string name)
 
 	// Texture
 	// impl->texture.init("./res/textures/particles/christopher-carlson-charge-ring.jpg", true);
-	impl->texture.init("./res/textures/particles/aHEiB5kn3N-yZ9VdtQPeXA.jpeg", true);
+	impl->texture.loadImage("./res/textures/particles/aHEiB5kn3N-yZ9VdtQPeXA.jpeg", true);
 }
 
 void Sprite::update()

@@ -87,7 +87,7 @@ Q3BspMap::~Q3BspMap()
 void Q3BspMap::Init()
 {
   m_missingTex = new mt::graphic::Texture(); // #TODO Co new nhung chua delete !!!!!!!!!!!
-  m_missingTex->init("./res/textures/default.png");
+  m_missingTex->loadImage("./res/textures/default.png");
 
   // load textures
   LoadTextures();
@@ -331,7 +331,7 @@ void Q3BspMap::LoadTextures()
     // m_textures[f.texture] = TextureManager::GetInstance()->LoadTexture(nameJPG.c_str());
     m_textures[f.texture] = new mt::graphic::Texture();
     try {
-      m_textures[f.texture]->init(("./res/EngineQuakeIII/"+nameJPG).c_str());
+      m_textures[f.texture]->loadImage(("./res/EngineQuakeIII/"+nameJPG).c_str());
     } catch(mt::Exception e) {
       m_textures[f.texture] = NULL;
     }
@@ -344,7 +344,7 @@ void Q3BspMap::LoadTextures()
       // m_textures[f.texture] = TextureManager::GetInstance()->LoadTexture(nameTGA.c_str());
       m_textures[f.texture] = new mt::graphic::Texture();
       try {
-        m_textures[f.texture]->init(("./res/EngineQuakeIII/"+nameTGA).c_str());
+        m_textures[f.texture]->loadImage(("./res/EngineQuakeIII/"+nameTGA).c_str());
       } catch(mt::Exception e) {
         m_textures[f.texture] = NULL;
       }

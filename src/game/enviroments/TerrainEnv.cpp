@@ -8,6 +8,8 @@
 
 #include "engine/file/FileCFG.h"
 #include "engine/file/Image.h"
+#include "engine/random/PerlinNoise.h"
+#include "graphic/terrain/TerrainInf.h"
 #include "physic/body/RigidBody.h"
 
 using namespace std;
@@ -19,7 +21,7 @@ using namespace mt::game;
 
 class TerrainEnv::TerrainEnvImpl {
 public:
-	StaticTerrain* model;
+	TerrainInf* model;
 	RigidBody* body;
 	string m_name;
 };
@@ -42,43 +44,39 @@ TerrainEnv::TerrainEnv(string name) {
 		float cellScale = fCFG.getFloat("cellScale");
 
 		// Validate
-		if (heightScale == 0.0f)
-			throw error("HEIGHT_SCALE_ZERO", "Cau hinh heightScale ko hop le!");
+		if (terrainName != "noise")
+			throw error("HEIGHTMAP_TYPE_INVAIL", "TerrainInf chi dung heightmap noise!");
 		if (cellScale == 0.0f)
 			throw error("CELL_SCALE_ZERO", "Cau hinh cellScale ko hop le!");
 
-		// Load Data
-		Image data;
-		data.load(pathDir + terrainName);
-		int depth = data.getWidth();
-		int width = data.getHeight();
+		fCFG.select("noise");
+		int depth = fCFG.getInt("depth");
+		int width = fCFG.getInt("width");
 
-		// Convert data
-		vector<float> heightData = vector(depth * width, 0.0f);
-		for (int z = 0; z < width; z++) {
-			for (int x = 0; x < depth; x++) {
-				int index = (z*width + x);
-				// Màu từ 0 - 255, Chuyển thành 0 - 1, Nhân với độ cao địa hình
-				heightData[z*depth+x] = (float)data[index] / 255.0f * heightScale;
-			}
-		}
+		PerlinNoise noise;
+		noise.setPersistence(fCFG.getFloat("persistence"));
+		noise.setFrequency(fCFG.getFloat("frequency"));
+		noise.setAmplitude(fCFG.getFloat("amplitude"));
+		noise.setOctaves(fCFG.getFloat("octaves"));
+		noise.setSeed(fCFG.getInt("seed"));
+
+		// Load Data
+		HeightmapData hmData;
+		hmData.loadNoise(noise, depth, width, heightScale);
 
 		// Init Model
-		impl->model = new StaticTerrain();
-		impl->model->initVAO(depth, width, heightData, cellScale);
+		impl->model = new TerrainInf();
+		impl->model->initVAO(&hmData);
 		impl->model->initTexture(pathDir + textureFile);
-		Graphic::ins.scene.terrainStatic = impl->model;
-
-		// Terrain* terrain = new Terrain();
-		// terrain->init(terrainName);
-		// Graphic::ins.scene.terrain = terrain;
+		Graphic::ins.scene.terrain = impl->model;
 
 		// Init Body
-		// vec3 offsetOrigin(depth/2, heightScale/2, width/2); // Căn giữa body địa hình
-		// impl->body = Physic::ins.builder.createHeightField(depth, width, heightData, cellScale, offsetOrigin);
+		impl->body = Physic::ins.builder.createHeightField(&hmData, cellScale);
 	}
 	catch (Exception e) {
 		track(e);
+		if (e.getCode() == "LOAD_FAIL")
+			e.setMessage("CONFIG_NOT_FOUND", "Khong tim thay file Config TerrainInf (res/terrains/"+name+"/info.cfg)");
 		throw e;
 	}
 }

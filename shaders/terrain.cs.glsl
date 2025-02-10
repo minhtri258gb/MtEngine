@@ -10,8 +10,9 @@ in int c_flag[];
 out vec2 e_position[];
 out vec2 e_texcoord[];
 
-uniform sampler2D texHeight; // at TerrainPath
-uniform float heightScale; // at TerrainPath
+uniform sampler2D texHeight; // at TerrainPart
+uniform float heightScale; // at TerrainPart
+uniform float heightOffset; // at TerrainPart
 uniform vec3 camPos;
 
 
@@ -40,7 +41,7 @@ void main() {
 
 	if (gl_InvocationID == 0) {
 
-		float height = texture(texHeight, c_texcoord[0]).r * heightScale;
+		float height = texture(texHeight, c_texcoord[0]).r * heightScale + heightOffset;
 		float dis = distance(camPos, vec3(c_position[gl_InvocationID].x, height, c_position[gl_InvocationID].y));
 
 		// gl_TessLevelInner[0] = 4.0;

@@ -19,7 +19,7 @@ public:
 	// Native
 	std::string getCode();
 	std::string getMessage();
-	void setMessage(std::string code, std::string msg, std::string file, int line);
+	void setMessage(std::string code, std::string msg);
 	void addTrack(std::string file, int line);
 
 	// Stock

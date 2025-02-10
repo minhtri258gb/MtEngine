@@ -10,8 +10,9 @@ out vec2 f_texcoord;
 
 uniform mat4 proj;
 uniform mat4 view;
-uniform sampler2D texHeight; // at TerrainPath
-uniform float heightScale; // at TerrainPath
+uniform sampler2D texHeight; // at TerrainPart
+uniform float heightScale; // at TerrainPart
+uniform float heightOffset; // at TerrainPart
 
 
 // vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2)
@@ -24,29 +25,25 @@ uniform float heightScale; // at TerrainPath
 //     return vec3(gl_TessCoord.x) * v0 + vec3(gl_TessCoord.y) * v1 + vec3(gl_TessCoord.z) * v2;
 // }
 
-vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2, vec2 v3)
-{
+vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2, vec2 v3) {
 	vec2 p1 = mix(v0, v1, gl_TessCoord.x);
 	vec2 p2 = mix(v2, v3, gl_TessCoord.x);
 	return mix(p1, p2, gl_TessCoord.y);
 }
 
-vec3 interpolate3D(vec3 v0, vec3 v1, vec3 v2, vec3 v3)
-{
+vec3 interpolate3D(vec3 v0, vec3 v1, vec3 v2, vec3 v3) {
 	vec3 p1 = mix(v0, v1, gl_TessCoord.x);
 	vec3 p2 = mix(v2, v3, gl_TessCoord.x);
 	return mix(p1, p2, gl_TessCoord.y);
 }
 
-vec4 interpolate4D(vec4 v0, vec4 v1, vec4 v2, vec4 v3)
-{
+vec4 interpolate4D(vec4 v0, vec4 v1, vec4 v2, vec4 v3) {
 	vec4 p1 = mix(v0, v1, gl_TessCoord.x);
 	vec4 p2 = mix(v2, v3, gl_TessCoord.x);
 	return mix(p1, p2, gl_TessCoord.y);
 }
 
-void main()
-{
+void main() {
 	// Textcoord
 	f_texcoord = interpolate2D(e_texcoord[0], e_texcoord[1], e_texcoord[2], e_texcoord[3]);
 
@@ -62,8 +59,11 @@ void main()
 	// Position
 	vec2 pos = interpolate2D(e_position[0], e_position[1], e_position[2], e_position[3]);
 
-	float height = texture(texHeight, f_texcoord).r * heightScale;
-	// float height = 0.0;
+	// float height = texture(texHeight, f_texcoord).r - heightOffset;
+	// float height = texture(texHeight, f_texcoord).r * 1.0 - heightOffset;
+	float height = texture(texHeight, f_texcoord).r * heightScale + heightOffset;
+	// float height = -heightOffset;
+	// float height = heightOffset;
 
 	gl_Position = proj * view * vec4(pos.x, height, pos.y, 1.0);
 }

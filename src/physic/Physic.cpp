@@ -71,8 +71,8 @@ void Physic::update() {
 
 		// Vòng lặp mô phỏng vật lý
 		float timestep = Timer::ins.getTimePassed();
-		if (timestep > 2)
-			timestep = 2;
+		if (timestep > 1.0f)
+			timestep = 1.0f;
 		impl->world->update(timestep);
 	}
 	catch (Exception e) {

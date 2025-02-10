@@ -13,7 +13,8 @@ public:
 	~Texture();
 
 	// General
-	void init(std::string filepath, bool flip = false);
+	void loadImage(std::string filepath, bool flip = false);
+	void loadArray(float* pData, int width, int height);
 	void bind(unsigned int location = 0);
 
 private:

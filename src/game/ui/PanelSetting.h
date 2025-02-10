@@ -20,6 +20,10 @@ public:
 	void render();
 
 	// Natives
+
+private:
+	class PanelSettingImpl;
+	PanelSettingImpl* impl;
 };
 
 }}

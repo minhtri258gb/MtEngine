@@ -12,8 +12,8 @@
 #include "LobbyMap.h"
 
 #include "engine/file/FileCFG.h"
-#include "graphic/terrain/StaticTerrain.h"
-#include "graphic/terrain/Terrain.h"
+#include "graphic/terrain/TerrainStatic.h"
+#include "graphic/terrain/TerrainInf.h"
 #include "graphic/bsp/BspSourceMap.h"
 #include "graphic/bsp/BspQuakeMap.h"
 #include "graphic/bsp/BspMap.h"

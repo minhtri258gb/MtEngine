@@ -40,15 +40,9 @@ std::string Exception::getMessage() {
 	return strBuild.str();
 }
 
-void Exception::setMessage(std::string _code, std::string _msg, std::string _file, int _line) {
+void Exception::setMessage(std::string _code, std::string _msg) {
 	this->code = _code;
 	this->message = _msg;
-
-	this->files.clear();
-	this->lines.clear();
-
-	this->files.push_back(_file);
-	this->lines.push_back(_line);
 }
 
 void Exception::addTrack(std::string _file, int _line) {

@@ -18,6 +18,7 @@ public:
 	int getWidth();
 	int getHeight();
 	int getChannel();
+	unsigned char at(unsigned int) const;
 	unsigned char* getDataPtr();
 
 	// Operators

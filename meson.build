@@ -88,6 +88,7 @@ mtengine = library('mtengine', [
 	,'./src/engine/file/FileINI.cpp'
 	,'./src/engine/random/Random.cpp'
 	,'./src/engine/random/PerlinNoise.cpp'
+	,'./src/engine/data/HeightmapData.cpp'
 	,'./src/engine/utils/StringUtils.cpp'
 	,'./src/engine/utils/FilePathUtils.cpp'
 	],
@@ -122,8 +123,8 @@ mtgraphic = library('mtgraphic', [
 	,'./src/graphic/particles/Emitter.cpp'
 	,'./src/graphic/sky/SkyBox.cpp'
 	,'./src/graphic/sky/Sun.cpp'
-	,'./src/graphic/terrain/StaticTerrain.cpp'
-	,'./src/graphic/terrain/Terrain.cpp'
+	,'./src/graphic/terrain/TerrainStatic.cpp'
+	,'./src/graphic/terrain/TerrainInf.cpp'
 	,'./src/graphic/terrain/TerrainPart.cpp'
 	,'./src/graphic/terrain/TerrainQuad.cpp'
 	,'./src/graphic/bsp/BspSourceMap.cpp'

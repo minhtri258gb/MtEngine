@@ -5,7 +5,7 @@
 #include <imgui/backends/imgui_impl_opengl3.h>
 
 #include "common.h"
-// #include "engine/Config.h"
+#include "engine/Config.h"
 #include "engine/Log.h"
 #include "engine/Timer.h"
 // #include "graphic/Graphic.h"
@@ -19,10 +19,29 @@ using namespace mt::graphic;
 using namespace mt::game;
 
 
+class PanelSetting::PanelSettingImpl {
+public:
+};
+
+
 PanelSetting::PanelSetting() {
+	LOG("PanelSetting");
+	try {
+
+		// Implement
+		this->impl = new PanelSettingImpl();
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }
 
 PanelSetting::~PanelSetting() {
+	LOG("~PanelSetting");
+
+	// Implement
+	delete this->impl;
 }
 
 void PanelSetting::render() {
@@ -50,6 +69,10 @@ void PanelSetting::render() {
 			}
 			ImGui::EndMenuBar();
 		}
+
+		ImGui::Text("Graphic Setting");
+		ImGui::Checkbox("Terrain wireframe", &Config::ins.graphic_terrain_wireframe);
+
 		ImGui::Text("This is some useful text."); // Display some text (you can use a format strings too)
 		ImGui::Checkbox("Demo Window", &show_demo_window); // Edit bools storing our window open/close state
 		ImGui::Checkbox("Another Window", &show_another_window);

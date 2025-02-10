@@ -41,8 +41,8 @@ void Test::run() {
 	catch (string e) {
 		cerr << "[ERROR]: " << e << endl;
 	}
-	catch (std::exception e) {
-		cerr << "[ERROR]: " << e.what() << '\n';
+	catch (exception e) {
+		cerr << "[ERROR]: " << e.what() << endl;
 	}
 	// ==============================================================================================
 	// // Test Dot Product MT vs GLM

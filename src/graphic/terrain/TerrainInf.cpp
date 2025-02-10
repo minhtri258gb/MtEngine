@@ -1,6 +1,5 @@
 #define __MT_TERRAIN_CPP__
 
-#define FLAG_WIREFRAME 1
 #define CELLSPACE (1<<8)
 
 #include <array>
@@ -12,7 +11,7 @@
 #include "engine/Config.h"
 #include "engine/Log.h"
 #include "graphic/Graphic.h"
-#include "Terrain.h"
+#include "TerrainInf.h"
 
 #include "engine/file/FileCFG.h"
 #include "engine/file/Image.h"
@@ -27,22 +26,33 @@ using namespace mt::engine;
 using namespace mt::graphic;
 
 
-class Terrain::TerrainImpl {
+class TerrainInf::TerrainInfImpl {
 public:
+
+	// Doc du lieu tu file cau hinh
+	enum eTerrainSizeStyle {
+		VerySmall = 1,
+		Small = 9,
+		Medium = 21,
+		Large = 37,
+		VeryLarge = 61
+	};
+	eTerrainSizeStyle m_size;
+
 	array<TerrainPart*, 61> parts;
 	Texture texture;
 	PerlinNoise noise;
 };
 
-ShaderProgram Terrain::shader;
+ShaderProgram TerrainInf::shader;
 
 
-Terrain::Terrain() {
-	LOG("Terrain");
+TerrainInf::TerrainInf() {
+	LOG("TerrainInf");
 	try {
 
 		// Implement
-		impl = new TerrainImpl();
+		impl = new TerrainInfImpl();
 
 		// m_maxwidth = 0;
 		// m_maxlength = 0;
@@ -52,32 +62,20 @@ Terrain::Terrain() {
 		throw e;
 	}
 }
-Terrain::~Terrain() {
-	LOG("~Terrain");
+TerrainInf::~TerrainInf() {
+	LOG("~TerrainInf");
 
 	// Implement
 	delete impl;
 }
 
-void Terrain::init(string name) {
-	LOG("init");
+void TerrainInf::initVAO(engine::HeightmapData* data) {
+	LOG("initVAO");
 	try {
 
-		// Data
-		FileCFG fCFG(Config::ins.terrain_path + name + "/info.cfg");
-
-		// Doc du lieu tu file cau hinh
-		enum eTerrainSizeStyle {
-			VerySmall = 1,
-			Small = 9,
-			Medium = 21,
-			Large = 37,
-			VeryLarge = 61
-		};
-		eTerrainSizeStyle size = VerySmall;
-
-		for (int i=0; i<size; i++)
-			impl->parts[i] = new TerrainPart();
+		impl->m_size = TerrainInfImpl::eTerrainSizeStyle::VerySmall;
+		for (int i=0; i<impl->m_size; i++)
+			impl->parts[i] = new TerrainPart(data);
 
 		// TODO ...
 
@@ -118,42 +116,47 @@ void Terrain::init(string name) {
 		// m_vb.storaAttribute(0, 3, 9);
 		// m_vb.storaAttribute(1, 2, 9);
 		// m_vb.unbind();
-
-	// 	// Texture
-		// m_texture.loadAdd("res/terrain/" + name + "/bgTexture.tga");
-	// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailR.tga");
-	// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailG.tga");
-	// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailB.tga");
-	// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailA.tga");
-	// 	m_texture.loadAdd("res/terrain/" + name + "/texPartR.tga");
-	// 	m_texture.loadAdd("res/terrain/" + name + "/texPartG.tga");
-	// 	m_texture.loadAdd("res/terrain/" + name + "/texPartB.tga");
-	// 	m_texture.loadAdd("res/terrain/" + name + "/texPartA.tga");
-
-		// Init Texture
-		impl->texture.init("./res/terrains/static/chadvernon/texture.png");
 	}
 	catch (Exception e) {
-		if (e.getCode() == "LOAD_FAIL") {
-			throw error("CONFIG_NOT_FOUND", "Khong tim thay file Config Terrain ("+name+")");
-		}
-		else {
-			track(e);
-			throw e;
-		}
+		track(e);
+		throw e;
 	}
 }
-void Terrain::render() {
-	LOG("init");
+void TerrainInf::initTexture(std::string filepath) {
+	LOG("initTexture");
 	try {
 
-		Terrain::shader.use();
+		// 	// Texture
+			// m_texture.loadAdd("res/terrain/" + name + "/bgTexture.tga");
+		// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailR.tga");
+		// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailG.tga");
+		// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailB.tga");
+		// 	m_texture.loadAdd("res/terrain/" + name + "/texDetailA.tga");
+		// 	m_texture.loadAdd("res/terrain/" + name + "/texPartR.tga");
+		// 	m_texture.loadAdd("res/terrain/" + name + "/texPartG.tga");
+		// 	m_texture.loadAdd("res/terrain/" + name + "/texPartB.tga");
+		// 	m_texture.loadAdd("res/terrain/" + name + "/texPartA.tga");
+
+		// Init Texture
+		impl->texture.loadImage("./res/terrains/dirtgrass/bgTexture.tga");
+	}
+	catch (Exception e) {
+		track(e);
+		if (e.getCode() == "LOAD_FAIL")
+			e.setMessage("TEXTURE_NOT_FOUND", "Khong tim thay file Texture TerrainInf (res/terrains/dirtgrass/bgTexture.tga)");
+		throw e;
+	}
+}
+void TerrainInf::render() {
+	LOG("render");
+	try {
+
+		TerrainInf::shader.use();
 
 		Graphic::ins.setPatchParameter(4);
 
-		#if FLAG_WIREFRAME
-		Graphic::ins.wireframe(true);
-		#endif
+		if (Config::ins.graphic_terrain_wireframe)
+			Graphic::ins.wireframe(true);
 
 		impl->texture.bind(0);
 
@@ -163,9 +166,21 @@ void Terrain::render() {
 				part->render();
 		}
 
-		#if FLAG_WIREFRAME
-		Graphic::ins.wireframe(false);
-		#endif
+		if (Config::ins.graphic_terrain_wireframe)
+			Graphic::ins.wireframe(false);
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
+}
+void TerrainInf::clear() {
+	LOG("clear");
+	try {
+
+		for (int i=0; i<impl->m_size; i++)
+			delete impl->parts[i];
+
 	}
 	catch (Exception e) {
 		track(e);

@@ -321,7 +321,7 @@ private:
 
 		map.seekg (header.lumps[index].offset);
 
-		for (int x = 0; x < header.lumps[index].length / sizeof(T); x++) {
+		for (long long unsigned int x = 0; x < header.lumps[index].length / sizeof(T); x++) {
 			T element;
 			map.read ((char*)&element, sizeof(T));
 			elements.push_back (element);

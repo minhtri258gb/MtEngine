@@ -161,14 +161,25 @@ RigidBody* PhysicBuilder::createPlayer(vec3 pos) {
 	}
 }
 
-RigidBody* PhysicBuilder::createHeightField(int width, int length, vector<float> heightData, float cellScale, vec3 origin) {
+RigidBody* PhysicBuilder::createHeightField(HeightmapData* data, float cellScale) {
 	LOG("createHeightField");
 	try {
+
+		int col = data->getWidth();
+		int row = data->getDepth();
+
+		// Convert data
+		vector<float> heightData = data->getHeightData();
+		for (uint i=0, size=heightData.size(); i<size; i++) {
+			// heightData[i] = heightData[i] * 1.0f;
+			heightData[i] = heightData[i] * data->getScale();
+			// heightData[i] = heightData[i] * data->getScale() - data->getOffset();
+		}
 
 		// Create HeightField
 		vector<rp3d::Message> messages;
 		rp3d::HeightField* heightField = Physic::ins.impl->common.createHeightField(
-			width, length, &heightData[0],
+			col, row, &heightData[0],
 			rp3d::HeightField::HeightDataType::HEIGHT_FLOAT_TYPE,
 			messages
 		);
@@ -182,7 +193,9 @@ RigidBody* PhysicBuilder::createHeightField(int width, int length, vector<float>
 
 		// Nâng địa hình lên mức từ 0 trở lên, Bắt đầu địa hình ở trên bên trái
 		rp3::Transform transform = rp3::Transform::identity();
-		transform.setPosition(rp3::Vector3(origin.x, origin.y, origin.z));
+		transform.setPosition(rp3::Vector3(col/2, data->getScale() / 2.0f + data->getOffset(), row/2));
+		// transform.setPosition(rp3::Vector3(col/2, data->getScale() / 2.0f, row/2));
+		// transform.setPosition(rp3::Vector3(col/2, data->getScale() / 2.0f - data->getOffset(), row/2));
 
 		// Create Body
 		rp3::RigidBody* body = Physic::ins.impl->world->createRigidBody(transform);

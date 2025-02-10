@@ -5,7 +5,6 @@
 #include <algorithm>
 
 #include "common.h"
-
 #include "FileCFG.h"
 
 using namespace std;
@@ -15,12 +14,10 @@ using namespace mt;
 FileCFG::FileCFG() {
 	sessionID = 0;
 }
-
 FileCFG::FileCFG(string filename) {
 	sessionID = 0;
 	load(filename);
 }
-
 FileCFG::~FileCFG() {
 }
 
@@ -35,7 +32,6 @@ void FileCFG::select(string sessionName) {
 
 	throw error("SESSION_NOT_FOUND", "Session \"" + sessionName + "\" not found!");
 }
-
 void FileCFG::addSession(string sessionName) {
 	short sizeArr = m_sessions.size();
 	for (short i = 0; i < sizeArr; i++) {
@@ -53,7 +49,6 @@ void FileCFG::addSession(string sessionName) {
 
 	sessionID = m_sessions.size() - 1;
 }
-
 void FileCFG::set(string key, string value) {
 	// Validate
 	short sizeArr = m_sessions.size();
@@ -79,7 +74,6 @@ void FileCFG::set(string key, string value) {
 		m_value[sessionID].push_back(value);
 	}
 }
-
 void FileCFG::save(string filepath) {
 	fstream file(filepath, fstream::out);
 
@@ -113,7 +107,6 @@ vector<string> FileCFG::keys() {
 	res = m_key[sessionID];
 	return res;
 }
-
 vector<string> FileCFG::values() {
 	vector<string> res;
 
@@ -140,7 +133,6 @@ string FileCFG::get(string key) {
 
 	return "";
 }
-
 bool FileCFG::getBool(string key) {
 	string data = get(key);
 	if (!data.length())
@@ -151,7 +143,6 @@ bool FileCFG::getBool(string key) {
 
 	return true;
 }
-
 int FileCFG::getInt(string key) {
 	string data = get(key);
 	if (!data.length())
@@ -162,7 +153,6 @@ int FileCFG::getInt(string key) {
 	geek >> x;
 	return x;
 }
-
 uint FileCFG::getUInt(string key) {
 	string data = get(key);
 	if (!data.length())
@@ -174,7 +164,6 @@ uint FileCFG::getUInt(string key) {
 
 	return x;
 }
-
 float FileCFG::getFloat(string key) {
 	string data = get(key);
 	if (!data.length())
@@ -186,7 +175,6 @@ float FileCFG::getFloat(string key) {
 
 	return x;
 }
-
 vec2 FileCFG::getVec2(string key) {
 	string data = get(key);
 	if (!data.length())
@@ -198,7 +186,6 @@ vec2 FileCFG::getVec2(string key) {
 
 	return vec2(x, y);
 }
-
 vec3 FileCFG::getVec3(string key) {
 	string data = get(key);
 	if (!data.length())
@@ -210,7 +197,6 @@ vec3 FileCFG::getVec3(string key) {
 
 	return vec3(x, y, z);
 }
-
 vec4 FileCFG::getVec4(string key) {
 	string data = get(key);
 	if (!data.length())

@@ -15,8 +15,8 @@ Config::Config() {
 	// File path
 	string root = "./res/";
 	this->resource_dir = root;
+	this->shader_path = "./shaders/";
 	this->system_path = root + "system/";
-	this->shader_path = root + "shaders/";
 	this->skybox_path = root + "skybox/";
 	this->terrain_path = root + "terrains/";
 	this->model_path = root + "models/";
@@ -39,6 +39,7 @@ Config::Config() {
 	// Graphic
 	setting.select("graphic");
 	this->graphic_vsync = setting.getBool("vsync");
+	this->graphic_terrain_wireframe = false;
 
 	// Physic
 	setting.select("physic");

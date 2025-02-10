@@ -30,6 +30,9 @@ Image::~Image() {
 		stbi_image_free(data);
 }
 
+unsigned char Image::at(unsigned int index) const {
+	return data[index * nrChannels];
+}
 void Image::load(string filepath) {
 	LOG("load");
 	try {

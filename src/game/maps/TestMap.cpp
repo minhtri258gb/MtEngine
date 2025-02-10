@@ -455,7 +455,7 @@ void TestMap::clear() {
 		}
 
 		// Terrain QuadTree
-		Terrain* terrain = Graphic::ins.scene.terrain;
+		TerrainInf* terrain = Graphic::ins.scene.terrain;
 		if (terrain)
 			delete terrain;
 

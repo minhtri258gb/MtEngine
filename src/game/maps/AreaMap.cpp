@@ -11,8 +11,8 @@
 
 #include "engine/file/FileCFG.h"
 #include "graphic/sky/SkyBox.h"
-#include "graphic/terrain/StaticTerrain.h"
-#include "graphic/terrain/Terrain.h"
+#include "graphic/terrain/TerrainStatic.h"
+#include "graphic/terrain/TerrainInf.h"
 #include "graphic/bsp/BspSourceMap.h"
 #include "graphic/bsp/BspQuakeMap.h"
 #include "graphic/bsp/BspMap.h"
@@ -40,8 +40,8 @@ public:
 	string skyName;
 	SkyBox* sky;
 	string terrainName;
-	StaticTerrain* terrainStatic;
-	Terrain* terrain;
+	TerrainStatic* terrainStatic;
+	TerrainInf* terrainInf;
 	BspSourceMap* sourceMap;
 	BspQuakeMap* quakeMap;
 	BspMap* bspMap;
@@ -50,7 +50,9 @@ public:
 	vector<Entity*> lstEntities;
 };
 
+
 AreaMap::AreaMap(string name) {
+	LOG("AreaMap");
 	try {
 
 		// Implement
@@ -85,6 +87,7 @@ AreaMap::AreaMap(string name) {
 }
 
 AreaMap::~AreaMap() {
+	LOG("~AreaMap");
 	// // Xoa debug physic
 	// if (this->physicDebug)
 	// 	delete this->physicDebug;
@@ -114,6 +117,7 @@ AreaMap::~AreaMap() {
 }
 
 void AreaMap::load() {
+	LOG("load");
 	try {
 
 		if (!this->needLoading)
@@ -396,109 +400,124 @@ void AreaMap::load() {
 	}
 }
 
-void AreaMap::clear()
-{
-	for (Entity *ent : impl->lstEntities)
-		delete ent;
-	impl->lstEntities.clear();
+void AreaMap::clear() {
+	LOG("load");
+	try {
 
-	// Sky
-	if (impl->sky)
-	{
-		delete impl->sky;
-		impl->sky = nullptr;
-		Graphic::ins.scene.sky = nullptr;
+		for (Entity *ent : impl->lstEntities)
+			delete ent;
+		impl->lstEntities.clear();
+
+		// Sky
+		if (impl->sky) {
+			delete impl->sky;
+			impl->sky = nullptr;
+			Graphic::ins.scene.sky = nullptr;
+		}
+
+		// Terrain Static
+		if (impl->terrainStatic) {
+			delete impl->terrainStatic;
+			impl->terrainStatic = nullptr;
+			Graphic::ins.scene.terrainStatic = nullptr;
+		}
+
+		// Terrain QuadTree
+		if (impl->terrainInf) {
+			delete impl->terrainInf;
+			impl->terrainInf = nullptr;
+			Graphic::ins.scene.terrain = nullptr;
+		}
+
+		// BSP Source Map
+		if (impl->sourceMap) {
+			delete impl->sourceMap;
+			impl->sourceMap = nullptr;
+			Graphic::ins.scene.sourceMap = nullptr;
+		}
+
+		// BSP Quake Map
+		if (impl->quakeMap) {
+			delete impl->quakeMap;
+			impl->quakeMap = nullptr;
+			Graphic::ins.scene.quakeMap = nullptr;
+		}
+
+		// BSP Map
+		if (impl->bspMap) {
+			delete impl->bspMap;
+			impl->bspMap = nullptr;
+			Graphic::ins.scene.bspMap = nullptr;
+		}
+
+		// #EXTRA
 	}
-
-	// Terrain Static
-	if (impl->terrainStatic)
-	{
-		delete impl->terrainStatic;
-		impl->terrainStatic = nullptr;
-		Graphic::ins.scene.terrainStatic = nullptr;
+	catch (Exception e) {
+		track(e);
+		throw e;
 	}
-
-	// Terrain QuadTree
-	if (impl->terrain)
-	{
-		delete impl->terrain;
-		impl->terrain = nullptr;
-		Graphic::ins.scene.terrain = nullptr;
-	}
-
-	// BSP Source Map
-	if (impl->sourceMap)
-	{
-		delete impl->sourceMap;
-		impl->sourceMap = nullptr;
-		Graphic::ins.scene.sourceMap = nullptr;
-	}
-
-	// BSP Quake Map
-	if (impl->quakeMap)
-	{
-		delete impl->quakeMap;
-		impl->quakeMap = nullptr;
-		Graphic::ins.scene.quakeMap = nullptr;
-	}
-
-	// BSP Map
-	if (impl->bspMap)
-	{
-		delete impl->bspMap;
-		impl->bspMap = nullptr;
-		Graphic::ins.scene.bspMap = nullptr;
-	}
-
-	// #EXTRA
 }
 
-void AreaMap::update()
-{
-	// float timeStep = Time::ins->getTimeStep();
+void AreaMap::update() {
+	LOG("update");
+	try {
 
-	// newton::NewtonUpdate(this->world, timeStep);
+		// float timeStep = Time::ins->getTimeStep();
 
-	// // Enviroment update
-	// this->physicDebug->update();
+		// newton::NewtonUpdate(this->world, timeStep);
 
-	if (impl->sourceMap)
-		impl->sourceMap->update();
+		// // Enviroment update
+		// this->physicDebug->update();
 
-	if (impl->quakeMap)
-		impl->quakeMap->update();
+		if (impl->sourceMap)
+			impl->sourceMap->update();
 
-	if (impl->bspMap)
-		impl->bspMap->update();
+		if (impl->quakeMap)
+			impl->quakeMap->update();
 
-	for (Entity* ent : impl->lstEntities)
-		ent->update();
-}
+		if (impl->bspMap)
+			impl->bspMap->update();
 
-void AreaMap::render()
-{
-	if (impl->sky)
-		impl->sky->render();
-	if (impl->terrainStatic)
-		impl->terrainStatic->render();
-	if (impl->terrain)
-		impl->terrain->render();
-	if (impl->sourceMap)
-		impl->sourceMap->render();
-	if (impl->quakeMap)
-		impl->quakeMap->render();
-	if (impl->bspMap)
-		impl->bspMap->render();
-
-	// Render nhieu lop doi voi graphic
-	// while (Graphic::ins->needRenderMore())
-	// {
-		// // rende renviroment
-		// this->physicDebug->render();
-		// this->terrain->render();
-
-		// Draw some cubes around
 		for (Entity* ent : impl->lstEntities)
-			ent->render();
-	// }
+			ent->update();
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
+}
+
+void AreaMap::render() {
+	LOG("render");
+	try {
+
+		if (impl->sky)
+			impl->sky->render();
+		if (impl->terrainStatic)
+			impl->terrainStatic->render();
+		if (impl->terrainInf)
+			impl->terrainInf->render();
+		if (impl->sourceMap)
+			impl->sourceMap->render();
+		if (impl->quakeMap)
+			impl->quakeMap->render();
+		if (impl->bspMap)
+			impl->bspMap->render();
+
+		// Render nhieu lop doi voi graphic
+		// while (Graphic::ins->needRenderMore())
+		// {
+			// // rende renviroment
+			// this->physicDebug->render();
+			// this->terrain->render();
+
+			// Draw some cubes around
+			for (Entity* ent : impl->lstEntities)
+				ent->render();
+		// }
+	}
+	catch (Exception e) {
+		track(e);
+		throw e;
+	}
 }

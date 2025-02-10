@@ -2,8 +2,8 @@
 #define __MT_SCENE_H__
 
 #include "graphic/sky/SkyBox.h"
-#include "graphic/terrain/StaticTerrain.h"
-#include "graphic/terrain/Terrain.h"
+#include "graphic/terrain/TerrainStatic.h"
+#include "graphic/terrain/TerrainInf.h"
 #include "graphic/bsp/BspSourceMap.h"
 #include "graphic/bsp/BspQuakeMap.h"
 #include "graphic/bsp/BspMap.h"
@@ -38,8 +38,8 @@ public:
 
 	// Enviroment
 	SkyBox* sky;
-	StaticTerrain* terrainStatic;
-	Terrain* terrain;
+	TerrainStatic* terrainStatic;
+	TerrainInf* terrain;
 	BspSourceMap* sourceMap;
 	BspQuakeMap* quakeMap;
 	BspMap* bspMap;
@@ -49,6 +49,7 @@ public:
 	// Forward
 	Scene();
 	~Scene();
+
 	void init();
 	void update();
 	void render();

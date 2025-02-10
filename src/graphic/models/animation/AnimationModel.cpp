@@ -364,7 +364,7 @@ AnimationModel::AnimationModel()
 	this->impl->VAO.addIndices(indices_tmp);
 	this->impl->VAO.unbind();
 
-	this->impl->texture.init("./res/models/man/diffuse.png");
+	this->impl->texture.loadImage("./res/models/man/diffuse.png");
 
 	this->impl->currentPose.resize(this->impl->boneCount, this->impl->identity); // use this for no animation
 }

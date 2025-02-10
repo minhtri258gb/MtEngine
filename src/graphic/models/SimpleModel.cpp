@@ -96,7 +96,7 @@ void SimpleModel::loadVAO(vector<vec3> vertices, vector<unsigned int> indices) {
 void SimpleModel::loadTexture(string filepath) {
 	LOG("loadTexture");
 	try {
-		impl->texture.init(filepath);
+		impl->texture.loadImage(filepath);
 	}
 	catch (Exception e) {
 		track(e);

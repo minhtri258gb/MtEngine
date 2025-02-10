@@ -3,8 +3,7 @@
 
 namespace mt {
 
-class FileCFG
-{
+class FileCFG {
 public:
 
 	// Constructor
